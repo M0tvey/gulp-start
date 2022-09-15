@@ -1,0 +1,41 @@
+{
+  "name": "gulp-start-kostua",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Moroz Kostua",
+  "license": "ISC",
+  "devDependencies": {
+    "@fancyapps/fancybox": "^3.5.7",
+    "bootstrap-4-grid": "^3.2.0",
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^6.2.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-svgmin": "^4.1.0",
+    "gulp-svgstore": "^9.0.0",
+    "gulp-terser": "^2.1.0",
+    "gulp-watch": "^5.0.1",
+    "jquery": "^3.4.1",
+    "svg4everybody": "^2.1.9",
+    "swiper": "^8.3.2"
+  },
+  "dependencies": {
+    "del": "^5.1.0",
+    "gulp-nunjucks-render": "^2.2.3",
+    "inputmask": "^5.0.3",
+    "jquery-ui": "^1.12.1",
+    "jquery.cookie": "^1.4.1",
+    "node-sass": "^6.0.0",
+    "parsleyjs": "^2.9.2",
+    "select": "^1.1.2",
+    "select2": "^4.0.13"
+  }
+}

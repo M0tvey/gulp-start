@@ -1,0 +1,43 @@
+.map {
+	height: 380px;
+	margin-top: 33px;
+
+	&__adres {
+		position: absolute;
+		background: #fff;
+		box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+		border-radius: 8px;
+		padding: 8px 28px 8px 22px;
+		font-size: 14px;
+		line-height: 180%;
+		white-space: nowrap;
+		inset: -60px auto auto 35px;
+		@include screen("md", "min") {
+			font-size: 18px;
+
+			br {
+				display: none;
+			}
+		}
+
+		&::before {
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 12px;
+			line-height: 0;
+			transform: translateY(-1px);
+		}
+	}
+
+	// [class*=ground-pane] {
+	// 	filter: grayscale(1);
+	// }
+
+	[class*=copyrights-pane] {
+		display: none;
+	}
+
+	& + .form__wrap {
+		padding-top: 0;
+	}
+}

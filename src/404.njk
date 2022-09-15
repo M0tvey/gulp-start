@@ -1,0 +1,17 @@
+{% set siteTitle = 'Страница не найдена' %}
+{% include './src/templates/header-inner.njk' %}
+{% include './src/templates/header.njk' %}
+
+<main class="main page__404_wrap">
+	<section class="page__404">
+		<div class="page__404_icon">4<img src="assets/img/svg/404.svg" alt="404">4</div>
+
+		<h1 class="page__404_title">Страница не найдена</h1>
+
+		<p class="page__404_text">Похоже, мы не можем найти нужную вам страницу.<br><br>Вы можете вернуться на главную страницу и попробовать ещё раз.</p>
+
+		<a href="/" class="bttn bttn_1">На главную</a>
+	</section>
+</main>
+
+{% include './src/templates/footer.njk' %}

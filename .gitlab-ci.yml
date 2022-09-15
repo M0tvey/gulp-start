@@ -1,0 +1,20 @@
+image: centos/nodejs-12-centos7
+
+pages:
+  script:
+    - npm install -g gulp yarn
+    - if [ -f yarn.lock ]; then rm yarn.lock; fi
+    - yarn install
+    - gulp build
+    - mv build public
+    - find ./public/ -type f -exec sed -i -e 's|/assets/|'$CI_PAGES_URL'/assets/|g' {} \;
+    - find ./public/ -type f -exec sed -i -e 's|href="/|href="'$CI_PAGES_URL'/|g' {} \;
+    - find ./public/ -type f -exec sed -i -e 's|src="/|src="'$CI_PAGES_URL'/|g' {} \;
+    - echo 'console.dir("'$CI_COMMIT_SHORT_SHA' - '$CI_COMMIT_MESSAGE' - '$CI_COMMIT_DESCRIPTION'");' > public/git.log.js
+    - sed -i -e ':a;N;$!ba;s/\n/\\n/g' public/git.log.js
+    - find ./public/ -type f -exec sed -i -e 's|<head>|<head><script src="'$CI_PAGES_URL'/git.log.js"></script>|g' {} \;
+  artifacts:
+    paths:
+      - public
+  only:
+    - main

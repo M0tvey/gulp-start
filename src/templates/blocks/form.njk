@@ -1,0 +1,79 @@
+<form action="response-form.json" class="form js-form-ajax" data-parsley-validate>
+	<div class="form__body">
+		<p class="form__title">Отправить резюме</p>
+
+		<div class="form__body-col">
+			<div class="form__body-select form-margin form-pr">
+				<select data-placeholder="Название вакансии / желаемая должность*" required>
+					<option></option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</select>
+			</div>
+
+			<div class="form__body-input form-margin form-pr">
+				<input id="fio" type="text" name="fio" required data-parsley-maxlength="100">
+				<label for="fio">ФИО*</label>
+			</div>
+
+			<div class="form__body-input form-margin form-pr">
+				<input id="phone" type="text" name="phone" class="js-phone-mask" data-parsley-pattern="^[\d\+\-\.\(\)\/\s]*$"
+					required>
+				<label for="phone">Телефон для связи*</label>
+			</div>
+
+			<div class="form__body-input form-margin form-pr">
+				<input id="email" type="text" name="email1" data-parsley-type="email" required data-parsley-maxlength="100">
+				<label for="email">Электронная почта*</label>
+			</div>
+
+			<div class="form__body-input form-margin form-pr">
+				<input id="data" type="text" name="data" required onfocus="(this.type='date')" onblur="(this.type='text')">
+				<label for="data">Дата рождения*</label>
+			</div>
+
+			<div class="form__body-input form-margin form-pr">
+				<input id="price" type="number" name="price" required>
+				<label for="price">Желаемый уровень заработной платы*</label>
+			</div>
+
+			<div class="form__body-textarea form-margin form-pr">
+				<textarea name="experience" id="experience" rows="1" required data-parsley-maxlength="1000"></textarea>
+				<label for="experience">Опыт работы*</label>
+				<div class="ghost"></div>
+			</div>
+
+			<div class="form__body-textarea form-margin form-pr">
+				<textarea name="education" id="education" rows="1" required data-parsley-maxlength="100"></textarea>
+				<label for="education">Образование*</label>
+				<div class="ghost"></div>
+			</div>
+
+			<div class="form__body-textarea form-margin form-pr">
+				<textarea name="additional_information" id="additional_information" rows="1"
+					data-parsley-maxlength="1000"></textarea>
+				<label for="additional_information">Дополнительная информация</label>
+				<div class="ghost"></div>
+			</div>
+
+			<div class="form__body-input form__body--file form-margin form-pr">
+				<input class="hidden-input js-file-input" id="file" type="file" data-label="Загрузить презентацию"
+					name="presentation" data-parsley-max-file-size="5120" data-parsley-file-formats="PDF,DOC,DOCX,ODT">
+				<label class="input-file" for="file">Загрузить презентацию</label>
+				<label class="input-file__label" for="file">Допустимые для загрузки форматы: PDF, DOC, DOCX, ODT <br>Размер
+					файла – до 5 Мб</label>
+			</div>
+
+			<div class="form__body-checkbox form-pr">
+				<input type="checkbox" class="hidden-input" name="personal-data" id="personal-data">
+				<label for="personal-data" class="checkbox-label">Я согласен на обработку <a target="_blank"
+						href="javascript:void(0)">персональных данных</a>
+				</label>
+			</div>
+		</div>
+
+		<button type="submit" class="form__bttn bttn bttn_1 js-form-ajax-btn">Отправить</button>
+	</div>
+</form>

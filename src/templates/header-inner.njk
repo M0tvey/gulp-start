@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>{% if siteTitle %}{{ siteTitle }}{% else %}page{% endif %}</title>
+		<meta name="description" content="">
+
+		<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="/assets/css/main.min.css">
+		<script src="https://api-maps.yandex.ru/2.1/?apikey=865714b7-1fc0-49e4-ac3d-b917e31ad8de&lang=ru_RU" type="text/javascript"></script>
+	</head>
+
+	<body {% if bodyClass %}class="{{ bodyClass }}"{% endif %}>

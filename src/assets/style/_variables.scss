@@ -1,0 +1,103 @@
+// $container-width: 1226px; // Максимальная ширина контейнера контента
+// $container-padding: 15px; // Отступы слева и справа у контейнера
+// $grid-container-width: 100%; // Ширина контейнера сетки
+// $grid-cols: 12; // Количество колонок в сетке
+// $grid-gap: 20px; // Расстояние между колонками
+// $grid-gap-vertical: 20px; // Расстояние между строками в сетке
+// Пример @media (min-width: $md) {}
+
+$font_1: 'Arial', sans-serif;
+
+$color_1: #2F2F2F;
+$color_2: #FF292A;
+
+
+$max_width: 1340px;
+
+$breakpoints: (
+  'xlll': 1750px,
+  'xll': 1400px,
+  'xxl': 1280px,
+  'xl': 1200px,
+  'lg': 992px,
+  'mdd': 900px,
+  'md': 768px,
+  'sm': 576px,
+  'xxs': 500px,
+  'xss': 400px,
+  'xs': 320px
+);
+
+$article_width: 820px;
+
+@mixin transition($property: '', $time: 0.2, $timing-function: ease-in-out) {
+  @if $property == '' {
+		$property: all;
+		transition: $property #{$time}s $timing-function;
+	} @else {
+		$prop: '';
+		@for $i from 1 through length($property) {
+			$prop: #{$prop} nth($property, $i); 
+		}
+
+		transition-property: #{$prop};
+		transition-duration: #{$time}s;
+		transition-timing-function: #{$timing-function};
+	}
+}
+
+@mixin hover() {
+  &:hover,
+  &:active,
+  &:focus {
+    @content;
+  }
+}
+
+@mixin size($height, $width: "") {
+  @if $width == "" { $width: $height }
+  height: $height;
+  width: $width;
+}
+
+@function gradient($color1, $color2) {
+  @return linear-gradient(180deg, $color1 36.13%, $color2 135%);
+}
+
+@mixin insert_icon($icon1, $icon2) {
+  position: relative;
+
+  &:before,
+  &:after {
+    position: absolute;
+    inset: 50% auto auto 0;
+    transform: translateY(-50%);
+    line-height: 0;
+  }
+  &:before {
+    content: $icon1;
+  }
+  &:after {
+    content: $icon2;
+    opacity: 0;
+    @include transition;
+  }
+  &.is-active:after,
+  &:hover:after {
+    opacity: 1;
+  }
+}
+
+@mixin screen($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+
+    @if $type == max {
+      $width: $width - 00.2px;
+    }
+
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}

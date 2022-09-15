@@ -1,0 +1,104 @@
+@import "../../../node_modules/bootstrap-4-grid/scss/grid.scss";
+@import "../../../node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css";
+@import "../../../node_modules/jquery-ui/themes/base/base.css";
+@import "../../../node_modules/select2/dist/css/select2.min.css";
+@import "../../../node_modules/swiper/swiper-bundle.min.css";
+
+@import "_fonts";
+@import "_variables";
+@import "_icons";
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	background: -webkit-linear-gradient(
+		top,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(0, 174, 255, 0.04) 50%,
+		rgba(255, 255, 255, 0) 51%,
+		rgba(0, 174, 255, 0.03) 100%
+	);
+}
+
+::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #ccc;
+	opacity: 1; /* Firefox */
+	font-weight: 400;
+}
+
+:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: #ccc;
+	font-weight: 400;
+}
+
+::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: #ccc;
+	font-weight: 400;
+}
+
+* {
+	outline: none;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	height: 100%;
+}
+
+body {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: auto 1fr auto;
+	font: normal 16px/140% $font_1;
+	color: $color_1;
+}
+
+a {
+	color: $color_1;
+	@include transition;
+
+	&:hover {
+		color: $color_2;
+		text-decoration: none;
+	}
+}
+
+.wrap {
+	max-width: 1380px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.container {
+	max-width: $max_width;
+}
+
+.center {
+	text-align: center;
+}
+
+.both {
+	display: block;
+	clear: both;
+}
+
+@import "_menu";
+@import "_form";
+@import "_tabs";
+@import "_popup";
+@import "_map";
+@import "_bttn";
+@import "_mobile-menu";
+@import "_sitemap";
+@import "_slider";

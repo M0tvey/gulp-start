@@ -1,0 +1,161 @@
+.mobile_menu {
+	&__wrap,
+	&__bttn,
+	&_next-link,
+	&_back-link {
+		display: block;
+
+		@include screen("lg", "min") {
+			display: none;
+		}
+	}
+
+	&__wrap {
+		position: fixed;
+		inset: 55px 0 0 0;
+		background-color: #fff;
+		z-index: 100;
+		transform: translateX(100%);
+		@include transition(all, 0.3);
+		display: grid;
+		grid-template-columns: 100%;
+		grid-template-rows: 1fr auto;
+		overflow: hidden;
+	}
+
+	&__bttn {
+		border-radius: 5px;
+		background-color: transparent;
+		float: right;
+		height: 38px;
+		width: 38px;
+		padding: 8px 8px;
+
+		div {
+			position: relative;
+			display: block;
+			height: 2px;
+			width: 100%;
+			margin-top: 4px;
+			transition: all 0.25s;
+		}
+	}
+
+	&_next-link {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: 50px;
+		z-index: 5;
+
+		&::before {
+			line-height: 0;
+			position: absolute;
+			inset: 50% auto auto 10px;
+			transform: translateY(-50%);
+		}
+	}
+
+	&_back-link {
+		font-weight: 700;
+		font-size: 18px;
+		line-height: 140%;
+		padding: 15px 30px;
+		order: -1;
+
+		&:before {
+			overflow: hidden;
+			width: 18px;
+			display: inline-block;
+			line-height: 0;
+			margin-right: 12px;
+			vertical-align: middle;
+		}
+	}
+
+	&.menu_open {
+		.mobile_menu {
+			&__wrap {
+				transform: translateX(0);
+			}
+		}
+
+		[class*="__bttn"] {
+			div {
+				&:first-child {
+					transform: rotate(45deg) translate(4.4px, 4.4px);
+				}
+
+				&:nth-child(2) {
+					width: 0%;
+					opacity: 0;
+				}
+
+				&:last-child {
+					transform: rotate(-45deg) translate(4.4px, -4.4px);
+				}
+			}
+		}
+	}
+
+	.header-menu {
+		margin: 0;
+		padding: 15px 0;
+		list-style: none;
+		position: relative;
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		&.submenu-active {
+			.is-active .header-menu__submenu {
+				transform: translateX(-100%);
+			}
+		}
+
+		&__link {
+			padding: 15px 10px 15px 30px;
+			text-decoration: none;
+			font-size: 18px;
+			line-height: 180%;
+			@include transition;
+			position: relative;
+			display: block;
+
+			&:hover {
+				color: $color_2;
+				font-weight: 700;
+			}
+		}
+
+		&__submenu {
+			position: fixed;
+			inset: 0 auto 0 100%;
+			width: 100%;
+			margin: 0;
+			padding: 15px 0;
+			list-style: none;
+			overflow-y: auto;
+			overflow-x: hidden;
+			z-index: 5;
+			background-color: #fff;
+			@include transition;
+			transform: translateX(0);
+			display: grid;
+			grid-auto-rows: max-content;
+			grid-template-columns: 100%;
+
+			&_link {
+				padding: 15px 10px 15px 30px;
+				text-decoration: none;
+				font-size: 18px;
+				line-height: 180%;
+				display: block;
+				@include transition;
+
+				&:hover,
+				&.is-active {
+					color: $color_2;
+				}
+			}
+		}
+	}
+}

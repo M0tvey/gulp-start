@@ -1,0 +1,158 @@
+{% set menuItems = {
+	'header': [
+		{
+			name: 'Гдавная',
+			link: '/',
+			class: '',
+			blank: false,
+			submenu: [
+				{
+					name: 'О компании',
+					link: 'javascript:void(0)',
+					class: '',
+					blank: false
+				}
+			]
+		}
+	],
+	'footer' :[
+		{
+			name: 'Главная',
+			link: '/',
+			class: '',
+			blank: false
+		}
+	]
+} %}
+
+{% macro menu(activeItem = '', typeMenu = 'header', menuClass = false) %}
+	<menu class="menu {{ typeMenu }}-menu{% if menuClass %} {{ menuClass}}{% endif %}">
+		{% for item in menuItems[typeMenu] %}
+			{% set activeClass = '' %}
+			{% if activeItem === item.name %}{% set activeClass = ' is-active' %}{% endif %}
+			{% if item.submenu and item.submenu.length %}
+				{% for subItem in item.submenu %}
+					{% if subItem.name === activeItem %}{% set activeClass = ' is-active' %}{% endif %}
+				{% endfor %}
+			{% endif %}
+
+			<li class="{{ typeMenu }}-menu__item{{ activeClass }}">
+				<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{{ item.class }}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
+				{% if item.submenu and item.submenu.length %}
+					<ul class="{{ typeMenu }}-menu__submenu">
+						{% for subItem in item.submenu %}
+							{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
+							<li class="{{ typeMenu }}-menu__submenu_item">
+								<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{{ subItem.class }}{{ subActiveClass }}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
+							</li>
+							{% set subActiveClass = '' %}
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</menu>
+{% endmacro %}
+
+{% macro breadcrumbs(itemsArray) %}
+	<section class="breadcrumbs">
+		<a href="/" class="breadcrumbs__back breadcrumbs__item js_back_link">Назад</a>
+
+		<ul class="breadcrumbs__list">
+			<li>
+				<a href="/" class="breadcrumbs__item">Главная</a>
+			</li>
+
+			{% if itemsArray.length != 0 %}
+				{% for bredItem in itemsArray %}
+					{% if loop.index != loop.length %}
+						{% set bredItemUrl = 'javascript:void(0)' %}
+
+						{% for hMenuItem in menuItems['header'] %}
+							{% if bredItem == hMenuItem.name %}
+								{% set bredItemUrl = hMenuItem.link %}
+							{% endif %}
+						{% endfor %}
+
+						<li>
+							<a href="{{ bredItemUrl }}" class="breadcrumbs__item">{{ bredItem }}</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+
+				<li>
+					<span class="breadcrumbs__item">{{ itemsArray | last }}</span></li>
+			{% endif %}
+		</ul>
+	</section>
+{% endmacro %}
+
+{% macro directions(directionsItems) %}
+	<section class="directions container">
+		<p class="page__title-2">Направления</p>
+
+		<div class="directions__list">
+			{% for item in directionsItems %}
+				{% set itemLink = 'javascript:void(0)' %}
+				{% if item.link %}{% set itemLink = item.link %}
+				{% endif %}
+				<a href="{{ itemLink }}" class="directions__item">
+					<span class="directions__item_image_wrap">
+						<img src="assets/img/directions/{{ item.img }}" alt="" class="directions__item_image">
+					</span>
+
+					<span class="directions__item_content">
+						<span class="directions__item_title">{{ item.title }}</span>
+						<span class="directions__item_more">Подробнее >></span>
+					</span>
+				</a>
+			{% endfor %}
+		</div>
+	</section>
+{% endmacro %}
+
+{% macro tags(obj) %}
+	<section class="container">
+		<form action="{{ obj.action }}" class="tags">
+			{% for item in obj.items %}
+				<div class="tags__item js_tag{% if item.check %} is-active{% endif %}">
+					<input type="checkbox" name="{{ obj.name }}" value="{{ item.val }}" class="tags__check" id="tag-{{ loop.index }}"{% if item.check %} checked{% endif %}>
+					<label for="tag-{{ loop.index }}" class="tags__label">{{ item.title }}</label>
+					<a href="javascript:void(0)" class="tags__close js_tag_close"></a>
+				</div>
+			{% endfor %}
+		</form>
+	</section>
+{% endmacro %}
+
+{% macro blockLinks(obj) %}
+	<div class="{{ obj.class }}">
+		{% for item in obj.items %}
+			<{{ 'a href="' + item.link + '"' if item.link else 'p' }} class="block-link{% if item.class %} {{ item.class }}__item{% endif %}">
+				<span class="block-link__title{% if item.class %} {{ item.class }}__title{% endif %}">{{ item.title }}</span>
+			</{{ 'a' if item.link else 'p' }}>
+		{% endfor %}
+	</div>
+{% endmacro %}
+
+{% macro offerList(obj) %}
+	<div class="offer-list__list{{ ' '+obj.class+'__list' if obj.class else '' }}">
+		{% for item in obj.items %}
+			<div class="offer-list__item{{ ' '+obj.class+'__item' if obj.class else '' }}">
+				<img src="assets/img/{{ obj.icon }}" alt="{{ item.title }}" class="offer-list__item_icon{{ ' '+obj.class+'__item_icon' if obj.class else '' }}">
+				
+				<a href="{{ item.link }}" class="offer-list__item_title{{ ' '+obj.class+'__item_title' if obj.class else '' }}">{{ item.title }}</a>
+
+				<p class="offer-list__item_text{{ ' '+obj.class+'__item_text' if obj.class else '' }}">{{ item.text }}</p>
+
+				{% if item.bttn and item.bttn.length %}
+					<div class="offer-list__item_bttns{{ ' '+obj.class+'__item_bttns' if obj.class else '' }}">
+						{% for bttn in item.bttn %}
+							<a href="{{ bttn.link }}" class="offer-list__item_bttn{{ ' '+obj.class+'__item_bttn' if obj.class else '' }} bttn bttn_{{ bttn.id }}">{{ bttn.title }}</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+{% endmacro %}

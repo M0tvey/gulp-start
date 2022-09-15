@@ -1,0 +1,89 @@
+.bttn {
+	border-radius: 8px;
+	text-decoration: none;
+	text-align: center;
+	display: inline-block;
+	padding: 13px 38px;
+	border-radius: 30px;
+	font: normal 16px/100% $font_1;
+	cursor: pointer;
+	@include transition;
+
+	&.is-disabled {
+		background-color: rgba($color_2, 0.5);
+		color: $color_1;
+	}
+
+	&_1 {
+		color: #fff;
+		background-color: $color_2;
+		border: solid 1px $color_2;
+
+		&:hover,
+		&:active,
+		.is-active {
+			background-color: #fff;
+			color: $color_2;
+		}
+	}
+
+	&_2 {
+		color: $color_2;
+		background-color: #fff;
+		border: solid 1px $color_2;
+
+		&:hover,
+		&:active,
+		.is-active {
+			background-color: $color_2;
+			color: #fff;
+		}
+
+		&.arrow {
+			position: relative;
+
+			&::before {
+				content: "";
+				background-color: #fff;
+				position: absolute;
+				inset: 50% -2px auto auto;
+				@include size(6px);
+				transform: translateY(-50%);
+				@include transition;
+			}
+
+			&::after {
+				position: absolute;
+				inset: 50% -25px auto auto;
+				line-height: 0;
+				transform: translateY(-50%);
+			}
+
+			&:hover {
+				&::before {
+					opacity: 0;
+				}
+			}
+		}
+	}
+
+	&_3 {
+		padding: 18px 27px;
+		background-color: #fff;
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 100%;
+		@include transition;
+
+		&:hover,
+		&:active,
+		.is-active {
+			color: #fff;
+		}
+	}
+
+	&_semiwide {
+		width: 100%;
+		max-width: 360px;
+	}
+}
