@@ -67,6 +67,7 @@ var path = {
     json: 'src/*.json',
     style: 'src/assets/style/**/*.scss',
     img: 'src/assets/img/**/*.*',
+    svg: 'src/assets/img/svg/*.*',
     root: 'src/assets/root/**/*.*',
     fonts: 'src/assets/fonts/**/*.*'
   },
@@ -178,7 +179,7 @@ gulp.task('watch', function (done) {
   watch([path.watch.json], gulp.series('json:build'));
   watch([path.watch.root], gulp.series('root:build'));
   watch([path.watch.img], gulp.series('image:build'));
-  watch([path.watch.img], gulp.series('svg:build'));
+  watch([path.watch.svg], gulp.series('svg:build'));
   watch([path.watch.fonts], gulp.series('fonts:build'));
   done();
 });

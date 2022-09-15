@@ -1,16 +1,7 @@
-// $container-width: 1226px; // Максимальная ширина контейнера контента
-// $container-padding: 15px; // Отступы слева и справа у контейнера
-// $grid-container-width: 100%; // Ширина контейнера сетки
-// $grid-cols: 12; // Количество колонок в сетке
-// $grid-gap: 20px; // Расстояние между колонками
-// $grid-gap-vertical: 20px; // Расстояние между строками в сетке
-// Пример @media (min-width: $md) {}
-
 $font_1: 'Arial', sans-serif;
 
 $color_1: #2F2F2F;
 $color_2: #FF292A;
-
 
 $max_width: 1340px;
 
@@ -58,10 +49,6 @@ $article_width: 820px;
   @if $width == "" { $width: $height }
   height: $height;
   width: $width;
-}
-
-@function gradient($color1, $color2) {
-  @return linear-gradient(180deg, $color1 36.13%, $color2 135%);
 }
 
 @mixin insert_icon($icon1, $icon2) {

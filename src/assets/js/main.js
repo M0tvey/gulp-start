@@ -1,4 +1,4 @@
-window.siteOptions = {
+window.siteOpt = {
 	breakpoints: {
 		'xlll': 1750,
 		'xll': 1400,
@@ -17,6 +17,134 @@ window.siteOptions = {
 $(function () {
 	svg4everybody();
 
+	// ----------------------------------------- custom sliders
+	/*
+		data-slider             - id слайдера
+		data-items-count        - количество видемых слайдов
+		data-space-between      - растояние между слайдами
+		data-paginate           - включить пагинацию? (элемент должен находится внутри data-slider, data-paginate="id слайдера")
+		data-space-breakpoints  - настройки для адаптации (data-space-breakpoints="80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2"")
+		data-slider-direction   - напровленеи слайдера
+		data-slider-interaction - взаимодействи слайдеров (data-slider-interaction="id второго слайдера") !!!если на втором слайдере указан spaceBetween то он каряво работает
+		data-navigation - 
+	*/
+	function customSliders() {
+		const $sliders = $('.js_custom_slider');
+		if (!$sliders.length) return false;
+		if (!window.siteOpt) {
+			window.siteOpt = {};
+			window.siteOpt.swipers = {};
+		} else {
+			window.siteOpt.swipers = {};
+		}
+
+		$.each($sliders, function () {
+			var slider = $(this),
+				sliderId = slider.data('slider'),
+				$sliderSettings = {
+					slidesPerView: slider.data('items-count') ? slider.data('items-count').toString().includes(`'`) ? slider.data('items-count').replaceAll(`'`, '') : +slider.data('items-count') : 1,
+					spaceBetween: slider.data('space-between') || 0,
+				};
+
+			if (slider.data('[data-mousewheel]') !== undefined) $sliderSettings.mousewheel = true;
+
+			if (slider.find('[data-paginate]').length) {
+				var sliderPagination = {
+					el: `[data-paginate=${sliderId}]`,
+					clickable: true
+				}
+
+				slider.addClass('paginate');
+				$sliderSettings.pagination = sliderPagination;
+			}
+
+			if (slider.find('[data-slider-prev], [data-slider-next]').length) {
+
+				$sliderSettings.navigation = {
+					nextEl: `[data-slider-next=${sliderId}]`,
+					prevEl: `[data-slider-prev=${sliderId}]`,
+				};
+			}
+
+			if (slider.data('space-breakpoints') !== undefined) {
+				var sliderRes = slider.data('space-breakpoints').split(';'),
+					sliderbreakbreak = {};
+
+				$.each(sliderRes, function (i, a) {
+					var sliderResI = a.split('-'),
+						sliderWidth = parseInt(sliderResI[0]),
+						sliderResOpts = sliderResI[1].split(','),
+						sliderbreakSet = {};
+
+					sliderResOpts.forEach(opt => {
+						const [key, val] = opt.split(':');
+						sliderbreakSet[key] = val.includes(`'`) ? val.replaceAll(`'`, '') : +val;
+					});
+
+					sliderbreakbreak[sliderWidth] = sliderbreakSet;
+					$sliderSettings.breakpoints = sliderbreakbreak;
+				});
+			}
+
+			if (slider.data('slider-direction') !== undefined) $sliderSettings.direction = slider.data('slider-direction');
+
+			if (slider.data('column') !== undefined) $sliderSettings.slidesPerColumn = slider.data('column');
+
+			if (slider.data('slider-interaction') !== undefined) {
+				var secondSlider = $('[data-slider=' + slider.data('slider-interaction') + ']'),
+					secondsliderSettings = {
+						on: {
+							slideChangeTransitionEnd: function () {
+								slider.find('.swiper-slide').not(':eq(' + this.activeIndex + ')').removeClass('active');
+								slider.find('.swiper-slide').eq(this.activeIndex).addClass('active');
+								thisSwiper.slideTo(this.activeIndex);
+							}
+						}
+					},
+					secondSwiper = new Swiper(secondSlider[0], secondsliderSettings),
+					thisSwiper = new Swiper(slider[0], $sliderSettings);
+
+				window.siteOpt.swipers[secondSlider.data('slider')] = secondSwiper;
+				window.siteOpt.swipers[sliderId] = thisSwiper;
+
+				slider.find('.swiper-slide').on('click', function (e) {
+					e.preventDefault();
+					var index = $(this).index();
+					if (!$(this).hasClass('active')) {
+						$(this).addClass('active');
+					}
+					$(this).parent('.swiper-wrapper').find('.swiper-slide').not($(this)).removeClass('active');
+					secondSwiper.slideTo(index);
+				});
+			} else {
+				if (window.siteOpt.swipers[sliderId]) {
+					window.siteOpt.swipers[sliderId].update($sliderSettings);
+				} else {
+					setTimeout(_ => {
+						if (sliderId === 'all-services') {
+							$sliderSettings.breakpoints = {
+								80: {
+									grid: {
+										rows: 7,
+									}
+								},
+								768: {
+									grid: {
+										rows: 1
+									}
+								}
+							}
+						}
+
+						var thisSwiper = new Swiper(slider[0], $sliderSettings);
+
+						window.siteOpt.swipers[sliderId] = thisSwiper;
+					}, 100)
+				}
+			}
+		});
+	}; customSliders();
+
 	// ---------------- mobile menu ----------------
 	(_ => {
 		const header = document.querySelector('.js_header'),
@@ -32,7 +160,7 @@ $(function () {
 			subMenuActiveClass = 'submenu-active',
 			activeClass = 'is-active',
 			moveHeaderElement = () => {
-				if (window.innerWidth < window.siteOptions.breakpoints['lg']) {
+				if (window.innerWidth < window.siteOpt.breakpoints['lg']) {
 					header.classList.add('mobile_menu');
 					if (mobileEl1) mobileMenuWrap.append(mobileEl1);
 				} else {
@@ -40,7 +168,7 @@ $(function () {
 					if (mobileEl1) mobileEl2.before(mobileEl1);
 				}
 
-				if (window.innerWidth < window.siteOptions.breakpoints['sm']) {
+				if (window.innerWidth < window.siteOpt.breakpoints['sm']) {
 					if (mobileEl2) mobileMenuWrap.append(mobileEl2);
 				} else {
 					if (mobileEl2) mobileMenuWrap.before(mobileEl2);
@@ -134,8 +262,8 @@ $(function () {
 				function setC() {
 					let right = 0;
 
-					if (window.innerWidth < window.siteOptions.breakpoints['lg']) right = 240;
-					if (window.innerWidth < window.siteOptions.breakpoints['md']) right = 150;
+					if (window.innerWidth < window.siteOpt.breakpoints['lg']) right = 240;
+					if (window.innerWidth < window.siteOpt.breakpoints['md']) right = 150;
 
 					const offsetPos = contactsMap.options.get('projection').fromGlobalPixels([positions[0] + right, positions[1]], contactsMap.getZoom());
 
@@ -153,7 +281,7 @@ $(function () {
 
 				setTimeout(() => {
 					placemark.getOverlaySync().getLayoutSync().getElement().append(adresBlock)
-				}, 200)
+				}, 300)
 			});
 		}
 	}; contactsMap();
@@ -353,6 +481,7 @@ $(function () {
 
 							$form.find('.' + activeClass).removeClass(activeClass);
 							$form[0].reset();
+							$form.find('select').val(null).trigger('change');
 							$errorContainer.html('');
 						} else {
 							$errorContainer.html('<div>' + data.error + '</div>');
@@ -394,7 +523,7 @@ $(function () {
 			scrollToF = to => {
 				let top = $(to).offset().top;
 				const $header = $('.header');
-				// top = innerWidth <= window.siteOptions.breakpoints['sm'] ? top - 60 : top
+				// top = innerWidth <= window.siteOpt.breakpoints['sm'] ? top - 60 : top
 				top = $header.css('position') === 'fixed' ? top - ($header.innerHeight() + 10) : top;
 
 				$('html, body').stop().animate({ scrollTop: top }, 500, 'swing');
@@ -545,127 +674,4 @@ $(function () {
 			}
 		});
 	} tabs();
-
-	// ----------------------------------------- custom sliders
-	/*
-		data-slider - id слайдера
-		data-items-count - количество видемых слайдов
-		data-space-between - растояние между слайдами
-		data-paginate - включить пагинацию? (элемент должен находится внутри data-slider, data-paginate="id слайдера")
-		data-space-breakpoints - настройки для адаптации (data-space-breakpoints="80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2"")
-		data-slider-direction - напровленеи слайдера
-		data-slider-interaction - взаимодействи слайдеров (data-slider-interaction="id второго слайдера") !!!если на втором слайдере указан spaceBetween то он каряво работает
-		data-navigation - 
-	*/
-	function customSliders() {
-		const $sliders = $('.js_custom_slider');
-		if (!$sliders.length) return false;
-		if (!window.swipers) window.swipers = {};
-
-		$.each($sliders, function () {
-			var slider = $(this),
-				sliderId = slider.data('slider'),
-				$sliderSettings = {
-					slidesPerView: slider.data('items-count') ? slider.data('items-count').toString().includes(`'`) ? slider.data('items-count').replaceAll(`'`, '') : +slider.data('items-count') : 1,
-					spaceBetween: slider.data('space-between') || 0,
-				};
-
-			if (slider.data('[data-mousewheel]') !== undefined) $sliderSettings.mousewheel = true;
-
-			if (slider.find('[data-paginate]').length) {
-				var sliderPagination = {
-					el: `[data-paginate=${sliderId}]`,
-					clickable: true
-				}
-
-				slider.addClass('paginate');
-				$sliderSettings.pagination = sliderPagination;
-			}
-
-			if (slider.find('[data-slider-prev], [data-slider-next]').length) {
-
-				$sliderSettings.navigation = {
-					nextEl: `[data-slider-next=${sliderId}]`,
-					prevEl: `[data-slider-prev=${sliderId}]`,
-				};
-			}
-
-			if (slider.data('space-breakpoints') !== undefined) {
-				var sliderRes = slider.data('space-breakpoints').split(';'),
-					sliderbreakbreak = {};
-
-				$.each(sliderRes, function (i, a) {
-					var sliderResI = a.split('-'),
-						sliderWidth = parseInt(sliderResI[0]),
-						sliderResOpts = sliderResI[1].split(','),
-						sliderbreakSet = {};
-
-					sliderResOpts.forEach(opt => {
-						const [key, val] = opt.split(':');
-						sliderbreakSet[key] = val.includes(`'`) ? val.replaceAll(`'`, '') : +val;
-					});
-
-					sliderbreakbreak[sliderWidth] = sliderbreakSet;
-					$sliderSettings.breakpoints = sliderbreakbreak;
-				});
-			}
-
-			if (slider.data('slider-direction') !== undefined) $sliderSettings.direction = slider.data('slider-direction');
-
-			if (slider.data('column') !== undefined) $sliderSettings.slidesPerColumn = slider.data('column');
-
-			if (slider.data('slider-interaction') !== undefined) {
-				var secondSlider = $('[data-slider=' + slider.data('slider-interaction') + ']'),
-					secondsliderSettings = {
-						on: {
-							slideChangeTransitionEnd: function () {
-								slider.find('.swiper-slide').not(':eq(' + this.activeIndex + ')').removeClass('active');
-								slider.find('.swiper-slide').eq(this.activeIndex).addClass('active');
-								thisSwiper.slideTo(this.activeIndex);
-							}
-						}
-					},
-					secondSwiper = new Swiper(secondSlider[0], secondsliderSettings),
-					thisSwiper = new Swiper(slider[0], $sliderSettings);
-
-				window.swipers[secondSlider.data('slider')] = secondSwiper;
-				window.swipers[sliderId] = thisSwiper;
-
-				slider.find('.swiper-slide').on('click', function (e) {
-					e.preventDefault();
-					var index = $(this).index();
-					if (!$(this).hasClass('active')) {
-						$(this).addClass('active');
-					}
-					$(this).parent('.swiper-wrapper').find('.swiper-slide').not($(this)).removeClass('active');
-					secondSwiper.slideTo(index);
-				});
-			} else {
-				if (window.swipers[sliderId]) {
-					window.swipers[sliderId].update($sliderSettings);
-				} else {
-					setTimeout(_ => {
-						if (sliderId === 'all-services') {
-							$sliderSettings.breakpoints = {
-								80: {
-									grid: {
-										rows: 7,
-									}
-								},
-								768: {
-									grid: {
-										rows: 1
-									}
-								}
-							}
-						}
-
-						var thisSwiper = new Swiper(slider[0], $sliderSettings);
-
-						window.swipers[sliderId] = thisSwiper;
-					}, 100)
-				}
-			}
-		});
-	}; customSliders();
 });
