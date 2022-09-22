@@ -381,6 +381,7 @@ $(function () {
 				return true;
 			}
 			const files = parsleyInstance.$element[0].files;
+			
 			return files.length != 1 || files[0].size <= maxSize * 1024;
 		},
 		requirementType: 'integer',
@@ -402,6 +403,21 @@ $(function () {
 		requirementType: 'string',
 		messages: {
 			ru: 'Не подходящий фрмат файла.',
+		}
+	});
+
+	Parsley.addValidator('wordsOnly', {
+		validateString: function (_value, data, parsleyInstance) {
+			if (!window.FormData) {
+				alert('Вы заставляете всех разработчиков в мире съеживаться. Обновите свой браузер!');
+				return true;
+			}
+
+			return /^[a-zA-Zа-яА-Я ]+$/.test(_value);
+		},
+		requirementType: 'string',
+		messages: {
+			ru: 'Должны быть только буквы.',
 		}
 	});
 

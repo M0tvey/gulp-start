@@ -46,7 +46,7 @@
   //   icon_name: _buildPath((path), params, attrs) _buildPath((path), (params), attrs) _buildPath(... (width, height),
   // )
   $icons: (
-    cross_icon: _buildPath((1: 'M17 8H9V3V0H8V3V8H0V9H8V15.5V17H9V15.5V9H17V8Z'), $parameters, '') (17,17),
+    arrow_down_icon: _buildPath((1: 'M13.9.7L7.4 7.1.9.9'), $parameters, '') (14.6,8.2),
   );
 
   $listSize: length(map-get($icons, $icon-name));

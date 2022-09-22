@@ -50,6 +50,7 @@ var path = {
       'node_modules/inputmask/dist/jquery.inputmask.min.js',
       'node_modules/select2/dist/js/select2.min.js',
       'node_modules/select2/dist/js/i18n/ru.js',
+			'node_modules/gsap/dist/gsap.js',
       'node_modules/swiper/swiper-bundle.min.js',
       'src/assets/js/main.js',
     ],

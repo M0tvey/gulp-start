@@ -29,8 +29,6 @@
 
 	&__body {
 		max-width: 895px;
-		padding-left: 15px;
-		padding-right: 15px;
 		width: 100%;
 		margin: 0 auto;
 
@@ -56,72 +54,74 @@
 				font-size: 15px;
 				margin-bottom: 15px;
 			}
-	
-			.select2 {
+		}
+
+		.select2 {
+			&-container--default .select2 {
 				&-selection {
-					padding: 15px 16px;
-	
 					&__rendered {
 						padding: 0;
 						line-height: 1em;
 					}
-	
+
 					&__placeholder {
 						font-size: 14px;
 						line-height: 17px;
 						color: $color_1;
 					}
-	
+
 					&__arrow {
 						@include size(calc(100% - 2px), 25px);
-	
+
 						&::before {
+							content: icon(arrow_down_icon, transparent, $color_1, 1);
 							position: absolute;
 							inset: 50% auto auto 0;
 							transform: translateY(-50%);
 							@include transition;
 							line-height: 0;
 						}
-	
+
 						b {
 							display: none;
 						}
 					}
 				}
-	
-				&-container {
-					width: 100%;
-	
-					&--open {
-						.select2-selection {
-							border: 1px solid $color_2;
-							box-shadow: 0px 4px 10px rgba(0, 137, 199, 0.12);
-	
-							&__arrow::before {
-								transform: translateY(-50%) rotate3d(1,0,0,180deg);
-							}
+			}
+			
+			&-container {
+				width: 100%;
+
+				&--open {
+					.select2-selection {
+						border: 1px solid $color_2;
+						box-shadow: 0px 4px 10px rgba(0, 137, 199, 0.12);
+
+						&__arrow::before {
+							transform: translateY(-50%) rotate3d(1,0,0,180deg);
 						}
 					}
 				}
-	
-				&-dropdown {
-					border-color: $color_2;
+			}
+
+			&-dropdown {
+				border-color: $color_2;
+			}
+
+			&-results__option {
+				padding-left: 16px;
+
+				&[aria-selected=true] {
+					background-color: rgba($color_2, .8);
+					color: #fff;
 				}
-	
-				&-results__option {
-					padding-left: 16px;
-	
-					&[aria-selected=true] {
-						background-color: rgba($color_2, .8);
-						color: #fff;
-					}
-	
-					&--highlighted {
-						background-color: rgba($color_2, .3);
-					}
+
+				&--highlighted {
+					background-color: rgba($color_2, .3);
 				}
 			}
 		}
+
 		//select--end
 
 		&-radio {
