@@ -37,13 +37,13 @@
 			{% endif %}
 
 			<li class="{{ typeMenu }}-menu__item{{ activeClass }}">
-				<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{{ item.class }}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
+				<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
 				{% if item.submenu and item.submenu.length %}
 					<ul class="{{ typeMenu }}-menu__submenu">
 						{% for subItem in item.submenu %}
 							{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
 							<li class="{{ typeMenu }}-menu__submenu_item">
-								<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{{ subItem.class }}{{ subActiveClass }}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
+								<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}{{ subActiveClass }}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
 							</li>
 							{% set subActiveClass = '' %}
 						{% endfor %}

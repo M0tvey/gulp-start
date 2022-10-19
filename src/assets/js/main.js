@@ -152,7 +152,7 @@ $(function () {
 		if (!header && !headerMenu) return;
 
 		const div = document.createElement('div'),
-			mobileMenuWrap = div.cloneNode(),
+			mobileMenuWrap = header.querySelector('.mobile_menu__wrap') || div.cloneNode(),
 			mobileMenuBttn = div.cloneNode(),
 			openMenuClass = 'menu_open',
 			mobileEl1 = header.querySelector('.js_mobile_el_1'),
@@ -176,7 +176,7 @@ $(function () {
 			};
 
 		mobileMenuWrap.classList.add('mobile_menu__wrap');
-		header.append(mobileMenuWrap);
+		if (!header.querySelector('.mobile_menu__wrap')) header.append(mobileMenuWrap);
 
 		for (let i = 0; i < 3; i++) { mobileMenuBttn.append(div.cloneNode()) };
 		mobileMenuBttn.classList.add('mobile_menu__bttn');
