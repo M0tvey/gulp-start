@@ -234,6 +234,35 @@ $(function () {
 		});
 	})();
 
+	// ----------------------------------------- popup
+	document.querySelectorAll('.js_open_popup').forEach(link => {
+		link.addEventListener('click', e => {
+			e.preventDefault();
+
+			if (!link.href) return;
+
+			$.fancybox.open({
+				hideScrollbar: false,
+				src: link.href,
+				type: 'ajax'
+			});
+		})
+	});
+
+	document.querySelectorAll('.js_open_local_popup').forEach(link => {
+		link.addEventListener('click', e => {
+			e.preventDefault();
+
+			if (!link.hash) return;
+
+			$.fancybox.open({
+				hideScrollbar: false,
+				src: link.hash,
+				type: 'inline'
+			});
+		})
+	});
+
 	// ----------------------------------------- contacts map
 	function contactsMap() {
 		const mapEl = document.querySelector('.js_map');
