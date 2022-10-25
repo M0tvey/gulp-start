@@ -1,4 +1,4 @@
-// icon(icon-name, fill, stroke, stroke-width, size, custom-css)
+// icon(icon-name, fill, stroke, stroke-width, custom-css, size)
 @function _buildIcon($icon, $view_box, $size) {
   @if $view_box == '' {
     $icon: '<svg xmlns="http://www.w3.org/2000/svg">#{$icon}</svg>';

@@ -37,6 +37,15 @@ $article_width: 820px;
 	}
 }
 
+@function sizeVw($f-min, $f-max, $v-min:360, $v-max:1920) {
+  $k: ($f-max - $f-min)/($v-max - $v-min);
+  $b: $f-min - $k * $v-min;
+
+  $b: $b * 1px;
+
+  @return calc( #{$k} * 100vw + #{$b} );
+}
+
 @mixin hover() {
   &:hover,
   &:active,

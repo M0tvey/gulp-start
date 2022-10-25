@@ -6,12 +6,18 @@
 	border-radius: 16px;
 
 	.fancybox-button {
-		right: -40px;
-		top: -15px;
+		right: 5px;
+		top: 5px;
+		color: $color_1;
+    opacity: 1;
 
-		svg {
-			display: none;
+		&:hover {
+			color: $color_2;
 		}
+	}
+
+	&.hide {
+		display: none;
 	}
 
 	&--postmessage {
