@@ -354,11 +354,10 @@ $(function () {
 				}
 			});
 
-			$page.find(".js-phone-mask").inputmask({
-				mask: "+7(999)999-99-99"
-			});
-
+			phoneMask();
 			checkInputs();
+			inputFile();
+			textareaHeight();
 		});
 
 		$('select').each(function () {
@@ -458,34 +457,39 @@ $(function () {
 	});
 
 	// ----------------------------------------- phone mask
-	$(".js-phone-mask").inputmask({
-		showMaskOnHover: false,
-		mask: "+7 (999) 999-99-99"
-	});
+	function phoneMask() {
+		$(".js-phone-mask").inputmask({
+			showMaskOnHover: false,
+			mask: "+7 (999) 999-99-99"
+		});
+	};phoneMask();
 
 	// ----------------------------------------- textarea
-	$('textarea').on('keydown change dragend paste', function (e) {
-		let ghost = $(this).parent().find('.ghost'),
-			text = e.type === 'paste' ? this.value + (e.originalEvent || e).clipboardData.getData('text/plain') : $(this).val();
+	function textareaHeight() {
+		$('textarea').on('keydown change dragend paste', function (e) {
+			let ghost = $(this).parent().find('.ghost'),
+				text = e.type === 'paste' ? this.value + (e.originalEvent || e).clipboardData.getData('text/plain') : $(this).val();
 
-		ghost.text(text);
+			ghost.text(text);
 
-		let ghostHeight = ghost.innerHeight();
-		$(this).css('min-height', ghostHeight < 80 ? 80 : ghostHeight);
-	});
+			let ghostHeight = ghost.innerHeight();
+			$(this).css('min-height', ghostHeight < 80 ? 80 : ghostHeight);
+		});
+	};textareaHeight();
 
 	// ----------------------------------------- input file
-	$('.js-file-input').on('change', function (e) {
-		if ($(this).val() != '') {
-			const photoVal = $(this)[0].files[0].name;
-
-			$(this).siblings('.input-file').text(photoVal)
-			$(this).parents('.form__body--input').removeClass('has-error').find('.form-error').hide();
-		}
-		else {
-			$(this).siblings('.input-file').text($(this).data('label'))
-		}
-	});
+	function inputFile() {
+		$('.js-file-input').on('change', function (e) {
+			if ($(this).val() != '') {
+				const fileName = $(this)[0].files[0].name;
+				
+				$(this).siblings('.input-file').text(fileName)
+				$(this).parents('.form__body--input').removeClass('has-error').find('.form-error').hide();
+			} else {
+				$(this).siblings('.input-file').text($(this).data('label'))
+			}
+		});
+	};inputFile();
 
 	// ----------------------------------------- ajax form
 	function ajaxForm() {
