@@ -358,6 +358,7 @@ $(function () {
 			checkInputs();
 			inputFile();
 			textareaHeight();
+			ajaxForm(current.$content[0]);
 		});
 
 		$('select').each(function () {
@@ -492,65 +493,79 @@ $(function () {
 	};inputFile();
 
 	// ----------------------------------------- ajax form
-	function ajaxForm() {
-		let $form = $('.js-form-ajax'),
-			activeClass = 'is-active';
-			
-			$(document).on('submit', $form, function (e) {
-			if (e.target.classList.contains('js-form-ajax')) {
+	function ajaxForm(wrap=document) {
+		wrap.querySelectorAll('.js-form-ajax').forEach(function(form){
+			form.addEventListener('submit', function (e) {
 				e.preventDefault();
 				$form = $(e.target);
 				if ($form.find("input").hasClass("error")) return;
 
 				const $submitBtn = $form.find('.js-form-ajax-btn'),
-				defaultTextBtn = $submitBtn.html(),
-				$errorContainer = $form.find('.js-form-ajax-error'),
-				fd = new FormData($form[0]);
+					defaultTextBtn = $submitBtn.html(),
+					$errorContainer = $form.find('.js-form-ajax-error'),
+					fd = new FormData(form),
+					activeClass = 'is-active',
+					isJson = form.action.includes('.json');
+					
+				function openPopup(url) {
+					$.fancybox.open({
+						src: url,
+						type: 'ajax'
+					});
+
+					setTimeout(function () {
+						$.fancybox.close(true);
+					}, 3000);
+				}
 
 				$.ajax({
 					url: $form.attr("action"),
 					type: "POST",
 					data: fd,
-					dataType: "json",
+					dataType: isJson ? 'json' : 'html',
 					processData: false,
 					contentType: false,
 					beforeSend: function () {
 						$errorContainer.html();
 						$submitBtn
-						.html('Идет отправка...')
-						.prop('disabled', true);
+							.html('Идет отправка...')
+							.prop('disabled', true);
 					},
 					success: function (data) {
+						
 						$submitBtn
 							.prop('disabled', false)
 							.html(defaultTextBtn);
 
-						if (data.status === 1) {
-							$.fancybox.open({
-								src: data.popup,
-								type: 'ajax'
-							});
+						if (isJson) {
+							if (data.status === 1) {
+								openPopup(data.popup);
 
-							setTimeout(function () {
-								$.fancybox.close(true);
-							}, 3000);
-
-							$form.find('.' + activeClass).removeClass(activeClass);
-							$form[0].reset();
-							$form.find('select').val(null).trigger('change');
-							$errorContainer.html('');
+								$form.find('.' + activeClass).removeClass(activeClass);
+								$form[0].reset();
+								$form.find('select').val(null).trigger('change');
+								$errorContainer.html('');
+							} else {
+								$errorContainer.html('<div>' + data.error + '</div>');
+							}
 						} else {
-							$errorContainer.html('<div>' + data.error + '</div>');
+							const wrap = document.createElement('div');
+							wrap.innerHTML = data;
+
+							if (wrap.querySelector('[data-is-send]')?.value === 'Y') {
+								openPopup(wrap.querySelector('[data-post-url]').dataset.postUrl);
+							}
 						}
 					},
 					error: function (xhr, status, errorString) {
+						
 						$errorContainer.html('<div>' + errorString + '</div>');
 						$submitBtn
 							.prop('disabled', false)
 							.html(defaultTextBtn);
 					}
 				});
-			}
+			});
 		});
 	}; ajaxForm();
 
