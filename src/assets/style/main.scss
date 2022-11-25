@@ -98,6 +98,10 @@ img {
 	clear: both;
 }
 
+#panel:empty {
+	display: none;
+}
+
 @import "_sitemap";
 @import "_bttn";
 @import "_form";
