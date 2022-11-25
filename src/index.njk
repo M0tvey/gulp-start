@@ -2,52 +2,50 @@
 {% include './src/templates/header.njk' %}
 
 <main class="main">
-	<div class="container">
-		{% include './src/templates/blocks/form.njk' %}
+	{% include './src/templates/blocks/form.njk' %}
 
-		{% set newsArray = [
-			{
-				data: '28 июля 2022 г.',
-				title: 'Компания «Системные решения» заключила соглашение о сотрудничестве с Казанским национальным исследовательским технологическим университетом (КНИТУ КХТИ).',
-				link: 'javascript:void(0)'
-			}, {
-				data: '12 января 2019 г.',
-				title: '«Вести» взяли интервью у главы РАН в чистых помещениях ФИАНа, созданных и оснащенных компанией «Системные решения».',
-				link: 'javascript:void(0)'
-			}, {
-				data: '29 мая 2019 г.',
-				title: 'Состоялось открытие технологического центра «СИБУР ПолиЛаб», созданного при участии компании «Системные решения».',
-				link: 'javascript:void(0)'
-			}
-		] %}
-		<section class="news container">
-			<p class="news__title page__title-2 show">Анонс новостей</p>
+	{% set newsArray = [
+		{
+			data: '28 июля 2022 г.',
+			title: 'Компания «Системные решения» заключила соглашение о сотрудничестве с Казанским национальным исследовательским технологическим университетом (КНИТУ КХТИ).',
+			link: 'javascript:void(0)'
+		}, {
+			data: '12 января 2019 г.',
+			title: '«Вести» взяли интервью у главы РАН в чистых помещениях ФИАНа, созданных и оснащенных компанией «Системные решения».',
+			link: 'javascript:void(0)'
+		}, {
+			data: '29 мая 2019 г.',
+			title: 'Состоялось открытие технологического центра «СИБУР ПолиЛаб», созданного при участии компании «Системные решения».',
+			link: 'javascript:void(0)'
+		}
+	] %}
+	<section class="news container">
+		<p class="news__title page__title-2 show">Анонс новостей</p>
 
-			<div class="slider js_custom_slider swiper-container" data-slider="news" data-items-count="2" data-space-between="30" data-space-breakpoints="80-spaceBetween:20,slidesPerView:1;992-spaceBetween:30,slidesPerView:2">
-				<div class="slider__wrap swiper-wrapper">
-					{% for item in newsArray -%}
-						<div class="swiper-slide slider__slide">
-							<div class="news__item">
-								<div class="news__item_content">
-									<p class="news__item_data">{{ item.data }}</p>
-									<p class="news__item_title_2">{{ item.title }}</p>
-									<a href="{{ item.link }}" class="news__item_link">Подробнее >></a>
-								</div>
+		<div class="slider js_custom_slider swiper-container" data-slider="news" data-items-count="2" data-space-between="30" data-space-breakpoints="80-spaceBetween:20,slidesPerView:1;992-spaceBetween:30,slidesPerView:2">
+			<div class="slider__wrap swiper-wrapper">
+				{% for item in newsArray -%}
+					<div class="swiper-slide slider__slide">
+						<div class="news__item">
+							<div class="news__item_content">
+								<p class="news__item_data">{{ item.data }}</p>
+								<p class="news__item_title_2">{{ item.title }}</p>
+								<a href="{{ item.link }}" class="news__item_link">Подробнее >></a>
 							</div>
 						</div>
-						{% endfor %}
 					</div>
-
-					<div class="slider__buttons">
-						<div class="slider__button slider__button_prev" data-slider-prev="news"></div>
-						<div class="slider__button slider__button_next" data-slider-next="news"></div>
-					</div>
-
-					<div class="slider__pagination" data-paginate="news"></div>
+					{% endfor %}
 				</div>
+
+				<div class="slider__buttons">
+					<div class="slider__button slider__button_prev" data-slider-prev="news"></div>
+					<div class="slider__button slider__button_next" data-slider-next="news"></div>
+				</div>
+
+				<div class="slider__pagination" data-paginate="news"></div>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
 
 	{% include './src/templates/blocks/map.njk' %}
 </main>
