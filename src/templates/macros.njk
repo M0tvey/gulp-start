@@ -63,7 +63,7 @@
 				<a href="/" class="breadcrumbs__item">Главная</a>
 			</li>
 
-			{% if itemsArray.length != 0 %}
+			{% if itemsArray and itemsArray.length != 0 %}
 				{% for bredItem in itemsArray %}
 					{% if loop.index != loop.length %}
 						{% set bredItemUrl = 'javascript:void(0)' %}
@@ -87,30 +87,6 @@
 	</section>
 {% endmacro %}
 
-{% macro directions(directionsItems) %}
-	<section class="directions container">
-		<p class="page__title-2">Направления</p>
-
-		<div class="directions__list">
-			{% for item in directionsItems %}
-				{% set itemLink = 'javascript:void(0)' %}
-				{% if item.link %}{% set itemLink = item.link %}
-				{% endif %}
-				<a href="{{ itemLink }}" class="directions__item">
-					<span class="directions__item_image_wrap">
-						<img src="assets/img/directions/{{ item.img }}" alt="" class="directions__item_image">
-					</span>
-
-					<span class="directions__item_content">
-						<span class="directions__item_title">{{ item.title }}</span>
-						<span class="directions__item_more">Подробнее >></span>
-					</span>
-				</a>
-			{% endfor %}
-		</div>
-	</section>
-{% endmacro %}
-
 {% macro tags(obj) %}
 	<section class="container">
 		<form action="{{ obj.action }}" class="tags">
@@ -123,36 +99,4 @@
 			{% endfor %}
 		</form>
 	</section>
-{% endmacro %}
-
-{% macro blockLinks(obj) %}
-	<div class="{{ obj.class }}">
-		{% for item in obj.items %}
-			<{{ 'a href="' + item.link + '"' if item.link else 'p' }} class="block-link{% if item.class %} {{ item.class }}__item{% endif %}">
-				<span class="block-link__title{% if item.class %} {{ item.class }}__title{% endif %}">{{ item.title }}</span>
-			</{{ 'a' if item.link else 'p' }}>
-		{% endfor %}
-	</div>
-{% endmacro %}
-
-{% macro offerList(obj) %}
-	<div class="offer-list__list{{ ' '+obj.class+'__list' if obj.class else '' }}">
-		{% for item in obj.items %}
-			<div class="offer-list__item{{ ' '+obj.class+'__item' if obj.class else '' }}">
-				<img src="assets/img/{{ obj.icon }}" alt="{{ item.title }}" class="offer-list__item_icon{{ ' '+obj.class+'__item_icon' if obj.class else '' }}">
-				
-				<a href="{{ item.link }}" class="offer-list__item_title{{ ' '+obj.class+'__item_title' if obj.class else '' }}">{{ item.title }}</a>
-
-				<p class="offer-list__item_text{{ ' '+obj.class+'__item_text' if obj.class else '' }}">{{ item.text }}</p>
-
-				{% if item.bttn and item.bttn.length %}
-					<div class="offer-list__item_bttns{{ ' '+obj.class+'__item_bttns' if obj.class else '' }}">
-						{% for bttn in item.bttn %}
-							<a href="{{ bttn.link }}" class="offer-list__item_bttn{{ ' '+obj.class+'__item_bttn' if obj.class else '' }} bttn bttn_{{ bttn.id }}">{{ bttn.title }}</a>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
-		{% endfor %}
-	</div>
 {% endmacro %}

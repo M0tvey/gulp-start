@@ -274,7 +274,7 @@ $(function () {
 	function contactsMap() {
 		const mapEl = document.querySelector('.js_map');
 
-		if (mapEl) {
+		if (mapEl && (typeof ymaps !== 'undefined')) {
 			ymaps.ready().done(function (ym) {
 				const contactsMap = new ym.Map(mapEl, {
 					center: mapEl.dataset.cords.split(',') || ['55.751574', '37.573856'],
