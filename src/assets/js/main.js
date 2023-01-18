@@ -43,6 +43,7 @@ $(function () {
 					slidesPerGroup: slider.data('items-group') ? +slider.data('items-group') : 1,
 					slidesPerView: slider.data('items-count') ? slider.data('items-count').toString().includes(`'`) ? slider.data('items-count').replaceAll(`'`, '') : +slider.data('items-count') : 1,
 					spaceBetween: slider.data('space-between') || 0,
+					watchSlidesProgress: true,
 					navigation: {
 						nextEl: `[data-slider-next=${sliderId}]`,
 						prevEl: `[data-slider-prev=${sliderId}]`,
@@ -740,8 +741,6 @@ $(function () {
 
 				setTimeout(function () {
 					$(document).find('[data-tab-group="' + tabGroup + '"]').removeClass(activeClass).removeClass('is-proccess');
-					// tab.addClass(activeClass);
-
 					tab.show(0, function () {
 						$(this).addClass(activeClass);
 					});
