@@ -86,17 +86,3 @@
 		</ul>
 	</section>
 {% endmacro %}
-
-{% macro tags(obj) %}
-	<section class="container">
-		<form action="{{ obj.action }}" class="tags">
-			{% for item in obj.items %}
-				<div class="tags__item js_tag{% if item.check %} is-active{% endif %}">
-					<input type="checkbox" name="{{ obj.name }}" value="{{ item.val }}" class="tags__check" id="tag-{{ loop.index }}"{% if item.check %} checked{% endif %}>
-					<label for="tag-{{ loop.index }}" class="tags__label">{{ item.title }}</label>
-					<a href="javascript:void(0)" class="tags__close js_tag_close"></a>
-				</div>
-			{% endfor %}
-		</form>
-	</section>
-{% endmacro %}

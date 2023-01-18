@@ -12,7 +12,7 @@
 		line-height: 180%;
 		white-space: nowrap;
 		inset: -60px auto auto 35px;
-		@include screen("md", "min") {
+		@include screen('md', "min") {
 			font-size: 18px;
 
 			br {

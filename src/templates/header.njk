@@ -1,7 +1,9 @@
 {% from './macros.njk' import menu %}
 
 <header class="header">
-	<div class="container">
+	<div class="container js_header">
+		<a href="/" class="logo__link">LOGO</a>
+
 		{{ menu(activeItem=activePage, menuClass='js_mobile_el_1 js_header_menu') }}
 	</div>
 </header>

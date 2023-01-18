@@ -5,7 +5,7 @@
 	&_back-link {
 		display: block;
 
-		@include screen("lg", "min") {
+		@include screen('lg', "min") {
 			display: none;
 		}
 	}
