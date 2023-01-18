@@ -10,7 +10,7 @@
 		grid-template-columns: repeat(2, auto);
 		justify-content: space-between;
 		z-index: 10;
-		@include screen('xlll', "min") {
+		@include screen('xlll', 'min') {
 			inset: 50% 0 auto 0;
 		}
 	}
