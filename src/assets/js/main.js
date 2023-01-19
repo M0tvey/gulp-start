@@ -73,8 +73,16 @@ $(function () {
 						sliderbreakSet = {};
 
 					sliderResOpts.forEach(opt => {
-						const [key, val] = opt.split(':');
-						sliderbreakSet[key] = val.includes(`'`) ? val.replaceAll(`'`, '') : +val;
+						const [key, val] = opt.split(':'),
+							value = val.includes(`'`)
+								? val.replaceAll(`'`, '')
+								: val.includes(`true`)
+									? true
+									: val.includes(`false`)
+										? false
+										: +val;
+
+						sliderbreakSet[key] = value;
 					});
 
 					sliderbreakbreak[sliderWidth] = sliderbreakSet;
@@ -117,21 +125,6 @@ $(function () {
 					window.siteOpt.swipers[sliderId].update($sliderSettings);
 				} else {
 					setTimeout(_ => {
-						if (sliderId === 'all-services') {
-							$sliderSettings.breakpoints = {
-								80: {
-									grid: {
-										rows: 7,
-									}
-								},
-								768: {
-									grid: {
-										rows: 1
-									}
-								}
-							}
-						}
-
 						var thisSwiper = new Swiper(slider[0], $sliderSettings);
 
 						window.siteOpt.swipers[sliderId] = thisSwiper;

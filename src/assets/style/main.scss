@@ -1,4 +1,3 @@
-@import "../../../node_modules/bootstrap-4-grid/scss/grid.scss";
 @import "../../../node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css";
 @import "../../../node_modules/jquery-ui/themes/base/base.css";
 @import "../../../node_modules/select2/dist/css/select2.min.css";
@@ -85,9 +84,6 @@ img {
 	margin-left: auto;
 	margin-right: auto;
 }
-.container {
-	max-width: $max_width;
-}
 
 .center {
 	text-align: center;
@@ -102,6 +98,11 @@ img {
 	display: none;
 }
 
+.img__wrap {
+	line-height: 0
+}
+
+@import "_container";
 @import "_sitemap";
 @import "_bttn";
 @import "_form";
