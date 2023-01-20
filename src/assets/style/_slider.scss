@@ -53,19 +53,27 @@
 	}
 
 	&__pagination {
-		margin-top: 30px;
-		text-align: center;
+		margin-top: 40px;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 8px;
+		column-gap: 9px;
+		justify-content: center;
+		@include screen('sm', 'min') {
+			margin-top: 20px;
+		}
 
-		[class*="bullet"] {
-			@include size(12px);
-			margin: 0 10px !important;
-			background-color: transparent;
-			border: solid 1px $color_2;
+		[class*=bullet] {
+			aspect-ratio: 1/1;
+			margin: 0 !important;
+			background-color: $color_1;
 			opacity: 1;
+			width: 100%;
+			height: auto;
 			@include transition;
 		}
 
-		[class*="bullet-active"] {
+		[class*=bullet-active] {
 			background-color: $color_2;
 		}
 	}
