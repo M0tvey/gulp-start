@@ -25,43 +25,12 @@
 	]
 } %}
 
-{% macro menu(activeItem = '', typeMenu = 'header', menuClass = false) %}
-	<menu class="menu {{ typeMenu }}-menu{% if menuClass %} {{ menuClass}}{% endif %}">
-		{% for item in menuItems[typeMenu] %}
-			{% set activeClass = '' %}
-			{% if activeItem === item.name %}{% set activeClass = ' is-active' %}{% endif %}
-			{% if item.submenu and item.submenu.length %}
-				{% for subItem in item.submenu %}
-					{% if subItem.name === activeItem %}{% set activeClass = ' is-active' %}{% endif %}
-				{% endfor %}
-			{% endif %}
 
-			<li class="{{ typeMenu }}-menu__item{{ activeClass }}">
-				<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
-				{% if item.submenu and item.submenu.length %}
-					<ul class="{{ typeMenu }}-menu__submenu">
-						{% for subItem in item.submenu %}
-							{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
-							<li class="{{ typeMenu }}-menu__submenu_item">
-								<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}{{ subActiveClass }}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
-							</li>
-							{% set subActiveClass = '' %}
-						{% endfor %}
-					</ul>
-				{% endif %}
-			</li>
-		{% endfor %}
-	</menu>
-{% endmacro %}
 
 {% macro breadcrumbs(itemsArray) %}
-	<section class="breadcrumbs">
-		<a href="/" class="breadcrumbs__back breadcrumbs__item js_back_link">Назад</a>
-
+	<div class="breadcrumbs">
 		<ul class="breadcrumbs__list">
-			<li>
-				<a href="/" class="breadcrumbs__item">Главная</a>
-			</li>
+			{% set bArr = ['<li><a href="/" class="breadcrumbs__item">Home</a></li>'] %}
 
 			{% if itemsArray and itemsArray.length != 0 %}
 				{% for bredItem in itemsArray %}
@@ -74,15 +43,42 @@
 							{% endif %}
 						{% endfor %}
 
-						<li>
-							<a href="{{ bredItemUrl }}" class="breadcrumbs__item">{{ bredItem }}</a>
-						</li>
+						{% set s %}<li><a href="{{ bredItemUrl }}" class="breadcrumbs__item">{{ bredItem }}</a></li>{% endset %}
+						{% set bArr = (bArr.push(s), bArr) %}
 					{% endif %}
 				{% endfor %}
 
-				<li>
-					<span class="breadcrumbs__item">{{ itemsArray | last }}</span></li>
+				{% set s %}<li><span class="breadcrumbs__item">{{ itemsArray | last }}</span></li>{% endset %}
+				{% set bArr = (bArr.push(s), bArr) %}				
 			{% endif %}
+
+		{% for item in bArr %}
+			{{ item | safe }}
+		{% endfor %}
 		</ul>
+	</div>
+{% endmacro %}
+
+{% macro directions(directionsItems) %}
+	<section class="directions container">
+		<p class="page__title-2">Направления</p>
+
+		<div class="directions__list">
+			{% for item in directionsItems %}
+				{% set itemLink = 'javascript:void(0)' %}
+				{% if item.link %}{% set itemLink = item.link %}
+				{% endif %}
+				<a href="{{ itemLink }}" class="directions__item">
+					<span class="directions__item_image_wrap">
+						<img src="assets/img/directions/{{ item.img }}" alt="" class="directions__item_image">
+					</span>
+
+					<span class="directions__item_content">
+						<span class="directions__item_title">{{ item.title }}</span>
+						<span class="directions__item_more">Подробнее >></span>
+					</span>
+				</a>
+			{% endfor %}
+		</div>
 	</section>
 {% endmacro %}

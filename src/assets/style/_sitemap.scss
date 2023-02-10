@@ -17,7 +17,7 @@
 		counter-increment: map;
 
 		&::marker {
-			content: counters(map, ".") " ";
+			content: counters(map, ".") ". ";
 		}
 	}
 
