@@ -142,7 +142,7 @@ $(function () {
 
 		const div = document.createElement('div'),
 			mobileMenuWrap = header.querySelector('.mobile_menu__wrap') || div.cloneNode(),
-			mobileMenuBttn = div.cloneNode(),
+			mobileMenuBttn = header.querySelector('.mobile_menu__bttn') || div.cloneNode(),
 			mobileMenuzBlind = div.cloneNode(),
 			openMenuClass = 'menu_open',
 			mobileEl1 = header.querySelector('.js_mobile_el_1'),
@@ -179,8 +179,10 @@ $(function () {
 		});
 
 		for (let i = 0; i < 3; i++) { mobileMenuBttn.append(div.cloneNode()) };
-		mobileMenuBttn.classList.add('mobile_menu__bttn');
-		header.append(mobileMenuBttn);
+		if (!mobileMenuBttn.classList.contains('mobile_menu__bttn')) {
+			mobileMenuBttn.classList.add('mobile_menu__bttn');
+			header.append(mobileMenuBttn);
+		}
 
 		window.addEventListener('resize', () => {
 			moveHeaderElement();
