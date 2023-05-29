@@ -14,6 +14,8 @@ window.siteOpt = {
 	}
 }
 
+// gsap.registerPlugin(ScrollTrigger);
+
 $(function () {
 	svg4everybody();
 
@@ -25,32 +27,43 @@ $(function () {
 		data-paginate           - включить пагинацию? (элемент должен находится внутри data-slider, data-paginate="id слайдера")
 		data-space-breakpoints  - настройки для адаптации (data-space-breakpoints="80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2"")
 		data-slider-direction   - напровленеи слайдера
-		data-slider-interaction - взаимодействи слайдеров (data-slider-interaction="id второго слайдера") !!!если на втором слайдере указан spaceBetween то он каряво работает
-		data-navigation - 
+		data-thumbs             - взаимодействи слайдеров (data-thumbs="id второго слайдера")
+		...
 	*/
 	function customSliders() {
-		const $sliders = $('.js_custom_slider');
-		if (!$sliders.length) return false;
+		const sliders = document.querySelectorAll('.js_custom_slider');
+		if (!sliders.length) return false;
 		if (!window.siteOpt) window.siteOpt = {};
 
 		window.siteOpt.swipers = {};
 
-		$.each($sliders, function () {
-			var slider = $(this),
-				sliderId = slider.data('slider'),
-				$sliderSettings = {
-					loop: slider.data('loop') || false,
-					slidesPerGroup: slider.data('items-group') ? +slider.data('items-group') : 1,
-					slidesPerView: slider.data('items-count') ? slider.data('items-count').toString().includes(`'`) ? slider.data('items-count').replaceAll(`'`, '') : +slider.data('items-count') : 1,
-					spaceBetween: slider.data('space-between') || 0,
+		function initSlider(s) {
+			const $slider = $(s),
+				sliderId = s.dataset.slider,
+				sliderSettings = {
+					loop: $slider.data('loop') || false,
+					slidesPerGroup: $slider.data('items-group') ? +$slider.data('items-group') : 1,
+					slidesPerView: $slider.data('items-count') ? $slider.data('items-count').toString().includes(`'`) ? $slider.data('items-count').replaceAll(`'`, '') : +$slider.data('items-count') : 1,
+					spaceBetween: $slider.data('space-between') || 0,
 					watchSlidesProgress: true,
+					allowTouchMove: $slider.data('allow-touch') == false ? false : true,
+					centeredSlides: $slider.data('centered-slides') || false,
+					centeredSlidesBounds: $slider.data('slides-bounds') || false,
 					navigation: {
 						nextEl: `[data-slider-next=${sliderId}]`,
 						prevEl: `[data-slider-prev=${sliderId}]`,
 					}
 				};
 
-			if (slider.data('[data-mousewheel]') !== undefined) $sliderSettings.mousewheel = true;
+			if ($slider.data('data-mousewheel') !== undefined) sliderSettings.mousewheel = true;
+
+			if ($slider.data('effect')) {
+				sliderSettings.effect = $slider.data('effect');
+				
+				if ($slider.data('effect') == 'fade') sliderSettings.fadeEffect = {
+					crossFade: true
+				}
+			}
 
 			if ($(`[data-paginate=${sliderId}]`).length) {
 				var sliderPagination = {
@@ -58,13 +71,17 @@ $(function () {
 					clickable: true
 				}
 
-				slider.addClass('paginate');
-				$sliderSettings.pagination = sliderPagination;
+				$slider.addClass('paginate');
+				sliderSettings.pagination = sliderPagination;
 			}
 
-			if (slider.data('space-breakpoints') !== undefined) {
-				var sliderRes = slider.data('space-breakpoints').split(';'),
-					sliderbreakbreak = {};
+			if ($slider.data('slider-direction') !== undefined) sliderSettings.direction = $slider.data('slider-direction');
+
+			if ($slider.data('column') !== undefined) sliderSettings.slidesPerColumn = $slider.data('column');
+
+			if ($slider.data('space-breakpoints') !== undefined) {
+				const sliderbreakbreak = {}
+					, sliderRes = $slider.data('space-breakpoints').split(';');
 
 				$.each(sliderRes, function (i, a) {
 					var sliderResI = a.split('-'),
@@ -86,52 +103,55 @@ $(function () {
 					});
 
 					sliderbreakbreak[sliderWidth] = sliderbreakSet;
-					$sliderSettings.breakpoints = sliderbreakbreak;
 				});
+
+				sliderSettings.breakpoints = sliderbreakbreak;
 			}
 
-			if (slider.data('slider-direction') !== undefined) $sliderSettings.direction = slider.data('slider-direction');
-
-			if (slider.data('column') !== undefined) $sliderSettings.slidesPerColumn = slider.data('column');
-
-			if (slider.data('slider-interaction') !== undefined) {
-				var secondSlider = $('[data-slider=' + slider.data('slider-interaction') + ']'),
-					secondsliderSettings = {
-						on: {
-							slideChangeTransitionEnd: function () {
-								slider.find('.swiper-slide').not(':eq(' + this.activeIndex + ')').removeClass('active');
-								slider.find('.swiper-slide').eq(this.activeIndex).addClass('active');
-								thisSwiper.slideTo(this.activeIndex);
-							}
-						}
-					},
-					secondSwiper = new Swiper(secondSlider[0], secondsliderSettings),
-					thisSwiper = new Swiper(slider[0], $sliderSettings);
-
-				window.siteOpt.swipers[secondSlider.data('slider')] = secondSwiper;
-				window.siteOpt.swipers[sliderId] = thisSwiper;
-
-				slider.find('.swiper-slide').on('click', function (e) {
-					e.preventDefault();
-					var index = $(this).index();
-					if (!$(this).hasClass('active')) {
-						$(this).addClass('active');
+			if (sliderId === 'news') {
+				sliderSettings.breakpoints = {
+					80: {
+						grid: {
+							rows: 2,
+						},
 					}
-					$(this).parent('.swiper-wrapper').find('.swiper-slide').not($(this)).removeClass('active');
-					secondSwiper.slideTo(index);
-				});
-			} else {
-				if (window.siteOpt.swipers[sliderId]) {
-					window.siteOpt.swipers[sliderId].update($sliderSettings);
-				} else {
-					setTimeout(_ => {
-						var thisSwiper = new Swiper(slider[0], $sliderSettings);
-
-						window.siteOpt.swipers[sliderId] = thisSwiper;
-					}, 100)
 				}
-			}
-		});
+			}			
+
+			const thisSwiper = new Swiper(s, sliderSettings);
+
+			window.siteOpt.swipers[sliderId] = thisSwiper;
+			return thisSwiper;
+		};
+
+		setTimeout(_ => {
+			sliders.forEach(slider => {
+				if (window.siteOpt.swipers[slider.dataset.slider]) return;
+				
+				if (slider.dataset.thumbs) {
+					const secondSliderEl = document.querySelector(`[data-slider="${ slider.dataset.thumbs }"]`)
+						, secondSlider = initSlider(secondSliderEl)
+						, firstSlider = initSlider(slider);
+
+					secondSliderEl.querySelectorAll('.swiper-slide').forEach(slide => {
+						slider.addEventListener('click', function(e) {
+							const index = +slide.ariaLabel.split(' / ')[0];
+
+							firstSlider.slideTo(index);
+						});
+					});
+
+					secondSlider.on('slideChange', function(e) {
+						firstSlider.slideTo(e.activeIndex);
+					});
+
+					firstSlider.params.thumbs.swiper = secondSlider;
+					firstSlider.thumbs.init();
+				} else {
+					initSlider(slider);
+				}
+			});
+		}, 100)
 	}; customSliders();
 
 	// ---------------- mobile menu ----------------
@@ -238,58 +258,100 @@ $(function () {
 	})();
 
 	// ----------------------------------------- popup
-	document.querySelectorAll('.js_open_popup').forEach(link => {
-		link.addEventListener('click', e => {
-			e.preventDefault();
+	function openPopup(wrap=document) {
+		wrap.querySelectorAll('.js_open_popup').forEach(link => {
+			link.addEventListener('click', e => {
+				e.preventDefault();
 
-			if (!link.href) return;
+				if (!link.href) return;
 
-			$.fancybox.open({
-				hideScrollbar: false,
-				src: link.href,
-				type: 'ajax'
-			});
-		})
+				$.fancybox.open({
+					hideScrollbar: false,
+					src: link.href,
+					type: 'ajax',
+				});
+			})
+		});
+	}
+
+	function openLocalPopup(wrap=document) {
+		wrap.querySelectorAll('.js_open_local_popup').forEach(link => {
+			link.addEventListener('click', e => {
+				e.preventDefault();
+
+				if (!link.hash) return;
+
+				$.fancybox.open({
+					hideScrollbar: false,
+					src: link.hash,
+					type: 'inline',
+				});
+			})
+		});
+	}
+	
+	$(document).on('afterLoad.fb', function (event, fancybox, current) {
+		const wrap = current.$content[0];
+		openPopup(wrap);
+		openLocalPopup(wrap);
+
+		if (!wrap.querySelector('form')) return;
+
+		wrap.querySelectorAll('select').forEach(function () {
+			initSelects($(this));
+		});
+
+		$(wrap).find('form').parsley({
+			errorsContainer: function (parsleyField) {
+				const $fieldSet = parsleyField.$element.parent();
+	
+				if ($fieldSet.length > 0) return $fieldSet;
+				return parsleyField;
+			}
+		});
+
+		phoneMask();
+		checkInputs();
+		inputFile(wrap);
+		textareaHeight();
+		ajaxForm(wrap);
 	});
 
-	document.querySelectorAll('.js_open_local_popup').forEach(link => {
-		link.addEventListener('click', e => {
-			e.preventDefault();
-
-			if (!link.hash) return;
-
-			$.fancybox.open({
-				hideScrollbar: false,
-				src: link.hash,
-				type: 'inline'
-			});
-		})
-	});
+	openPopup();
+	openLocalPopup();
 
 	// ----------------------------------------- contacts map
+	function getDimensions(src, callback) {
+		const img = document.createElement('img');
+
+		img.src = src;
+		img.onload = () => {
+			callback({
+				height: img.height,
+				width: img.width
+			});
+		};
+	};
+
 	function contactsMap() {
 		const mapEl = document.querySelector('.js_map');
 
 		if (mapEl && (typeof ymaps !== 'undefined')) {
 			ymaps.ready().done(function (ym) {
+				let placemark;
 				const contactsMap = new ym.Map(mapEl, {
-					center: mapEl.dataset.cords.split(',') || ['55.751574', '37.573856'],
-					autoFitToViewport: 'always',
-					zoom: 16,
-					controls: ['zoomControl']
-				}, {
-					zoomControlSize: 'small'
-				}),
-					placemark = new ymaps.Placemark(contactsMap.getCenter(), {
-						hintContent: mapEl.dataset.content || 'Метка'
+						center: mapEl.dataset.cords.split(',') || ['55.751574', '37.573856'],
+						autoFitToViewport: 'always',
+						zoom: mapEl.dataset.zoom || 16,
+						controls: ['zoomControl']
 					}, {
-						iconLayout: 'default#image',
-						// iconImageHref: '../assets/img/map-icon.png',
-						// iconImageSize: [82, 94],
-						// iconImageOffset: [-41, -80]
-					}),
-					adresBlock = document.createElement('div'),
-					positions = contactsMap.getGlobalPixelCenter();
+						zoomControlSize: 'small'
+					})
+					, positions = contactsMap.getGlobalPixelCenter()
+					, iconOpt = {
+						iconLayout: 'default#image'
+					}
+					, adresBlock = document.createElement('div');
 
 				function setC() {
 					let right = 0;
@@ -297,19 +359,39 @@ $(function () {
 					if (window.innerWidth < window.siteOpt.breakpoints['lg']) right = 240;
 					if (window.innerWidth < window.siteOpt.breakpoints['md']) right = 150;
 
-					const offsetPos = contactsMap.options.get('projection').fromGlobalPixels([positions[0] + right, positions[1]], contactsMap.getZoom());
+					const offsetPos = contactsMap.options.get('projection').fromGlobalPixels([positions[0] + right, positions[1] + 50], contactsMap.getZoom());
 
 					contactsMap.setCenter(offsetPos);
-				}; setC();
+				}
 
+				function addIcon(opt) {
+					placemark = new ymaps.Placemark(contactsMap.getCenter(), {
+						hintContent: mapEl.dataset.content || 'Метка'
+					}, opt);
+
+					contactsMap.geoObjects.add(placemark);
+
+					setC();
+				};
+				
 				window.addEventListener('resize', () => {
 					setC();
 				}, true);
 
+				if (mapEl.dataset.icon) {
+					const src = mapEl.dataset.icon;
+					getDimensions(src, size => {
+						iconOpt.iconImageHref = src;
+						iconOpt.iconImageSize = [size.width, size.height];
+						iconOpt.iconImageOffset = [-size.width / 2, -size.height];
+
+						addIcon(iconOpt);
+					});
+				} else addIcon(iconOpt);
+			
 				adresBlock.innerHTML = mapEl.dataset.adres;
 				adresBlock.classList.add('map__adres');
 				contactsMap.behaviors.disable('scrollZoom');
-				contactsMap.geoObjects.add(placemark);
 
 				setTimeout(() => {
 					placemark.getOverlaySync().getLayoutSync().getElement().append(adresBlock)
@@ -319,48 +401,23 @@ $(function () {
 	}; contactsMap();
 
 	// ----------------------------------------- custom selects
-	function customSelects() {
-		function initSelects($el) {
-			const placeholder = $el.data('placeholder') || false
-			selectOpt = {
-				language: 'ru',
-				dropdownParent: $el.parent(),
-				width: '100%',
-				minimumResultsForSearch: -1,
-			};
-
-			if (placeholder) selectOpt.placeholder = placeholder;
-
-			$el.select2(selectOpt);
+	function initSelects($el) {
+		const placeholder = $el.data('placeholder') || false
+		selectOpt = {
+			language: 'ru',
+			dropdownParent: $el.parent(),
+			width: '100%',
+			minimumResultsForSearch: -1,
 		};
 
-		$(document).on('afterLoad.fb', function (event, fancybox, current) {
-			const $page = $(current.$content);
+		if (placeholder) selectOpt.placeholder = placeholder;
 
-			$page.find('select').each(function () {
-				initSelects($(this));
-			})
+		$el.select2(selectOpt);
+	};
 
-			$page.find('form').parsley({
-				errorsContainer: function (parsleyField) {
-					var fieldSet = parsleyField.$element.parent();
-		
-					if (fieldSet.length > 0) return fieldSet;
-					return parsleyField;
-				}
-			});
-
-			phoneMask();
-			checkInputs();
-			inputFile();
-			textareaHeight();
-			ajaxForm(current.$content[0]);
-		});
-
-		$('select').each(function () {
-			initSelects($(this));
-		});
-	}; customSelects();
+	$('select').each(function () {
+		initSelects($(this));
+	});
 
 	// ----------------------------------------- parsley
 	$('form').parsley({
@@ -445,7 +502,7 @@ $(function () {
 				return true;
 			}
 
-			return /^[a-zA-Zа-яА-Я ]+$/.test(_value);
+			return /^[a-zA-Zа-яА-ЯЯёЁ ]+$/.test(_value);
 		},
 		requirementType: 'string',
 		messages: {
@@ -475,17 +532,118 @@ $(function () {
 	};textareaHeight();
 
 	// ----------------------------------------- input file
-	function inputFile() {
-		$('.js-file-input').on('change', function (e) {
-			if ($(this).val() != '') {
-				const fileName = $(this)[0].files[0].name;
-				
-				$(this).siblings('.input-file').text(fileName)
-				$(this).parents('.form__body--input').removeClass('has-error').find('.form-error').hide();
-			} else {
-				$(this).siblings('.input-file').text($(this).data('label'))
-			}
+	function inputFile(wrap=document) {
+		const dropArea = wrap.querySelector('label.js-file-input');
+		if (!dropArea) return;
+		const input = dropArea.control
+			, hoverClass = 'is-hover'
+			, activeClass = 'is-active'
+			, areaHtml = dropArea.innerHTML
+			, activeHtml = input.dataset.activeHtml || '<span>Готово!</span> Перезагрузить файл'
+			, div = document.createElement('div')
+			, img = document.createElement('img')
+			, itemsWrap = div.cloneNode();
+
+		itemsWrap.classList.add('input-file__list');
+		dropArea.parentNode.appendChild(itemsWrap);
+
+		function preventDefaults (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		}
+
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+			dropArea.addEventListener(eventName, preventDefaults, false)   
+			document.body.addEventListener(eventName, preventDefaults, false)
 		});
+		
+		['dragenter', 'dragover'].forEach(eventName => {
+			dropArea.addEventListener(eventName, () => {
+				dropArea.classList.add(hoverClass)
+			}, false)
+		});
+
+		['dragleave', 'drop'].forEach(eventName => {
+			dropArea.addEventListener(eventName, () => {
+				dropArea.classList.remove(hoverClass)
+			}, false)
+		});
+
+		function setActive() {
+			dropArea.classList.add(activeClass);
+			dropArea.innerHTML = activeHtml;
+		}
+
+		function checkInput() {
+			if (input.files.length) {
+				setActive();
+			} else {
+				dropArea.classList.remove(activeClass);
+				dropArea.innerHTML = areaHtml;
+			}
+		}
+
+		dropArea.addEventListener('drop', (e) => {
+			if (input.multiple) {
+				input.files =  e.dataTransfer.files
+			} else {
+				const trasfer = new DataTransfer;
+				trasfer.items.add(e.dataTransfer.files.item(0));
+				input.files = trasfer.files;
+			}
+			
+			setActive();
+			handleFiles();
+		}, false);
+
+		input.addEventListener('change', () => {
+			checkInput();
+			handleFiles();
+		}, false);
+
+		function handleFiles() {
+			itemsWrap.innerHTML = '';
+
+			[...input.files].forEach(file => {
+				const item = div.cloneNode()
+					, remove = div.cloneNode();
+
+				item.classList.add('input-file__item');
+				remove.classList.add('input-file__remove');
+
+				item.textContent = file.name;
+				item.appendChild(remove);
+				itemsWrap.appendChild(item);
+
+				remove.addEventListener('click', e => {
+					e.preventDefault();
+
+					item.remove();
+
+					const trasfer = new DataTransfer;
+
+					[...input.files].forEach(f => {
+						if (file.name !== f.name) trasfer.items.add(f);
+					});
+
+					input.files = trasfer.files;
+					checkInput();
+				});
+
+				// previewFile(sile);
+			})
+		}
+
+		function previewFile(file) {
+			let reader = new FileReader()
+			reader.readAsDataURL(file);
+
+			reader.onloadend = function() {
+				let imgC = img.cloneNode();
+				imgC.src = reader.result;
+				itemsWrap.appendChild(imgC);
+			}
+		}
 	};inputFile();
 
 	// ----------------------------------------- ajax form

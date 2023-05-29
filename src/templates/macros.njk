@@ -25,7 +25,50 @@
 	]
 } %}
 
+{% macro menu(activeItem = '', typeMenu = 'header', menuClass = false) %}
+	{% set menu = [] %}
 
+	{% for item in menuItems[typeMenu] %}
+		{% set activeClass = '' %}
+		{% if activeItem === item.name %}{% set activeClass = ' is-active' %}{% endif %}
+		{% if item.submenu and item.submenu.length %}
+			{% for subItem in item.submenu %}
+				{% if subItem.name === activeItem %}{% set activeClass = ' is-active' %}{% endif %}
+			{% endfor %}
+		{% endif %}
+
+		{% set l1 %}
+		<li class="{{ typeMenu }}-menu__item{{ activeClass }}">
+			<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
+		{% endset %}
+			{% if item.submenu and item.submenu.length %}
+				{% set l1 %}{{ l1 | safe }}
+				<ul class="{{ typeMenu }}-menu__submenu">
+				{% endset %}
+				{% for subItem in item.submenu %}
+					{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
+					{% set l1 %}{{ l1 | safe }}
+					<li class="{{ typeMenu }}-menu__submenu_item">
+						<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}{{ subActiveClass }}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
+					</li>
+					{% endset %}
+					{% set subActiveClass = '' %}
+				{% endfor %}
+				{% set l1 %}{{ l1 | safe }}
+				</ul>
+				{% endset %}
+			{% endif %}
+		{% set l1 %}{{ l1 | safe }}
+		</li>
+		{% endset %}
+		
+		{% set menu = (menu.push(l1), menu) %}
+	{% endfor %}
+
+				<menu class="menu {{ typeMenu }}-menu{% if menuClass %} {{ menuClass}}{% endif %}">
+					{% for item in menu %}{{ item | safe }}{% endfor %}
+				</menu>
+{% endmacro %}
 
 {% macro breadcrumbs(itemsArray) %}
 	<div class="breadcrumbs">

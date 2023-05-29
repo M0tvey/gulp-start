@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>{% if siteTitle %}Site | {{ siteTitle }}{% else %}Site{% endif %}</title>
+		<title>{% if siteTitle %}Site | {{ siteTitle | striptags(true) }}{% else %}Site{% endif %}</title>
 		<meta name="description" content="">
 
 		{# https://involta.ru/tools/generator-favicon/ #}
@@ -28,7 +28,7 @@
 		<meta name="msapplication-TileImage" content="/assets/favicons/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
 
-		<link rel="stylesheet" href="/assets/css/main.min.css">
+		<link rel="stylesheet" href="/assets/css/main.min.css?{{ range(1, 1000) | random }}">
 		<script src="https://api-maps.yandex.ru/2.1/?apikey=865714b7-1fc0-49e4-ac3d-b917e31ad8de&lang=ru_RU" type="text/javascript"></script>
 	</head>
 

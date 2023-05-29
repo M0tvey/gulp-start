@@ -51,6 +51,7 @@ var path = {
       'node_modules/select2/dist/js/select2.min.js',
       'node_modules/select2/dist/js/i18n/ru.js',
 			'node_modules/gsap/dist/gsap.js',
+			// 'node_modules/gsap/dist/ScrollTrigger.min.js',
       'node_modules/swiper/swiper-bundle.min.js',
       'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js', // http://manos.malihu.gr/jquery-custom-content-scroller/
 			// 'src/assets/js/scrollSmooth.js',
