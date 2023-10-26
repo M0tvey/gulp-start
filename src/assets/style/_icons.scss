@@ -17,13 +17,22 @@
   $icon: '';
   @each $i, $path in $paths {
     @if $i == 1 {
-      $path: 'fill="#{map-get($parameters, fill)}" stroke="#{map-get($parameters, stroke-color)}" stroke-width="#{map-get($parameters, stroke-width)}" style="#{map-get($parameters, css)}" d="#{$path}"';
+      $fill: (map-get($parameters, fill));
+      @if length($fill) != 1 {
+        $fill: nth($fill, 1);
+      }
+      $path: 'fill="#{$fill}" stroke="#{map-get($parameters, stroke-color)}" stroke-width="#{map-get($parameters, stroke-width)}" style="#{map-get($parameters, css)}" d="#{$path}"';
     } @else {
-      $path: 'fill="#{map-get($parameters, fill)}" d="#{$path}"';
+      $fill: (map-get($parameters, fill));
+      @if length($fill) != 1 {
+        $fill: nth($fill, 2);
+      }
+      $path: 'fill="#{$fill}" d="#{$path}"';
     }
 
     $icon: $icon + '<path #{$path} #{$attr} />';
   }
+
   @return str-replace($icon, '#', '%23');
 }
 @function icon(
@@ -49,13 +58,18 @@
     arrow_down_icon: _buildPath((1: 'M13.9.7L7.4 7.1.9.9'), $parameters, '') (14.6,8.2),
   );
 
-  $listSize: length(map-get($icons, $icon-name));
-  $path: set-nth(map-get($icons, $icon-name), $listSize, '');
-	$icon_size: nth(map-get($icons, $icon-name), $listSize);
-	@if map-get($parameters, size) != '' {
-		$icon_size: map-get($parameters, size);
-	}
+  @if map-has-key($icons, $icon-name) {
+    $icon: map-get($icons, $icon-name);
+    $listSize: length($icon);
+    $path: set-nth($icon, $listSize, '');
+    $icon_size: nth($icon, $listSize);
+    @if map-get($parameters, size) != '' {
+      $icon_size: map-get($parameters, size);
+    }
 
-  $icon: _buildIcon($path, nth(map-get($icons, $icon-name), $listSize), $icon_size);
-  @return url("data:image/svg+xml;utf8,#{$icon}");
+    $icon: _buildIcon($path, nth($icon, $listSize), $icon_size);
+    @return url("data:image/svg+xml;utf8,#{$icon}");
+  } @else {
+    @return null;
+  }
 }

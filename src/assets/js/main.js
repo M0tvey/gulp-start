@@ -659,7 +659,7 @@ $(function () {
 					$errorContainer = $form.find('.js-form-ajax-error'),
 					fd = new FormData(form),
 					activeClass = 'is-active',
-					isJson = form.action.includes('.json');
+					isJson = form.action.includes('.json') || form.action.includes('.php');
 					
 				function openPopup(url) {
 					$.fancybox.open({

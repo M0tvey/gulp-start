@@ -4,6 +4,7 @@ $color_1: #2F2F2F;
 $color_2: #FF292A;
 
 $max_width: 1340px;
+$article_width: 820px;
 
 $breakpoints: (
   'xlll': 1750px,
@@ -19,10 +20,8 @@ $breakpoints: (
   'xs': 320px
 );
 
-$article_width: 820px;
-
 @mixin transition($property: '', $time: 0.2, $timing-function: ease-in-out) {
-  @if $property == '' {
+  @if length($property) == 1 {
 		$property: all;
 		transition: $property #{$time}s $timing-function;
 	} @else {
@@ -37,7 +36,22 @@ $article_width: 820px;
 	}
 }
 
-@function sizeVw($f-min, $f-max, $v-min:360, $v-max:1920) {
+@mixin sizeVw($property, $f-min, $f-max, $v-min:360, $v-max:1792) {
+  $k: ($f-max - $f-min)/($v-max - $v-min);
+  $b: $f-min - $k * $v-min;
+
+  $b: $b * 1px;
+
+  #{$property}: #{$f-min}px;
+  @media only screen and (min-width: #{$v-min}px) {
+    #{$property}: calc( #{$k} * 100vw + #{$b} );
+  }
+  @media only screen and (min-width: #{$v-max}px) {
+    #{$property}: #{$f-max}px;
+  }
+}
+
+@function sizeVwF($f-min, $f-max, $v-min:360, $v-max:1920) {
   $k: ($f-max - $f-min)/($v-max - $v-min);
   $b: $f-min - $k * $v-min;
 
