@@ -20,12 +20,13 @@ $(function () {
 	svg4everybody();
 
 	// ----------------------------------------- custom sliders
+	// https://swiperjs.com/swiper-api
 	/*
 		data-slider             - id слайдера
 		data-items-count        - количество видемых слайдов
 		data-space-between      - растояние между слайдами
 		data-paginate           - включить пагинацию? (элемент должен находится внутри data-slider, data-paginate="id слайдера")
-		data-space-breakpoints  - настройки для адаптации (data-space-breakpoints="80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2"")
+		data-space-breakpoints  - настройки для адаптации (data-space-breakpoints="80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2")
 		data-slider-direction   - напровленеи слайдера
 		data-thumbs             - взаимодействи слайдеров (data-thumbs="id второго слайдера")
 		...
@@ -49,6 +50,7 @@ $(function () {
 					allowTouchMove: $slider.data('allow-touch') == false ? false : true,
 					centeredSlides: $slider.data('centered-slides') || false,
 					centeredSlidesBounds: $slider.data('slides-bounds') || false,
+					speed: $slider.data('speed') || 300,
 					navigation: {
 						nextEl: `[data-slider-next=${sliderId}]`,
 						prevEl: `[data-slider-prev=${sliderId}]`,
@@ -62,6 +64,12 @@ $(function () {
 				
 				if ($slider.data('effect') == 'fade') sliderSettings.fadeEffect = {
 					crossFade: true
+				}
+			}
+
+			if ($slider.data('auto')) {
+				sliderSettings.autoplay = {
+					delay: $slider.data('auto'),
 				}
 			}
 
@@ -132,18 +140,6 @@ $(function () {
 					const secondSliderEl = document.querySelector(`[data-slider="${ slider.dataset.thumbs }"]`)
 						, secondSlider = initSlider(secondSliderEl)
 						, firstSlider = initSlider(slider);
-
-					secondSliderEl.querySelectorAll('.swiper-slide').forEach(slide => {
-						slider.addEventListener('click', function(e) {
-							const index = +slide.ariaLabel.split(' / ')[0];
-
-							firstSlider.slideTo(index);
-						});
-					});
-
-					secondSlider.on('slideChange', function(e) {
-						firstSlider.slideTo(e.activeIndex);
-					});
 
 					firstSlider.params.thumbs.swiper = secondSlider;
 					firstSlider.thumbs.init();
