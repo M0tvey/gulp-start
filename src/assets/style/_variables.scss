@@ -20,9 +20,8 @@ $breakpoints: (
   'xs': 320px
 );
 
-@mixin transition($property: '', $time: 0.2, $timing-function: ease-in-out) {
+@mixin transition($property: 'all', $time: 0.2, $timing-function: ease-in-out) {
   @if length($property) == 1 {
-		$property: all;
 		transition: $property #{$time}s $timing-function;
 	} @else {
 		$prop: '';
