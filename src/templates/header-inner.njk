@@ -29,6 +29,9 @@
 		<meta name="theme-color" content="#ffffff">
 
 		<link rel="stylesheet" href="/assets/css/main.min.css?{{ range(1, 1000) | random }}">
+    {% if dopStypeFile %}
+    <link rel="stylesheet" href="/assets/css/{{ dopStypeFile }}.min.css?{{ range(1, 1000) | random }}">
+    {% endif %}
 		<script src="https://api-maps.yandex.ru/2.1/?apikey=865714b7-1fc0-49e4-ac3d-b917e31ad8de&lang=ru_RU" type="text/javascript"></script>
 		<!-- -------------------------------------------
             Удалить этот тег после интеграции

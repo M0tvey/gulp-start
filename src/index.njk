@@ -24,26 +24,25 @@
 
 		<div class="slider js_custom_slider swiper-container" data-slider="news" data-items-count="2" data-space-between="30" data-space-breakpoints="80-spaceBetween:20,slidesPerView:1;992-spaceBetween:30,slidesPerView:2">
 			<div class="slider__wrap swiper-wrapper">
-				{% for item in newsArray -%}
-					<div class="swiper-slide slider__slide">
-						<div class="news__item">
-							<div class="news__item_content">
-								<p class="news__item_data">{{ item.data }}</p>
-								<p class="news__item_title_2">{{ item.title }}</p>
-								<a href="{{ item.link }}" class="news__item_link">Подробнее >></a>
-							</div>
+			{% for item in newsArray -%}
+				<div class="swiper-slide slider__slide">
+					<div class="news__item">
+						<div class="news__item_content">
+							<p class="news__item_data">{{ item.data }}</p>
+							<p class="news__item_title_2">{{ item.title }}</p>
+							<a href="{{ item.link }}" class="news__item_link">Подробнее >></a>
 						</div>
 					</div>
-					{% endfor %}
 				</div>
-
-				<div class="slider__buttons">
-					<div class="slider__button slider__button_prev" data-slider-prev="news"></div>
-					<div class="slider__button slider__button_next" data-slider-next="news"></div>
-				</div>
-
-				<div class="slider__pagination" data-paginate="news"></div>
+			{% endfor %}
 			</div>
+
+			<div class="slider__buttons">
+				<div class="slider__button slider__button_prev" data-slider-prev="news"></div>
+				<div class="slider__button slider__button_next" data-slider-next="news"></div>
+			</div>
+
+			<div class="slider__pagination" data-paginate="news"></div>
 		</div>
 	</section>
 

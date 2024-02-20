@@ -14,7 +14,7 @@
 		color: $color_1;
 	}
 
-	&_1 {
+	&--1 {
 		color: #fff;
 		background-color: $color_2;
 		border: solid 1px $color_2;
@@ -27,7 +27,7 @@
 		}
 	}
 
-	&_2 {
+	&--2 {
 		color: $color_2;
 		background-color: #fff;
 		border: solid 1px $color_2;
@@ -67,7 +67,7 @@
 		}
 	}
 
-	&_3 {
+	&--3 {
 		padding: 18px 27px;
 		background-color: #fff;
 		font-weight: 500;
@@ -82,7 +82,7 @@
 		}
 	}
 
-	&_semiwide {
+	&--semiwide {
 		width: 100%;
 		max-width: 360px;
 	}

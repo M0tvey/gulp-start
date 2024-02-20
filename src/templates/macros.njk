@@ -1,4 +1,17 @@
 {% set menuItems = {
+	'sitemap': [
+		{
+			name: 'Главная',
+			link: '/',
+			class: '',
+			blank: false
+		}, {
+			name: '404',
+			link: '/404.html',
+			class: '',
+			blank: false
+		}
+	],
 	'header': [
 		{
 			name: 'Главная',
@@ -57,6 +70,7 @@
 		<li class="{{ typeMenu }}-menu__item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{{ activeClass }}">
 			<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
 		{% endset %}
+
 		{% if item.submenu and item.submenu.length %}
 			{% set l1 %}{{ l1 | safe }}
 			<ul class="{{ typeMenu }}-menu__submenu">
@@ -74,6 +88,7 @@
 			</ul>
 			{% endset %}
 		{% endif %}
+		
 		{% set l1 %}{{ l1 | safe }}
 		</li>
 		{% endset %}

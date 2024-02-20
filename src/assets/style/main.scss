@@ -48,12 +48,15 @@ select:-webkit-autofill:focus {
 	box-sizing: border-box;
 }
 
+html {
+	height: 100%;
+}
+
 html,
 body {
 	margin: 0;
 	padding: 0;
 	background: #fff;
-	height: 100%;
 }
 
 body {
@@ -62,6 +65,7 @@ body {
 	grid-template-rows: auto 1fr auto;
 	font: normal 16px/140% $font_1;
 	color: $color_1;
+	min-height: 100%;
 }
 
 a {
@@ -103,7 +107,6 @@ img {
 }
 
 @import "_container";
-@import "_sitemap";
 @import "_bttn";
 @import "_form";
 @import "_tabs";
