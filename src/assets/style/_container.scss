@@ -5,19 +5,19 @@
 	margin-right: auto;
 	margin-left: auto;
 
-	@include screen('sm', 'min') {
+	@include screen('sm') {
 		max-width: 540px
 	}
 
-	@include screen('md', 'min') {
+	@include screen('md') {
 		max-width: 720px
 	}
 
-	@include screen('lg', 'min') {
+	@include screen('lg') {
 		max-width: 960px
 	}
 
-	@include screen('xl', 'min') {
+	@include screen('xl') {
 		max-width: #{$max_width + 30px};
 	}
 }

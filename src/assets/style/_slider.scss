@@ -10,7 +10,7 @@
 		grid-template-columns: repeat(2, auto);
 		justify-content: space-between;
 		z-index: 10;
-		@include screen('xlll', 'min') {
+		@include screen('xlll') {
 			inset: 50% 0 auto 0;
 		}
 	}
@@ -60,7 +60,7 @@
 		grid-auto-columns: 8px;
 		column-gap: 9px;
 		justify-content: center;
-		@include screen('sm', 'min') {
+		@include screen('sm') {
 			margin-top: 20px;
 		}
 

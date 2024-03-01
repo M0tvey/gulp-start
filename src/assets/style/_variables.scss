@@ -73,27 +73,41 @@ $breakpoints: (
   width: $width;
 }
 
-@mixin insert_icon($icon1, $icon2) {
+@mixin insert_icon($icon1, $icon2, $size:20px) {
   position: relative;
 
   &:before,
   &:after {
+    content: '';
     position: absolute;
-    inset: 50% auto auto 0;
+    top: 50%;
+    left: 0;
     transform: translateY(-50%);
+    @include size($size);
     line-height: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include transition((opacity, transform));
   }
+
   &:before {
-    content: $icon1;
+    background-image: $icon1;
   }
+
   &:after {
-    content: $icon2;
+    background-image: $icon2;
     opacity: 0;
-    @include transition;
   }
-  &.is-active:after,
-  &:hover:after {
-    opacity: 1;
+
+  &.is-active,
+  &:hover {
+    &::before {
+      opacity: 0;
+    }
+
+    &:after {
+      opacity: 1;
+    }
   }
 }
 
