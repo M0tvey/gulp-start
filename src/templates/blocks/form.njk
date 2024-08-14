@@ -58,12 +58,10 @@
 				<div class="ghost"></div>
 			</div>
 
-			<div class="form__body-input form__body--file form-margin form-pr">
-				<input class="hidden-input js-file-input" id="file" type="file" data-label="Загрузить презентацию"
-					name="presentation" data-parsley-max-file-size="5120" data-parsley-file-formats="PDF,DOC,DOCX,ODT">
-				<label class="input-file" for="file">Загрузить презентацию</label>
-				<label class="input-file__label" for="file">Допустимые для загрузки форматы: PDF, DOC, DOCX, ODT <br>Размер
-					файла – до 5 Мб</label>
+			<div class="form__body-file form__body--file form-margin form-pr">
+				<input class="hidden-input" id="files" type="file" data-label="Загрузить файл" name="files" accept=".pdf,.doc,.docx,.jpg" data-parsley-file-formats="PDF,DOC,DOCX,JPG" data-parsley-trigger="change" data-parsley-max-file-size="15" multiple>
+				<label class="input-file js-file-input" for="files">Загрузить файл(ы)</label>
+				<label class="input-file__label" for="file">формат doc, docx, pdf, jpg</label>
 			</div>
 
 			<div class="form__body-checkbox form-pr">

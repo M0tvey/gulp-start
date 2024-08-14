@@ -1,27 +1,38 @@
-{% set menuItems = {
-	'sitemap': [
+{% set sitemaptems = [
 		{
 			name: 'Главная',
 			link: '/',
-			class: '',
-			blank: false
-		}, {
-			name: '404',
-			link: '/404.html',
 			class: '',
 			blank: false
 		}
-	],
+	]
+%}
+
+{% macro linkSpace(name) %}
+	{% set link = 'javascript:void(0)' %}
+	{% for menuItem in sitemapItems %}
+		{% if name == menuItem.name %}{% set link = menuItem.link %}{% endif %}
+		{% if menuItem.submenu and menuItem.submenu.length %}
+			{% for subMenuItem in menuItem.submenu %}
+				{% if name == subMenuItem.name %}{% set link = subMenuItem.link %}{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+{{ link }}
+{% endmacro %}
+{% macro link(name) %}{{ linkSpace(name) | trim }}{% endmacro %}
+
+{% set menuItems = {
+	'sitemap': sitemaptems,
 	'header': [
 		{
 			name: 'Главная',
-			link: '/',
 			class: '',
 			blank: false,
 			submenu: [
 				{
 					name: 'О компании',
-					link: 'javascript:void(0)',
+					link: link('О компании'),
 					class: '',
 					blank: false
 				}
@@ -31,28 +42,11 @@
 	'footer' :[
 		{
 			name: 'Главная',
-			link: '/',
 			class: '',
 			blank: false
 		}
 	]
 } %}
-
-{% macro linkSpace(name) %}
-	{% set link = 'javascript:void(0)' %}
-	{% for key, menu in menuItems %}
-		{% for menuItem in menu %}
-			{% if name == menuItem.name %}{% set link = menuItem.link %}{% endif %}
-			{% if menuItem.submenu and menuItem.submenu.length %}
-				{% for subMenuItem in menuItem.submenu %}
-					{% if name == subMenuItem.name %}{% set link = subMenuItem.link %}{% endif %}
-				{% endfor %}
-			{% endif %}
-		{% endfor %}
-	{% endfor %}
-{{ link }}
-{% endmacro %}
-{% macro link(name) %}{{ linkSpace(name) | trim }}{% endmacro %}
 
 {% macro menuSpace(activeItem = '', typeMenu = 'header', menuClass = false) %}
 	{% set menu = [] %}
@@ -68,7 +62,8 @@
 
 		{% set l1 %}
 		<li class="{{ typeMenu }}-menu__item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{{ activeClass }}">
-			<a href="{{ item.link }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
+			{% set itemLink = link(item.name) %}{% if item.link %}{% set itemLink = item.link %}{% endif %}
+			<a href="{{ itemLink }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
 		{% endset %}
 
 		{% if item.submenu and item.submenu.length %}
@@ -79,7 +74,8 @@
 				{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
 				{% set l1 %}{{ l1 | safe }}
 				<li class="{{ typeMenu }}-menu__submenu_item{{ subActiveClass }}">
-					<a href="{{ subItem.link }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
+					{% set subItemItemLink = link(subItem.name) %}{% if subItem.link %}{% set subItemItemLink = subItem.link %}{% endif %}
+					<a href="{{ subItemItemLink }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
 				</li>
 				{% endset %}
 				{% set subActiveClass = '' %}
@@ -116,7 +112,7 @@
 					{% if loop.index != loop.length %}
 						{% set bredItemUrl = 'javascript:void(0)' %}
 
-						{% for hMenuItem in menuItems['header'] %}
+						{% for hMenuItem in sitemapItems %}
 							{% if bredItem == hMenuItem.name %}
 								{% set bredItemUrl = hMenuItem.link %}
 							{% endif %}
