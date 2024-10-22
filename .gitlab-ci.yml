@@ -5,6 +5,7 @@ before_script:
 
 pages:
   script:
+    - npm i
     - gulp build
     - mv build public
     - find ./public/ -type f -exec sed -i -e 's|/assets/|'$CI_PAGES_URL'/assets/|g' {} \;
