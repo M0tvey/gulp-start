@@ -1,9 +1,7 @@
-import { filePaths } from '../config/paths.js';
-
-const serv = (instance) => {
-  instance.init({
+export function server() {
+  app.plugins.browserSync.init({
     server: {
-      baseDir: filePaths.buildFolder
+      baseDir: app.path.buildFolder
     },
     logLevel: 'info',
     cors: true,
@@ -20,5 +18,3 @@ const serv = (instance) => {
     }]
   });
 };
-
-export { serv };

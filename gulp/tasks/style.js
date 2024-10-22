@@ -5,7 +5,7 @@ import * as sass from 'sass'
 import gulpSass from 'gulp-sass';
 import rename from 'gulp-rename';
 import prefixer from 'gulp-autoprefixer';
-import cssmin from 'gulp-clean-css';
+import cssmin from 'gulp-cssmin';
 
 const sas = gulpSass(sass)
 
@@ -16,9 +16,7 @@ export function style(serverInstance) {
       overrideBrowserslist: ['last 2 versions'],
       cascade: false
     })) // Добавим вендорные префиксы
-    .pipe(cleanCSS({
-      level: 0,
-    })) // Сожмем
+    .pipe(cssmin()) // Сожмем
     .pipe(rename({
       suffix: '.min'
     }))

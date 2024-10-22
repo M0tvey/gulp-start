@@ -9,18 +9,17 @@
     "build": "gulp build --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Moroz Kostua",
   "license": "ISC",
   "devDependencies": {
-    "@fancyapps/fancybox": "latest",
     "browser-sync": "latest",
     "del": "^6.0.0",
     "esbuild-loader": "^4.2.2",
     "gsap": "latest",
     "gulp": "latest",
     "gulp-autoprefixer": "latest",
-    "gulp-clean-css": "latest",
+    "gulp-cssmin": "latest",
     "gulp-concat": "latest",
+    "gulp-changed": "latest",
     "gulp-imagemin": "^7.1.0",
     "gulp-nunjucks-render": "latest",
     "gulp-rename": "latest",
@@ -29,18 +28,18 @@
     "gulp-svgstore": "latest",
     "gulp-watch": "latest",
     "gulp-webp": "latest",
-    "jquery": "latest",
-    "malihu-custom-scrollbar-plugin": "latest",
     "sass": "latest",
     "svg4everybody": "latest",
-    "swiper": "latest",
     "webpack-stream": "latest"
   },
   "dependencies": {
-    "inputmask": "latest",
+    "jquery": "latest",
     "jquery-ui": "latest",
+    "inputmask": "latest",
     "jquery.cookie": "latest",
     "parsleyjs": "latest",
-    "select2": "latest"
+    "select2": "latest",
+    "swiper": "latest",
+    "@fancyapps/fancybox": "latest"
   }
 }

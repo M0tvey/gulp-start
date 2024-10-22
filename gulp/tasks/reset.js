@@ -1,6 +1,3 @@
 import del from 'del';
-import { filePaths } from '../config/paths.js';
 
-export function reset() {
-  return del(filePaths.clean); // Удаляем папку dist перед сборкой
-}
+export const reset = () => del([app.path.clean]); // Удаляем папку build перед сборкой

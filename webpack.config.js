@@ -1,7 +1,7 @@
 import { resolve, join } from 'path';
 import { readDir } from './gulp/config/read-dir.js';
 
-export const webpackConfig = async (isBuild) => {
+export const webpackConfig = async(isBuild) => {
 	const paths = {
 		src: resolve('src/assets'),
 		build: resolve('build'),
@@ -36,3 +36,4 @@ export const webpackConfig = async (isBuild) => {
 		},
 	};
 };
+
