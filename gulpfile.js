@@ -32,9 +32,9 @@ function watcher() {
   // gulp.watch(filePaths.watch.svg, svg);
 }
 
-const devTasks = (root, html)
-  , dev = gulp.series(reset, gulp.parallel(devTasks, watcher, server))
-  , build = gulp.series(reset, devTasks);
+const devTasks = [root, html]
+  , dev = gulp.series(reset, gulp.parallel(...devTasks, watcher, server))
+  , build = gulp.series(reset);
 
 export { dev, build };
 
