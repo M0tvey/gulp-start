@@ -1,0 +1,13 @@
+.header {
+	position: fixed;
+	inset: 0 0 auto 0;
+	z-index: 100;
+	background-color: #f9f9f9;
+
+	&__block {
+		height: var(--header-height);
+		display: grid;
+		grid-auto-flow: column;
+		justify-content: space-between;
+	}
+}

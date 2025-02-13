@@ -1,4 +1,5 @@
-@import "_variables";
+@import 'layout/fonts';
+@import "variables";
 
 .sitemap {
 	margin-bottom: 150px;
@@ -20,7 +21,7 @@
 			padding-left: 35px;
 			margin: 7px 0;
 
-			[class$="_link"]::before {
+			[class$=_link]::before {
 				inset: auto auto 0 -30px;
 			}
 		}
@@ -31,7 +32,7 @@
 				color: $color_2;
 			}
 		}
-	
+
 		&__link {
 			text-decoration: none;
 			color: $color_1;
@@ -39,8 +40,9 @@
 			display: inline-block;
 			font: 300 20px/150% $font_1;
 			transition: padding 0.3s ease-in-out;
-	
+
 			$leftP: 20px;
+
 			&:before {
 				content: "";
 				position: absolute;
@@ -50,16 +52,16 @@
 				transition: width 0.3s ease-in-out;
 				width: 0;
 			}
-	
+
 			&:hover {
 				padding-left: 10px;
-	
+
 				&:before {
 					width: calc(100% + #{$leftP});
 				}
 			}
 		}
-	
+
 		&__text {
 			font: 300 20px/150% $font_1;
 			margin: 0;

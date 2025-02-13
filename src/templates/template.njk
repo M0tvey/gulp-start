@@ -1,0 +1,52 @@
+{% from 'src/templates/macros.njk' import menu %}
+{% set randomNumber = range(1, 1000) | random %}
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>
+			{% if siteTitle %}Site | {{ siteTitle | striptags(true) }}
+			{% else %}Site{% endif %}
+		</title>
+
+		<link rel="icon" type="image/svg+xml" sizes="any" href="./favicon.svg">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="theme-color" content="#ffffff">
+
+		<link rel="stylesheet" type="text/css" href="./assets/css/main.min.css?v={{ randomNumber }}">
+		{% if dopStypeFile %}<link rel="stylesheet" type="text/css" href="./assets/css/{{ dopStypeFile }}.min.css?v={{ randomNumber }}">{% endif %}
+
+		<script src="https://api-maps.yandex.ru/2.1/?apikey=865714b7-1fc0-49e4-ac3d-b917e31ad8de&lang=ru_RU" type="text/javascript"></script>
+		<script defer src="./assets/js/main.min.js?v={{ randomNumber }}"></script>
+		<!-- -------------------------------------------
+						Удалить этот тег после интеграции
+														⭣
+		-------------------------------------------- -->
+		<meta name="robots" content="noindex">
+		<!-- -----------------	⭡   ---------------- -->
+	</head>
+
+	<body {% if bodyClass %}class="{{ bodyClass }}"{% endif %}>
+		<header class="header">
+			<div class="header__block container js_header">
+				<a href="/" class="logo__link js_mobile_el_1">LOGO</a>
+
+				{{ menu(activeItem=activePage, menuClass='js_mobile_el_2 js_header_menu') }}
+			</div>
+		</header>
+
+		{% block main %}{% endblock %}
+
+		<footer class="footer">
+			<div class="container">
+				{{ menu(activeItem=activePage, typeMenu='footer') }}
+			</div>
+
+			<input type="hidden" class="js_cookie_accept_url" data-url="popups/acceptcookie.html">
+		</footer>
+	</body>
+</html>

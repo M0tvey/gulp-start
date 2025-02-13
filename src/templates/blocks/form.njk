@@ -1,10 +1,12 @@
-<form action="response-form.json" class="form js-form-ajax" data-parsley-validate>
+<form action="response-form.json" class="form js_form_ajax" data-parsley-validate>
 	<div class="form__body">
 		<p class="form__title">Отправить резюме</p>
 
-		<div class="form__body-col">
-			<div class="form__body-select form-margin form-pr">
-				<select data-placeholder="Название вакансии / желаемая должность*" required>
+		<div class="form__grid form__grid--2">
+			<div class="form__item">
+				<label for="vacancies" class="form__label">Название вакансии / желаемая должность*</label>
+
+				<select data-placeholder="Название вакансии / желаемая должность*" name="vacancies" id="vacancies" required>
 					<option></option>
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -13,65 +15,62 @@
 				</select>
 			</div>
 
-			<div class="form__body-input form-margin form-pr">
-				<input id="fio" type="text" name="fio"  data-parsley-words-only data-parsley-maxlength="100" required>
-				<label for="fio">ФИО*</label>
+			<div class="form__item">
+				<label for="fio" class="form__label">ФИО*</label>
+				<input id="fio" type="text" name="fio" data-parsley-words-only data-parsley-maxlength="100" required>
 			</div>
 
-			<div class="form__body-input form-margin form-pr">
-				<input id="phone" type="text" name="phone" class="js-phone-mask" data-parsley-pattern="^[\d\+\-\.\(\)\/\s]*$"
-					required>
-				<label for="phone">Телефон для связи*</label>
+			<div class="form__item">
+				<label for="phone" class="form__label">Телефон для связи*</label>
+				<input id="phone" type="text" name="phone" class="js_phone_mask" data-parsley-pattern="^[\d\+\-\.\(\)\/\s]*$" required>
 			</div>
 
-			<div class="form__body-input form-margin form-pr">
+			<div class="form__item">
+				<label for="email" class="form__label">Электронная почта*</label>
 				<input id="email" type="text" name="email1" data-parsley-type="email" required data-parsley-maxlength="100">
-				<label for="email">Электронная почта*</label>
 			</div>
 
-			<div class="form__body-input form-margin form-pr">
+			<div class="form__item">
+				<label for="data" class="form__label">Дата рождения*</label>
 				<input id="data" type="text" name="data" required onfocus="(this.type='date')" onblur="(this.type='text')">
-				<label for="data">Дата рождения*</label>
 			</div>
 
-			<div class="form__body-input form-margin form-pr">
+			<div class="form__item">
+				<label for="price" class="form__label">Желаемый уровень заработной платы*</label>
 				<input id="price" type="number" name="price" required>
-				<label for="price">Желаемый уровень заработной платы*</label>
 			</div>
 
-			<div class="form__body-textarea form-margin form-pr">
+			<div class="form__item">
+				<label for="experience" class="form__label">Опыт работы*</label>
 				<textarea name="experience" id="experience" rows="1" required data-parsley-maxlength="1000"></textarea>
-				<label for="experience">Опыт работы*</label>
 				<div class="ghost"></div>
 			</div>
 
-			<div class="form__body-textarea form-margin form-pr">
+			<div class="form__item">
+				<label for="education" class="form__label">Образование*</label>
 				<textarea name="education" id="education" rows="1" required data-parsley-maxlength="100"></textarea>
-				<label for="education">Образование*</label>
 				<div class="ghost"></div>
 			</div>
 
-			<div class="form__body-textarea form-margin form-pr">
-				<textarea name="additional_information" id="additional_information" rows="1"
-					data-parsley-maxlength="1000"></textarea>
-				<label for="additional_information">Дополнительная информация</label>
+			<div class="form__item">
+				<label for="additional_information" class="form__label">Дополнительная информация</label>
+				<textarea name="additional_information" id="additional_information" rows="1" data-parsley-maxlength="1000"></textarea>
 				<div class="ghost"></div>
 			</div>
 
-			<div class="form__body-file form__body--file form-margin form-pr">
+			<div class="form__item">
+				<label class="input-file js_file_input" for="files">Загрузить файл(ы)</label>
 				<input class="hidden-input" id="files" type="file" data-label="Загрузить файл" name="files" accept=".pdf,.doc,.docx,.jpg" data-parsley-file-formats="PDF,DOC,DOCX,JPG" data-parsley-trigger="change" data-parsley-max-file-size="15" multiple>
-				<label class="input-file js-file-input" for="files">Загрузить файл(ы)</label>
 				<label class="input-file__label" for="file">формат doc, docx, pdf, jpg</label>
 			</div>
 
-			<div class="form__body-checkbox form-pr">
+			<div class="form__item">
 				<input type="checkbox" class="hidden-input" name="personal-data" id="personal-data">
-				<label for="personal-data" class="checkbox-label">Я согласен на обработку <a target="_blank"
-						href="javascript:void(0)">персональных данных</a>
+				<label for="personal-data" class="checkbox-label">Я согласен на обработку <a target="_blank" href="javascript:void(0)">персональных данных</a>
 				</label>
 			</div>
 		</div>
 
-		<button type="submit" class="form__bttn bttn bttn--1 js-form-ajax-btn">Отправить</button>
+		<button type="submit" class="form__btn btn btn--1 js_form_ajax_btn">Отправить</button>
 	</div>
 </form>

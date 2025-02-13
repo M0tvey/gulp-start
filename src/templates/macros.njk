@@ -1,26 +1,33 @@
 {% set sitemaptems = [
-		{
-			name: 'Главная',
-			link: '/',
-			class: '',
-			blank: false
-		}
-	]
-%}
+	{
+		name: 'Главная',
+		link: '/',
+		class: '',
+		blank: false
+	}, {
+		name: '404',
+		link: '/404.html',
+		class: '',
+		blank: false
+	}
+] %}
 
 {% macro linkSpace(name) %}
 	{% set link = 'javascript:void(0)' %}
-	{% for menuItem in sitemapItems %}
-		{% if name == menuItem.name %}{% set link = menuItem.link %}{% endif %}
+	{% for menuItem in sitemaptems %}
+		{% if name == menuItem.name %}{% set link = menuItem.link %}
+		{% endif %}
 		{% if menuItem.submenu and menuItem.submenu.length %}
 			{% for subMenuItem in menuItem.submenu %}
-				{% if name == subMenuItem.name %}{% set link = subMenuItem.link %}{% endif %}
+				{% if name == subMenuItem.name %}{% set link = subMenuItem.link %}
+				{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endfor %}
-{{ link }}
+	{{ link }}
 {% endmacro %}
-{% macro link(name) %}{{ linkSpace(name) | trim }}{% endmacro %}
+{% macro link(name) %}{{ linkSpace(name) | trim }}
+{% endmacro %}
 
 {% set menuItems = {
 	'sitemap': sitemaptems,
@@ -32,14 +39,15 @@
 			submenu: [
 				{
 					name: 'О компании',
-					link: link('О компании'),
-					class: '',
-					blank: false
+					link: link('404')
+				}, {
+					name: 'Контакты',
+					link: link('404')
 				}
 			]
 		}
 	],
-	'footer' :[
+	'footer': [
 		{
 			name: 'Главная',
 			class: '',
@@ -48,89 +56,68 @@
 	]
 } %}
 
-{% macro menuSpace(activeItem = '', typeMenu = 'header', menuClass = false) %}
-	{% set menu = [] %}
-
-	{% for item in menuItems[typeMenu] %}
-		{% set activeClass = '' %}
-		{% if activeItem === item.name %}{% set activeClass = ' is-active' %}{% endif %}
-		{% if item.submenu and item.submenu.length %}
-			{% for subItem in item.submenu %}
-				{% if subItem.name === activeItem %}{% set activeClass = ' is-active' %}{% endif %}
-			{% endfor %}
+{% macro menu(typeMenu = 'header', typeMenuClass = false, menuClass = false, activeItem = false) %}
+	{% set level = 1 %}
+	{% macro menuArray(array, typeMenu, typeMenuClass, level, activeItem) %}
+		{% set level = level + 1 %}
+		{% set typeClass = typeMenu %}
+		{% if typeMenuClass %}{% set typeClass = typeMenuClass %}
 		{% endif %}
-
-		{% set l1 %}
-		<li class="{{ typeMenu }}-menu__item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{{ activeClass }}">
-			{% set itemLink = link(item.name) %}{% if item.link %}{% set itemLink = item.link %}{% endif %}
-			<a href="{{ itemLink }}" class="{{ typeMenu }}-menu__link{% if item.class != '' %} {{ item.class }}{% endif %}"{% if item.blank %} target="_blanck"{% endif %}>{{ item.name }}</a>
-		{% endset %}
-
-		{% if item.submenu and item.submenu.length %}
-			{% set l1 %}{{ l1 | safe }}
-			<ul class="{{ typeMenu }}-menu__submenu">
-			{% endset %}
-			{% for subItem in item.submenu %}
-				{% if activeItem === subItem.name %}{% set subActiveClass = ' is-active' %}{% endif %}
-				{% set l1 %}{{ l1 | safe }}
-				<li class="{{ typeMenu }}-menu__submenu_item{{ subActiveClass }}">
-					{% set subItemItemLink = link(subItem.name) %}{% if subItem.link %}{% set subItemItemLink = subItem.link %}{% endif %}
-					<a href="{{ subItemItemLink }}" class="{{ typeMenu }}-menu__submenu_link{% if subItem.class != '' %} {{ subItem.class }}{% endif %}"{% if subItem.blank %} target="_blanck"{% endif %}>{{ subItem.name }}</a>
-				</li>
-				{% endset %}
-				{% set subActiveClass = '' %}
-			{% endfor %}
-			{% set l1 %}{{ l1 | safe }}
-			</ul>
-			{% endset %}
-		{% endif %}
-		
-		{% set l1 %}{{ l1 | safe }}
+		{% for item in array %}
+			<li class="{{ typeClass }}-menu__item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{% if activeItem == item.name %} is-active{% endif %}">
+				<a href="{% if item.link %}{{ item.link }}{% else %}{{ link(item.name) }}{% endif %}" class="{{ typeClass }}-menu__link{% if item.class and item.class != '' %} {{ item.class }}{% endif %}"{% if item.target and item.target != '' %} target="{{ item.targe }}"{% endif %}>{{ item.name }}</a>
+				{% if item.submenu | length > 0 %}
+					<ul class="{{ typeClass }}-menu__submenu level--{{ level }}">
+						{{ menuArray(item.submenu, typeMenu, typeClass, level, activeItem) | trim }}
+				</ul>
+			{% endif %}
 		</li>
-		{% endset %}
-		
-		{% set menu = (menu.push(l1), menu) %}
 	{% endfor %}
-
-				<menu class="menu {{ typeMenu }}-menu{% if menuClass %} {{ menuClass}}{% endif %}">
-					{% for item in menu %}{{ item | safe }}{% endfor %}
-				</menu>
 {% endmacro %}
-{% macro menu(activeItem='', typeMenu='header', menuClass=false) %}{{ menuSpace(activeItem=activeItem, typeMenu=typeMenu, menuClass=menuClass) | trim }}{% endmacro %}
+{% set menuHtml %}
+<menu class="menu {{ typeMenu }}-menu{% if typeMenuClass %} {{ typeMenuClass}}-menu{% endif %}{% if menuClass %} {{ menuClass}}{% endif %}">
+	{{ menuArray(menuItems[typeMenu], typeMenu, typeMenuClass, level, activeItem) | trim }}
+</menu>
+{% endset %}
 
-{% macro breadcrumbsSpace(itemsArray, isShowHome=true, blockClas=false) %}
-	<div class="breadcrumbs{% if blockClas %} {{ blockClas }}{% endif %}">
-		<ul class="breadcrumbs__list">
-			{% if isShowHome %}
-				{% set bArr = ['<li><a href="/" class="breadcrumbs__item">Главная</a></li>'] %}
-			{% else %}
-				{% set bArr = [] %}
-			{% endif %}
+{{ menuHtml | safe }}
+{% endmacro %}
 
-			{% if itemsArray and itemsArray.length != 0 %}
-				{% for bredItem in itemsArray %}
-					{% if loop.index != loop.length %}
-						{% set bredItemUrl = 'javascript:void(0)' %}
+{% macro breadcrumbsSpace(itemsArray, isShowHome, blockClas, hasWrap) %}
+{% if hasWrap %}
+	<section class="breadcrumbs container">
+	{% endif %}
+	<ul class="breadcrumbs__list{% if blockClas %} {{ blockClas }}{% endif %}">
+		{% if isShowHome %}
+			{% set bArr = ['<li class="breadcrumbs__item"><a href="/">Главная</a></li>'] %}
+		{% else %}
+			{% set bArr = [] %}
+		{% endif %}
 
-						{% for hMenuItem in sitemapItems %}
-							{% if bredItem == hMenuItem.name %}
-								{% set bredItemUrl = hMenuItem.link %}
-							{% endif %}
-						{% endfor %}
+		{% if itemsArray and itemsArray.length != 0 %}
+			{% for bredItem in itemsArray %}
+				{% if loop.index != loop.length %}
+					{% set s %}
+					<li class="breadcrumbs__item">
+						<a href="{{ link(bredItem) }}">{{ bredItem }}</a>
+					</li>{% endset %}
+					{% set bArr = (bArr.push(s), bArr) %}
+				{% endif %}
+			{% endfor %}
 
-						{% set s %}<li><a href="{{ bredItemUrl }}" class="breadcrumbs__item">{{ bredItem }}</a></li>{% endset %}
-						{% set bArr = (bArr.push(s), bArr) %}
-					{% endif %}
-				{% endfor %}
-
-				{% set s %}<li><span class="breadcrumbs__item">{{ itemsArray | last }}</span></li>{% endset %}
-				{% set bArr = (bArr.push(s), bArr) %}				
-			{% endif %}
+			{% set s %}
+			<li class="breadcrumbs__item">
+				<span>{{ itemsArray | last }}</span></li>{% endset %}
+			{% set bArr = (bArr.push(s), bArr) %}
+		{% endif %}
 
 		{% for item in bArr %}
 			{{ item | safe }}
 		{% endfor %}
-		</ul>
-	</div>
+	</ul>
+	{% if hasWrap %}
+	</section>
+{% endif %}
 {% endmacro %}
-{% macro breadcrumbs(itemsArray, isShowHome=true, blockClas=false) %}{{ breadcrumbsSpace(itemsArray, isShowHome=isShowHome, blockClas=blockClas) | trim }}{% endmacro %}
+{% macro breadcrumbs(itemsArray, isShowHome = true, blockClas = false, hasWrap = false) %}{{ breadcrumbsSpace(itemsArray, isShowHome, blockClas, hasWrap) | trim }}
+{% endmacro %}

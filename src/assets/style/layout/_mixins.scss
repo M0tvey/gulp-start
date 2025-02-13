@@ -1,0 +1,96 @@
+@mixin transition($property: all, $time: 0.5, $timing-function: ease-in-out) {
+	@if length($property)==1 {
+		transition: $property #{$time}s $timing-function;
+	}	@else {
+		$prop: "";
+
+		@for $i from 1 through length($property) {
+			$prop: #{$prop}, nth($property, $i);
+		}
+
+		transition-property: #{$prop};
+		transition-duration: #{$time}s;
+		transition-timing-function: #{$timing-function};
+	}
+}
+
+@mixin sizeVw($property, $f-min, $f-max, $v-min: 360, $v-max: 1792) {
+	$k: ( $f-max - $f-min)/ ($v-max - $v-min );
+	$b: $f-min - $k * $v-min;
+
+	$b: $b * 1px;
+
+	#{$property}: #{$f-min}px;
+	@media only screen and (min-width: #{$v-min}px) {
+		#{$property}: calc(#{$k} * 100vw + #{$b});
+	}
+
+	@media only screen and (min-width: #{$v-max}px) {
+		#{$property}: #{$f-max}px;
+	}
+}
+
+@mixin size($height, $width: "") {
+	@if $width =="" {
+		$width: $height;
+	}
+
+	height: $height;
+	width: $width;
+}
+
+@mixin insert_icon($icon1, $icon2, $size: 20px) {
+	position: relative;
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+		@include size($size);
+		line-height: 0;
+		background-size: contain;
+		background-repeat: no-repeat;
+		@include transition((opacity, transform));
+	}
+
+	&:before {
+		background-image: $icon1;
+	}
+
+	&:after {
+		background-image: $icon2;
+		opacity: 0;
+	}
+
+	&.is-active,
+	&:hover {
+		&::before {
+			opacity: 0;
+		}
+
+		&:after {
+			opacity: 1;
+		}
+	}
+}
+
+@mixin screen($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+
+    @if $type == max {
+      $width: $width - 00.2px;
+    }
+
+    @if $type == min {
+      $width: $width + 00.2px;
+    }
+
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}

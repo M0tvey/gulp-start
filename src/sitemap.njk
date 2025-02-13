@@ -1,16 +1,16 @@
+{% extends 'src/templates/template.njk' %}
 {% set dopStypeFile = 'sitemap' %}
-{% include './src/templates/header-inner.njk' %}
-{% include './src/templates/header.njk' %}
-{% from './src/templates/macros.njk' import menu %}
 
-<main class="main container">
-	<section class="sitemap wrap">
-		<div class="sitemap_item">
-			<div class="sitemap__title">Карта сайта</div>
+{% from 'src/templates/macros.njk' import menu %}
 
-			{{ menu(typeMenu='sitemap') }}
-		</div>
-	</section>
-</main>
+{% block main %}
+	<main class="main container">
+		<section class="sitemap wrap">
+			<div class="sitemap_item">
+				<div class="sitemap__title">Карта сайта</div>
 
-{% include './src/templates/footer.njk' %}
+				{{ menu(typeMenu='sitemap') }}
+			</div>
+		</section>
+	</main>
+{% endblock %}

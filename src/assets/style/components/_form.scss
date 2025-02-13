@@ -1,0 +1,277 @@
+$placeholders: '::placeholder', ':-ms-input-placeholder', '::-ms-input-placeholder';
+
+@each $placeholder in $placeholders {
+	#{ $placeholder } {
+		color: #ccc;
+		opacity: 1;
+		font-weight: 400;
+	}
+}
+
+$autofills: ':autofill', ':-webkit-autofill';
+
+.form {
+	&__title {
+		font-weight: 700;
+		font-size: 20px;
+		line-height: 200%;
+		text-align: center;
+		margin: 0 0 15px;
+
+		@include screen(md) {
+			margin-bottom: 23px;
+			font-size: 24px;
+		}
+	}
+
+	&__text {
+		line-height: 160%;
+		margin: 0 0 40px;
+		text-align: center;
+	}
+
+	&__grid {
+		display: grid;
+		gap: 24px;
+		flex-wrap: wrap;
+		flex-direction: row;
+		align-items: stretch;
+		width: 100%;
+		position: relative;
+		z-index: 1;
+		grid-template-columns: 100%;
+
+		[class*=title] {
+			width: 100%;
+		}
+
+		&--2 {
+			@include screen(sm) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+	}
+
+	&__item {
+		position: relative;
+	}
+
+	&__label {
+		display: block;
+		font-size: 14px;
+
+		span {
+			display: block;
+		}
+	}
+
+	input:not([type='checkbox']):not([type='radio']):not([type='file']),
+	textarea,
+	.input-file,
+	.select2-selection {
+		background-color: #fff;
+		box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.03);
+		border-radius: 6px;
+		min-height: 50px;
+		border: solid 1px $color_1;
+		width: 100%;
+		padding: 12px 30px 12px 16px;
+		font: normal 16px/140% $font_1;
+		resize: none;
+		@include transition('border, box-shadow');
+
+		&:hover:not([disabled]):not(.parsley-error) {
+			border: 1px solid $color_2;
+			box-shadow: 0px 4px 10px rgba(0, 137, 199, 0.12);
+		}
+
+		&:focus {
+			border: 1px solid $color_2;
+		}
+
+		&[disabled] {
+			box-shadow: none;
+		}
+
+		&.parsley-error {
+			box-shadow: none;
+		}
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		@each $autofill in $autofills {
+			#{ $autofill } {
+
+				&,
+				&:hover,
+				&:focus {
+					background: -webkit-linear-gradient(top,
+							rgba(255, 255, 255, 0) 0%,
+							rgba(0, 174, 255, 0.04) 50%,
+							rgba(255, 255, 255, 0) 51%,
+							rgba(0, 174, 255, 0.03) 100%);
+				}
+			}
+		}
+	}
+
+	textarea {
+		resize: none;
+		min-height: 80px;
+		padding-top: 12px;
+		padding-bottom: 12px;
+		overflow: hidden;
+
+		&~.ghost {
+			display: none;
+			position: absolute;
+			left: -1000px;
+			z-index: -1;
+			border: 1px solid transparent;
+			padding: 12px 30px 12px 16px;
+			width: 100%;
+			font: normal 16px/140% $font_1;
+			min-height: 80px;
+		}
+
+		&.textarea-average {
+			min-height: 90px;
+
+			&~.ghost {
+				min-height: 90px;
+			}
+		}
+
+		&.textarea-high {
+			min-height: 125px;
+
+			&~.ghost {
+				min-height: 125px;
+			}
+		}
+	}
+
+	.input-file {
+		padding-top: 15px;
+		font-size: 14px;
+		position: relative;
+		cursor: pointer;
+		word-break: break-all;
+		display: block;
+
+		&::after {
+			position: absolute;
+			inset: 50% 20px auto auto;
+			transform: translateY(-50%);
+			line-height: 0;
+		}
+
+		&__label {
+			font-size: 12px;
+			line-height: 120%;
+			padding-top: 4px;
+			opacity: 0.6;
+		}
+	}
+
+	.checkbox-label {
+		position: relative;
+		padding-left: 28px;
+		font-size: 12px;
+		line-height: 14px;
+		cursor: pointer;
+
+		&:before {
+			content: '';
+			position: absolute;
+			background-color: #fff;
+			border-radius: 4px;
+			border: solid 1px $color_1;
+			inset: 50% auto auto 0;
+			transform: translateY(-50%);
+			text-align: center;
+			font-size: 16px;
+			line-height: 17px;
+			color: $color_2;
+			@include size(18px);
+		}
+	}
+
+	.error-wrap {
+		&:before {
+			position: absolute;
+			inset: 15px 20px auto auto;
+			z-index: 1;
+		}
+
+		.input-file {
+			box-shadow: none;
+
+			&:after {
+				right: 30px;
+			}
+		}
+
+		.select2-selection {
+			box-shadow: none;
+
+			&__arrow {
+				right: 20px;
+			}
+		}
+	}
+
+	input[type=checkbox]:checked+.checkbox-label:before {
+		content: '✓';
+	}
+
+	&__btn {
+		margin: 32px auto 0;
+		display: table;
+		width: 100%;
+		max-width: 100%;
+
+		@include screen(sm) {
+			max-width: 350px;
+		}
+	}
+
+	.parsley {
+		&-errors-list {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			position: absolute;
+			inset: auto 0 -13px 0;
+			font-size: 12px;
+			line-height: 100%;
+			color: #ff292a;
+		}
+	}
+
+	.select2-container--default .select2-selection--single .select2-selection {
+		&__rendered {
+			padding: 0;
+			line-height: inherit;
+		}
+
+		&__placeholder {
+			color: inherit;
+		}
+	}
+}
+
+.hidden-input {
+	opacity: 0;
+	position: absolute;
+	width: 0 !important;
+	height: 0 !important;
+	padding: 0 !important;
+	visibility: hidden;
+	pointer-events: none;
+	margin: 0;
+}

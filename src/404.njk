@@ -1,17 +1,19 @@
+{% extends 'src/templates/template.njk' %}
 {% set siteTitle = 'Страница не найдена' %}
-{% include './src/templates/header-inner.njk' %}
-{% include './src/templates/header.njk' %}
 
-<main class="main page__404_wrap">
-	<section class="page__404 container">
-		<div class="page__404_icon">4<svg class="icon"><use xlink:href="assets/img/svg/svg.svg#404"></svg>4</div>
+{% block main %}
+	<main class="main page__404_wrap">
+		<section class="page__404 container">
+			<div class="page__404_icon">
+			4<svg class="icon">
+					<use xlink:href="assets/img/svg/svg.svg#404"></svg>4
+		</div>
 
-		<h1 class="page__404_title">Страница не найдена</h1>
+				<h1 class="page__404_title">Страница не найдена</h1>
 
-		<p class="page__404_text">Похоже, мы не можем найти нужную вам страницу.<br><br>Вы можете вернуться на главную страницу и попробовать ещё раз.</p>
+				<p class="page__404_text">Похоже, мы не можем найти нужную вам страницу.<br><br>Вы можете вернуться на главную страницу и попробовать ещё раз.</p>
 
-		<a href="/" class="bttn bttn--1">На главную</a>
-	</section>
-</main>
-
-{% include './src/templates/footer.njk' %}
+				<a href="/" class="btn btn--1">На главную</a>
+			</section>
+		</main>
+	{% endblock %}

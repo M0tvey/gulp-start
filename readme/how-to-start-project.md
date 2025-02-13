@@ -1,9 +1,11 @@
 # Как начать новый проект?
+
 Обычно этим будет заниматься разработчик (ведущий разработчик), за кем закреплен этот проект.
 
 ### Клонируй проект
 
 Клонируем проект в папку `new-project` и переходим в нее
+
 ```
 git clone https://gitlab.com/koshmarsianka/gulp-start project-name && cd project-name
 ```
@@ -11,7 +13,7 @@ git clone https://gitlab.com/koshmarsianka/gulp-start project-name && cd project
 ### Создай новый репозиторий
 
 Создаем репозиторий с названием проекта
-```https://gitlab.com/avdcomp/new```
+`https://gitlab.com/avdcomp/new`
 
 ### Инициализация GIT
 

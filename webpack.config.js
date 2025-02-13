@@ -1,23 +1,28 @@
-import { resolve, join } from 'path';
-import { readDir } from './gulp/config/read-dir.js';
+import { resolve, join } from "path";
+import { readDir } from "./gulp/config/read-dir.js";
 
-export const webpackConfig = async(isBuild) => {
+export const webpackConfig = async (isBuild) => {
 	const paths = {
-		src: resolve('src/assets'),
-		build: resolve('build'),
+		src: resolve(app.path.srcFolder + "/assets"),
+		build: resolve(app.path.buildFolder),
 	};
 
-	const context = join(paths.src, 'js');
+	const context = join(paths.src, "js");
 
 	return {
 		context,
 		entry: await readDir(context),
-		mode: isBuild ? 'development' : 'production',
+		mode: isBuild ? "development" : "production",
+		performance: {
+			hints: false,
+			maxEntrypointSize: 1024000,
+			maxAssetSize: 1024000,
+		},
 		output: {
-			path: join(paths.build, 'js'),
-			filename: '[name].min.js',
-      sourceMapFilename: '[file].map',
-			publicPath: '/',
+			path: join(paths.build, "js"),
+			filename: "[name].min.js",
+			sourceMapFilename: "[file].map",
+			publicPath: "/",
 		},
 		module: {
 			rules: [
@@ -25,8 +30,8 @@ export const webpackConfig = async(isBuild) => {
 					test: /\.m?js$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'esbuild-loader',
-						options: { target: 'ES6' },
+						loader: "esbuild-loader",
+						options: { target: "ES6" },
 					},
 					resolve: {
 						fullySpecified: false,
@@ -36,4 +41,3 @@ export const webpackConfig = async(isBuild) => {
 		},
 	};
 };
-

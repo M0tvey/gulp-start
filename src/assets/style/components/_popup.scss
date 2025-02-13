@@ -1,0 +1,97 @@
+.popup {
+	margin-top: 35px;
+	position: relative;
+	overflow: visible;
+	box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.15);
+	border-radius: 16px;
+
+	.fancybox-button {
+		right: 5px;
+		top: 5px;
+		color: $color_1;
+		opacity: 1;
+
+		&:hover {
+			color: $color_2;
+		}
+	}
+
+	&.hide {
+		display: none;
+	}
+
+	&--postmessage {
+		padding: 28px 40px 35px;
+		max-width: 500px;
+		width: 100%;
+		text-align: center;
+
+		.icon {
+			margin-bottom: 22px;
+			padding: 0;
+		}
+
+		.title {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 24px;
+			margin-bottom: 15px;
+		}
+	}
+
+	&--acceptcookie {
+		position: fixed;
+		left: 50%;
+		bottom: 20px;
+		padding: 24px 32px;
+		width: calc(100% - 30px);
+		max-width: 730px;
+		border-radius: 6px;
+		background-color: #fff;
+		transform: translateX(-50%);
+		z-index: 100;
+		display: grid;
+		gap: 10px 18px;
+		justify-items: center;
+
+		@include screen(sm) {
+			grid-template-columns: 1fr auto;
+			align-items: center;
+		}
+
+		@include screen(xl) {
+			bottom: 40px;
+		}
+
+		.acceptcookie__description {
+			font: 400 14px/140% $font_1;
+
+			a {
+				color: $color_2;
+				text-decoration: underline;
+
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+
+		.btn {
+			padding: 8px 16px;
+			font-size: 14px;
+		}
+
+		.popup__container-flex {
+			justify-content: flex-start;
+			align-items: flex-start;
+
+			@include screen(md) {
+				align-items: center;
+			}
+
+			@include screen(xl) {
+				justify-content: space-between;
+			}
+		}
+	}
+}

@@ -1,25 +1,33 @@
-import gulp from 'gulp';
-import { filePaths } from '../config/paths.js';
+import * as dartSass from "sass";
+import gulpSass from "gulp-sass";
+import prefixer from "gulp-autoprefixer";
+import rename from "gulp-rename";
 
-import * as sass from 'sass'
-import gulpSass from 'gulp-sass';
-import rename from 'gulp-rename';
-import prefixer from 'gulp-autoprefixer';
-import cssmin from 'gulp-cssmin';
+const sass = gulpSass(dartSass);
 
-const sas = gulpSass(sass)
-
-export function style(serverInstance) {
-  return gulp.src(filePaths.src.style) // Выберем наш main.scss
-    .pipe(sas({ outputStyle: 'expanded' }, null)) // Скомпилируем
-    .pipe(prefixer({
-      overrideBrowserslist: ['last 2 versions'],
-      cascade: false
-    })) // Добавим вендорные префиксы
-    .pipe(cssmin()) // Сожмем
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(gulp.dest(filePaths.build.css)) // И в build
-    .pipe(serverInstance.stream());
-}
+export const style = () => {
+	return app.gulp
+		.src(app.path.src.style, { encoding: false }) // Выберем наши scss файлы
+		.pipe(
+			sass(
+				{
+					style: app.isBuild ? "compressed" : "expanded",
+					includePaths: ["node_modules"],
+				},
+				null
+			).on("error", sass.logError)
+		) // Скомпилируем
+		.pipe(
+			prefixer({
+				overrideBrowserslist: ["last 5 versions"],
+				cascade: false,
+			})
+		) // Добавим вендорные префиксы
+		.pipe(
+			rename({
+				suffix: ".min",
+			})
+		)
+		.pipe(app.gulp.dest(app.path.build.style)) // И в build
+		.pipe(app.plugins.browserSync.stream());
+};

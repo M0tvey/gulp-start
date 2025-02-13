@@ -1,0 +1,70 @@
+@use "sass:math";
+
+@function sizeVwF($f-min, $f-max, $v-min: 360, $v-max: 1920) {
+	$k: (
+		$f-max - $f-min)/ ($v-max - $v-min
+	);
+$b: $f-min - $k * $v-min;
+
+$b: $b * 1px;
+
+@return calc(#{$k} * 100vw + #{$b});
+}
+
+// icon(icon-name, fill, stroke, stroke-width, custom-css, size)
+@function _buildIcon($icon, $view_box, $size) {
+	@if $view_box =="" {
+		$icon: '<svg xmlns="http://www.w3.org/2000/svg">#{$icon}</svg>';
+	}
+
+	@else {
+		$icon: '<svg xmlns="http://www.w3.org/2000/svg" width="#{nth($size, 1)}" height="#{nth($size, 2)}" viewBox="0 0 #{nth($view_box, 1)} #{nth($view_box, 2)}">#{$icon}</svg>';
+	}
+
+	@return $icon;
+}
+
+@function str-replace($string, $search, $replace: "") {
+	$index: str-index($string, $search);
+
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+
+	@return $string;
+}
+
+@function _buildPath($paths, $parameters, $attr: "") {
+	$path: "";
+	$icon: "";
+
+	@each $i, $path in $paths {
+		@if $i ==1 {
+			$fill: (
+				map-get($parameters, fill)
+			);
+
+		@if length($fill) !=1 {
+			$fill: nth($fill, 1);
+		}
+
+		$path: 'fill="#{$fill}" stroke="#{map-get($parameters, stroke-color)}" stroke-width="#{map-get($parameters, stroke-width)}" style="#{map-get($parameters, css)}" d="#{$path}"';
+	}
+
+	@else {
+		$fill: (
+			map-get($parameters, fill)
+		);
+
+	@if length($fill) !=1 {
+		$fill: nth($fill, 2);
+	}
+
+	$path: 'fill="#{$fill}" d="#{$path}"';
+}
+
+$icon: $icon + "<path #{$path} #{$attr} />";
+}
+
+@return str-replace($icon, "#", "%23");
+}
