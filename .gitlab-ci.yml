@@ -1,4 +1,4 @@
-image: node:tls
+image: node:lts
 
 before_script:
   - npm install --global gulp-cli
