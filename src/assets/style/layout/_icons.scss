@@ -3,15 +3,15 @@
 	$fill,
 	$stroke-color: transparent,
 	$stroke-width: 0,
-	$css: "",
-	$size: ""
+	$css: '',
+	$size: ''
 ) {
 	$parameters: (
-		"fill": $fill,
-		"stroke-color": $stroke-color,
-		"stroke-width": $stroke-width,
-		"css": $css,
-		"size": $size,
+		'fill': $fill,
+		'stroke-color': $stroke-color,
+		'stroke-width': $stroke-width,
+		'css': $css,
+		'size': $size,
 	);
 
 	$icons: (
@@ -28,7 +28,7 @@
 		}
 
 		$icon: _buildIcon($path, nth($icon, $listSize), $icon_size);
-		@return url("data:image/svg+xml;utf8,#{$icon}");
+		@return url('data:image/svg+xml;utf8,#{$icon}');
 	} @else {
 		@return null;
 	}

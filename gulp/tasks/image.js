@@ -1,11 +1,11 @@
-import imagemin, { gifsicle, mozjpeg, optipng } from "gulp-imagemin";
-import webp from "gulp-webp";
-import svgstore from "gulp-svgstore";
-import svgmin from "gulp-svgmin";
-import fs from "fs";
-import deleteAsync from "del";
-import { parse, stringify } from "svgson";
-import elementToPath from "element-to-path";
+import imagemin, { gifsicle, mozjpeg, optipng } from 'gulp-imagemin';
+import webp from 'gulp-webp';
+import svgstore from 'gulp-svgstore';
+import svgmin from 'gulp-svgmin';
+import fs from 'fs';
+import deleteAsync from 'del';
+import { parse, stringify } from 'svgson';
+import elementToPath from 'element-to-path';
 
 function image() {
 	return app.gulp
@@ -38,15 +38,15 @@ function svg() {
 }
 
 function svgToScssIcons() {
-	const svgsPath = app.path.src.svg.replace("*.*", ""),
+	const svgsPath = app.path.src.svg.replace('*.*', ''),
 		filesObj = {},
-		scssFile = app.path.srcFolder + "/assets/style/layout/_icons.scss";
+		scssFile = app.path.srcFolder + '/assets/style/layout/_icons.scss';
 
 	let fileIndex = 0;
 
 	fs.readdir(svgsPath, function (err, svgFiles) {
 		for (var i = 0; i < svgFiles.length; i++) {
-			const fileName = svgFiles[i].split(".")[0];
+			const fileName = svgFiles[i].split('.')[0];
 
 			fs.readFile(svgsPath + svgFiles[i], (err, input) => {
 				const elemToPath = (svgJson) => {
@@ -56,12 +56,10 @@ function svgToScssIcons() {
 						)
 					) {
 						filesObj[fileName].path.push(elementToPath(svgJson));
-						Object.keys(svgJson.attributes).forEach(
-							(attrKey) =>
-								/(fill-rule|clip-rule)/.test(attrKey) &&
-								filesObj[fileName].parameters.push(
-									attrKey + '="' + svgJson.attributes[attrKey] + ""
-								)
+						Object.keys(svgJson.attributes).forEach((attrKey) => {
+							/(fill-rule|clip-rule)/.test(attrKey) && filesObj[fileName].parameters.push(
+								filesObj[fileName].parameters.push(attrKey + '="' + svgJson.attributes[attrKey] + '"')
+							)}
 						);
 					} else if (svgJson.children && Array.isArray(svgJson.children)) {
 						svgJson.children.forEach((child) => {
@@ -71,7 +69,7 @@ function svgToScssIcons() {
 				};
 
 				parse(input).then((json) => {
-					const viewBoxArray = json.attributes.viewBox.split(" ");
+					const viewBoxArray = json.attributes.viewBox.split(' ');
 
 					filesObj[fileName] = {
 						path: [],
@@ -88,8 +86,8 @@ function svgToScssIcons() {
 							const { path, size, parameters } = filesObj[iconName];
 							iconsText.push(
 								`icon_${iconName}: _buildPath((1: '${path.join(
-									" "
-								)}'), $parameters, '${parameters.join(" ")}') ${size}`
+									' '
+								)}'), $parameters, '${parameters.join(' ')}') ${size}`
 							);
 						}
 
@@ -101,19 +99,19 @@ function svgToScssIcons() {
 	$fill,
 	$stroke-color: transparent,
 	$stroke-width: 0,
-	$css: "",
-	$size: ""
+	$css: '',
+	$size: ''
 ) {
 	$parameters: (
-		"fill": $fill,
-		"stroke-color": $stroke-color,
-		"stroke-width": $stroke-width,
-		"css": $css,
-		"size": $size,
+		'fill': $fill,
+		'stroke-color': $stroke-color,
+		'stroke-width': $stroke-width,
+		'css': $css,
+		'size': $size,
 	);
 
 	$icons: (
-		${iconsText.join(",\n\t\t")}
+		${iconsText.join(',\n\t\t')}
 	);
 
 	@if map-has-key($icons, $icon-name) {
@@ -126,7 +124,7 @@ function svgToScssIcons() {
 		}
 
 		$icon: _buildIcon($path, nth($icon, $listSize), $icon_size);
-		@return url("data:image/svg+xml;utf8,#{$icon}");
+		@return url('data:image/svg+xml;utf8,#{$icon}');
 	} @else {
 		@return null;
 	}

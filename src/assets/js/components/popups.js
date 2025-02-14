@@ -1,8 +1,8 @@
-import $ from "jquery";
+import $ from 'jquery';
 
 function openPopup(wrap = document) {
-	wrap.querySelectorAll(".js_open_popup").forEach((link) => {
-		link.addEventListener("click", (e) => {
+	wrap.querySelectorAll('.js_open_popup').forEach((link) => {
+		link.addEventListener('click', (e) => {
 			e.preventDefault();
 
 			if (!link.href) return;
@@ -10,15 +10,15 @@ function openPopup(wrap = document) {
 			$.fancybox.open({
 				hideScrollbar: false,
 				src: link.href,
-				type: "ajax",
+				type: 'ajax',
 			});
 		});
 	});
 }
 
 function openLocalPopup(wrap = document) {
-	wrap.querySelectorAll(".js_open_local_popup").forEach((link) => {
-		link.addEventListener("click", (e) => {
+	wrap.querySelectorAll('.js_open_local_popup').forEach((link) => {
+		link.addEventListener('click', (e) => {
 			e.preventDefault();
 
 			if (!link.hash) return;
@@ -26,7 +26,7 @@ function openLocalPopup(wrap = document) {
 			$.fancybox.open({
 				hideScrollbar: false,
 				src: link.hash,
-				type: "inline",
+				type: 'inline',
 			});
 		});
 	});

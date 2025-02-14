@@ -1,13 +1,13 @@
-import select2 from "select2";
+import select2 from 'select2';
 
 function initSelect($el) {
 	if (!$el.length) return;
 
-	const placeholder = $el.data("placeholder") || false,
+	const placeholder = $el.data('placeholder') || false,
 		selectOpt = {
-			language: "ru",
+			language: 'ru',
 			dropdownParent: $el.parent(),
-			width: "100%",
+			width: '100%',
 			minimumResultsForSearch: -1,
 		};
 

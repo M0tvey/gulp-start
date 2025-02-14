@@ -3,21 +3,21 @@ export function server() {
 		server: {
 			baseDir: app.path.buildFolder,
 		},
-		logLevel: "info",
+		logLevel: 'info',
 		cors: true,
 		notify: true,
 		reloadOnRestart: true,
 		port: 9003,
-		logPrefix: "Front-end",
+		logPrefix: 'Front-end',
 		middleware: [
 			function (req, res, next) {
 				// https://github.com/BrowserSync/browser-sync/issues/1458#issuecomment-417169447
 				if (
 					/\.json|\.txt|\.html/.test(req.url) &&
-					req.method.toUpperCase() === "POST"
+					req.method.toUpperCase() === 'POST'
 				) {
-					console.log("[POST => GET] : " + req.url);
-					req.method = "GET";
+					console.log('[POST => GET] : ' + req.url);
+					req.method = 'GET';
 				}
 				next();
 			},

@@ -9,7 +9,6 @@
 		"build": "gulp build --build",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"license": "ISC",
 	"devDependencies": {
 		"browser-sync": "latest",
 		"del": "^6.0.0",
@@ -17,7 +16,7 @@
 		"gsap": "latest",
 		"gulp": "latest",
 		"gulp-autoprefixer": "latest",
-		"gulp-fonter": "latest",
+		"gulp-fonter-2": "latest",
 		"gulp-imagemin": "^7.1.0",
 		"gulp-notify": "latest",
 		"gulp-nunjucks-render": "latest",
@@ -26,7 +25,6 @@
 		"gulp-sass": "latest",
 		"gulp-svgmin": "latest",
 		"gulp-svgstore": "latest",
-		"gulp-ttf2woff2": "latest",
 		"gulp-webp": "latest",
 		"sass": "latest",
 		"svg4everybody": "latest",
@@ -34,13 +32,12 @@
 	},
 	"dependencies": {
 		"@fancyapps/fancybox": "latest",
-		"element-to-path": "^1.2.1",
-		"gulp-if": "^3.0.0",
+		"element-to-path": "latest",
 		"inputmask": "latest",
 		"jquery": "latest",
 		"parsleyjs": "latest",
 		"select2": "latest",
-		"svgson": "^5.3.1",
+		"svgson": "latest",
 		"swiper": "latest"
 	}
 }

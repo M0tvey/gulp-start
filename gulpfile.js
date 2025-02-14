@@ -1,11 +1,11 @@
-import gulp from "gulp";
-import { filePaths } from "./gulp/config/paths.js";
-import browserSync from "browser-sync";
-import plumber from "gulp-plumber";
-import notify from "gulp-notify";
+import gulp from 'gulp';
+import { filePaths } from './gulp/config/paths.js';
+import browserSync from 'browser-sync';
+import plumber from 'gulp-plumber';
+import notify from 'gulp-notify';
 
 global.app = {
-	isBuild: process.argv.includes("--build"),
+	isBuild: process.argv.includes('--build'),
 	path: filePaths,
 	gulp: gulp,
 	plugins: {
@@ -15,19 +15,14 @@ global.app = {
 	},
 };
 
-import { server } from "./gulp/tasks/serv.js";
-import { reset } from "./gulp/tasks/reset.js";
-import { root } from "./gulp/tasks/root.js";
-import { html } from "./gulp/tasks/html.js";
-import { style } from "./gulp/tasks/style.js";
-import { script } from "./gulp/tasks/script.js";
-import { image, svg, svgToScssIcons } from "./gulp/tasks/image.js";
-import {
-	otfToTtf,
-	ttfToWoff,
-	fontsStyle,
-	fontsCopy,
-} from "./gulp/tasks/fonts.js";
+import { server } from './gulp/tasks/serv.js';
+import { reset } from './gulp/tasks/reset.js';
+import { root } from './gulp/tasks/root.js';
+import { html } from './gulp/tasks/html.js';
+import { style } from './gulp/tasks/style.js';
+import { script } from './gulp/tasks/script.js';
+import { image, svg, svgToScssIcons } from './gulp/tasks/image.js';
+import { convertFonts,	fontsStyle, fontsCopy} from './gulp/tasks/fonts.js';
 
 function watcher() {
 	server();
@@ -41,14 +36,11 @@ function watcher() {
 	gulp.watch(filePaths.watch.svg, svgToScssIcons);
 }
 
-const mondatory = gulp.series(otfToTtf, ttfToWoff, fontsStyle, svgToScssIcons),
-	devTasks = gulp.series(
-		mondatory,
-		gulp.parallel(root, html, style, script, image, svg, fontsCopy)
-	),
-	dev = gulp.series(reset, devTasks, watcher),
-	build = gulp.series(reset, devTasks);
+const mondatory = gulp.series(convertFonts, fontsStyle, svgToScssIcons)
+	, devTasks = gulp.series(mondatory, gulp.parallel(root, html, style, script, image, svg, fontsCopy))
+	, dev = gulp.series(reset, devTasks, watcher)
+	, build = gulp.series(reset, devTasks);
 
 export { dev, build };
 
-gulp.task("default", dev);
+gulp.task('default', dev);

@@ -1,5 +1,5 @@
-import webpack from "webpack-stream";
-import { webpackConfig } from "../../webpack.config.js";
+import webpack from 'webpack-stream';
+import { webpackConfig } from '../../webpack.config.js';
 
 export const script = async () => {
 	return app.gulp
@@ -10,8 +10,8 @@ export const script = async () => {
 		.pipe(
 			app.plugins.plumber(
 				app.plugins.notify.onError({
-					title: "JS",
-					message: "Error: <%= error.message %>",
+					title: 'JS',
+					message: 'Error: <%= error.message %>',
 				})
 			)
 		)

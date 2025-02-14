@@ -1,3 +1,6 @@
+$siteFont: 'Arial';
+@if $font_1 {	$siteFont: $font_1, 'Arial' }
+
 * {
 	outline: none;
 	box-sizing: border-box;
@@ -26,7 +29,7 @@ body {
 	display: grid;
 	grid-template-columns: 100%;
 	grid-template-rows: 1fr auto;
-	font: normal 16px/140% $font_1;
+	font: normal 16px/140% $siteFont;
 	color: $color_1;
 	min-height: 100%;
 }

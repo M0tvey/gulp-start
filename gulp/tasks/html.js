@@ -1,4 +1,4 @@
-import nunjucksRender from "gulp-nunjucks-render";
+import nunjucksRender from 'gulp-nunjucks-render';
 
 export const html = () => {
 	return app.gulp
@@ -6,8 +6,8 @@ export const html = () => {
 		.pipe(
 			app.plugins.plumber(
 				app.plugins.notify.onError({
-					title: "HTML",
-					message: "Error: <%= error.message %>",
+					title: 'HTML',
+					message: 'Error: <%= error.message %>',
 				})
 			)
 		)

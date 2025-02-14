@@ -10,7 +10,7 @@ const setCookie = (cookieName, cookieValue, expDays = 30) => {
 	const value = encodeURIComponent(cookieValue);
 
 	d.setTime(d.getTime() + expDays * 24 * 60 * 60 * 1000);
-	let expires = "expires=" + d.toUTCString();
+	let expires = 'expires=' + d.toUTCString();
 	document.cookie = `${name}=${value};${expires};path=/`;
 };
 
@@ -31,13 +31,7 @@ function deleteCookie(cookieName) {
  * @returns {string}
  */
 function getCookie(cookieName) {
-	const matches = document.cookie.match(
-		new RegExp(
-			"(?:^|; )" +
-				cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-				"=([^;]*)"
-		)
-	);
+	const matches = document.cookie.match(new RegExp('(?:^|; )' + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'));
 
 	return matches ? decodeURIComponent(matches[1]) : undefined;
 }
