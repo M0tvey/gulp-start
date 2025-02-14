@@ -10,9 +10,9 @@ pages:
     - npm list
     - gulp build
     - mv build public
-    - find ./public/ -type f -exec sed -i -e 's|/assets/|'$CI_PAGES_URL'/assets/|g' {} \;
-    - find ./public/ -type f -exec sed -i -e 's|href="/|href="'$CI_PAGES_URL'/|g' {} \;
-    - find ./public/ -type f -exec sed -i -e 's|src="/|src="'$CI_PAGES_URL'/|g' {} \;
+    - find ./public/ -type f -exec sed -i -e 's|./assets/|'$CI_PAGES_URL'/assets/|g' {} \;
+    - find ./public/ -type f -exec sed -i -e 's|href="./|href="'$CI_PAGES_URL'/|g' {} \;
+    - find ./public/ -type f -exec sed -i -e 's|src="./|src="'$CI_PAGES_URL'/|g' {} \;
     - echo 'console.dir("'$CI_COMMIT_SHORT_SHA' - '$CI_COMMIT_MESSAGE' - '$CI_COMMIT_DESCRIPTION'");' > public/git.log.js
     - sed -i -e ':a;N;$!ba;s/\n/\\n/g' public/git.log.js
     - find ./public/ -type f -exec sed -i -e 's|<head>|<head><script src="'$CI_PAGES_URL'/git.log.js"></script>|g' {} \;
