@@ -7,8 +7,7 @@ function checkVal(el) {
 }
 
 export function checkInputs(wrap = document) {
-	wrap
-		.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), textarea')
+	wrap.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="hidden"]), textarea')
 		.forEach((el) => {
 			['keydown', 'change', 'dragend', 'paste'].forEach((eventName) => {
 				el.addEventListener(eventName, () => {

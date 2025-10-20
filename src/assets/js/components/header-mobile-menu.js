@@ -3,7 +3,7 @@ import $ from 'jquery';
 export default () => {
 	const header = document.querySelector('.js_header'),
 		headerMenu = header?.querySelector('.js_header_menu');
-	if (!header && !headerMenu) return;
+	if (!header || !headerMenu) return;
 
 	const div = document.createElement('div')
 		, mobileMenuWrap = header.querySelector('.mobile_menu__wrap') || div.cloneNode()
@@ -77,8 +77,8 @@ export default () => {
 			, linckBack = document.createElement('li')
 			, wrapSubMenu = subMenu.parentNode;
 
-		linckNext.classList.add('mobile_menu_next-link');
-		linckBack.classList.add('mobile_menu_back-link');
+		linckNext.classList.add('mobile_menu__next-link');
+		linckBack.classList.add('mobile_menu__back-link');
 
 		linckBack.textContent = wrapSubMenu.querySelector('a').innerText;
 

@@ -1,23 +1,27 @@
-/**
- * Create cookie
- * @param cookieName {String} - cookie name
- * @param cookieValue {String || Number} - cookie value
- * @param expDays {Number} - cookie expiration date in days (by default: 30)
- */
-const setCookie = (cookieName, cookieValue, expDays = 30) => {
-	const d = new Date();
-	const name = encodeURIComponent(cookieName);
-	const value = encodeURIComponent(cookieValue);
+function setCookie(name, value, options = {}) {
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
 
-	d.setTime(d.getTime() + expDays * 24 * 60 * 60 * 1000);
-	let expires = 'expires=' + d.toUTCString();
-	document.cookie = `${name}=${value};${expires};path=/`;
-};
+  if (options.days) {
+    let date = new Date();
+    date.setTime(date.getTime() + (options.days * 24 * 60 * 60 * 1000));
+    options.expires = date.toUTCString();
+  }
 
-/**
- * Delete cookie
- * @param cookieName {String} - cookie name
- */
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
 function deleteCookie(cookieName) {
 	const d = new Date();
 	d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
@@ -25,11 +29,6 @@ function deleteCookie(cookieName) {
 	document.cookie = `${cookieName}=;${expires};path=/`;
 }
 
-/**
- * Read cookie
- * @param cookieName {String} - cookie name
- * @returns {string}
- */
 function getCookie(cookieName) {
 	const matches = document.cookie.match(new RegExp('(?:^|; )' + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'));
 

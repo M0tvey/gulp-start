@@ -1,14 +1,16 @@
 import $ from 'jquery';
 import parsley from 'parsleyjs';
 
-export function initFormsValidator() {
-	$('form').parsley({
-		errorsContainer: function (parsleyField) {
-			var fieldSet = parsleyField.$element.parent();
+export function initFormsValidator(wrap=document) {
+	wrap.querySelectorAll('form').forEach(form => {
+		$(form).parsley({
+			errorsContainer: function(parsleyField) {
+				const fieldSet = parsleyField.$element.parents('.form__item');
 
-			if (fieldSet.length > 0) return fieldSet;
-			return parsleyField;
-		},
+				if (fieldSet.length > 0) return fieldSet;
+				return parsleyField;
+			},
+		});
 	});
 
 	const Parsley = window.Parsley;
@@ -71,7 +73,7 @@ export function initFormsValidator() {
 			return formatsNames.map((format) => formats.toLowerCase().includes(format)).every((access) => !!access);
 		},
 		requirementType: 'string',
-		messages: { ru: 'Не подходящий фрмат файла.' },
+		messages: { ru: 'Не подходящий формат файла.' },
 	});
 
 	Parsley.addValidator('wordsOnly', {

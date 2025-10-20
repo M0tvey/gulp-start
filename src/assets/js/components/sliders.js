@@ -8,11 +8,10 @@ import { Navigation, Pagination } from 'swiper/modules';
 	data-slider             - id слайдера
 	data-items-count        - количество видемых слайдов
 	data-space-between      - растояние между слайдами
-	data-paginate           - включить пагинацию? (элемент должен находится внутри data-slider, data-paginate='id слайдера')
-	data-space-breakpoints  - настройки для адаптации (data-space-breakpoints='80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2')
+	data-paginate           - включить пагинацию? (data-paginate='id слайдера')
+	data-space-breakpoints  - настройки для адаптации (data-space-breakpoints='0-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2')
 	data-slider-direction   - напровленеи слайдера
 	data-thumbs             - взаимодействи слайдеров (data-thumbs='id второго слайдера')
-	...
 */
 
 export default function customSliders(callback = false) {

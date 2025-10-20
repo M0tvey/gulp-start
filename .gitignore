@@ -1,9 +1,11 @@
 .git
-/build/
-/node_modules/
+build
+node_modules
 .vscode
 ./**/Thumbs.db
 ./**/*.DS_Store
+./**/*.ini
 .idea
 *.docx
-package-lock.json
+src/assets/style/modules/_fonts.scss
+src/assets/style/modules/_icons.scss

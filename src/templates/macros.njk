@@ -1,4 +1,4 @@
-{% set sitemaptems = [
+{% set sitemapArray = [
 	{
 		name: 'Главная',
 		link: '/',
@@ -12,25 +12,26 @@
 	}
 ] %}
 
+{#
+	{{ link('Главная') }}
+#}
 {% macro linkSpace(name) %}
-	{% set link = 'javascript:void(0)' %}
-	{% for menuItem in sitemaptems %}
-		{% if name == menuItem.name %}{% set link = menuItem.link %}
-		{% endif %}
-		{% if menuItem.submenu and menuItem.submenu.length %}
-			{% for subMenuItem in menuItem.submenu %}
-				{% if name == subMenuItem.name %}{% set link = subMenuItem.link %}
-				{% endif %}
-			{% endfor %}
-		{% endif %}
-	{% endfor %}
-	{{ link }}
+	{% macro linksArray(array, name, url) %}
+		{% for item in array %}
+			{% if name == item.name %}{{ item.link }}{% endif %}
+			{% if item.submenu and item.submenu.length %}
+				{{ linksArray(item.submenu, name, url) }}
+			{% endif %}
+		{% endfor %}
+	{% endmacro %}
+	{% set url %}{{ linksArray(sitemapArray, name, url) | trim }}{% endset %}
+	{% if url == '' %}{% set url = 'javascript:void(0)' %}{% endif %}
+	{{ url }}
 {% endmacro %}
-{% macro link(name) %}{{ linkSpace(name) | trim }}
-{% endmacro %}
+{% macro link(name) %}{{ linkSpace(name) | trim }}{% endmacro %}
 
 {% set menuItems = {
-	'sitemap': sitemaptems,
+	'sitemap': sitemapArray,
 	'header': [
 		{
 			name: 'Главная',
@@ -56,7 +57,17 @@
 	]
 } %}
 
-{% macro menu(typeMenu = 'header', typeMenuClass = false, menuClass = false, activeItem = false) %}
+{#
+	typeMenu      - ключ меню в объекте menuItems
+	typeMenuClass - класс для элементов меню
+	menuClass     - дополнительный класс меню
+	activeItem    - name ктивного пункта меню
+	style         - инлайновый стили меню
+	datas         - массив массивов дата аттрибутов для меню
+
+	{{ menu('aside_menu_2', 'aside', 'accord__block js_ver_accord_block', activePage, 'display:none', [[ 'block', 'menu-1']]) }}
+#}
+{% macro menu(typeMenu = 'header', typeMenuClass = false, menuClass = false, activeItem = false, style=false, datas=false) %}
 	{% set level = 1 %}
 	{% macro menuArray(array, typeMenu, typeMenuClass, level, activeItem) %}
 		{% set level = level + 1 %}
@@ -64,8 +75,8 @@
 		{% if typeMenuClass %}{% set typeClass = typeMenuClass %}
 		{% endif %}
 		{% for item in array %}
-			<li class="{{ typeClass }}-menu__item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{% if activeItem == item.name %} is-active{% endif %}">
-				<a href="{% if item.link %}{{ item.link }}{% else %}{{ link(item.name) }}{% endif %}" class="{{ typeClass }}-menu__link{% if item.class and item.class != '' %} {{ item.class }}{% endif %}"{% if item.target and item.target != '' %} target="{{ item.targe }}"{% endif %}>{{ item.name }}</a>
+			<li class="{{ typeClass }}-menu_{% if level > 2 %}_submenu{% endif %}_item{% if item.submenu and item.submenu.length %} has-submenu{% endif %}{% if activeItem and item.name in activeItem.split('|') %} is-active{% endif %}">
+				<a href="{% if item.link %}{{ item.link }}{% else %}{{ link(item.name) }}{% endif %}" class="{{ typeClass }}-menu_{% if level > 2 %}_submenu{% endif %}_link{% if item.class and item.class != '' %} {{ item.class }}{% endif %}"{% if item.target and item.target != '' %} target="{{ item.target }}"{% endif %}>{{ item.name }}</a>
 				{% if item.submenu | length > 0 %}
 					<ul class="{{ typeClass }}-menu__submenu level--{{ level }}">
 						{{ menuArray(item.submenu, typeMenu, typeClass, level, activeItem) | trim }}
@@ -75,7 +86,7 @@
 	{% endfor %}
 {% endmacro %}
 {% set menuHtml %}
-<menu class="menu {{ typeMenu }}-menu{% if typeMenuClass %} {{ typeMenuClass}}-menu{% endif %}{% if menuClass %} {{ menuClass}}{% endif %}">
+<menu class="menu {{ typeMenu }}-menu{% if typeMenuClass %} {{ typeMenuClass }}-menu{% endif %}{% if menuClass %} {{ menuClass}}{% endif %}"{% if style %} style="{{ style }}"{% endif %}{% if datas and datas | length > 0 %}{% for d, v in datas %} data-{{ d }}="{{ v }}"{% endfor %}{% endif %}>
 	{{ menuArray(menuItems[typeMenu], typeMenu, typeMenuClass, level, activeItem) | trim }}
 </menu>
 {% endset %}
@@ -83,6 +94,9 @@
 {{ menuHtml | safe }}
 {% endmacro %}
 
+{#
+	{{ breadcrumbs(['О компании'], true, 'article__breadcrumbs', true) }}
+#}
 {% macro breadcrumbsSpace(itemsArray, isShowHome, blockClas, hasWrap) %}
 {% if hasWrap %}
 	<section class="breadcrumbs container">

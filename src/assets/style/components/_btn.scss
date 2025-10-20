@@ -1,5 +1,9 @@
+@use '../modules/main' as *;
+@use '../modules/icons' as *;
+
+// <a href="javascript:void(0)" class="btn btn--1">link</a>
+
 .btn {
-	border-radius: 8px;
 	text-decoration: none;
 	text-align: center;
 	display: inline-block;
@@ -10,6 +14,10 @@
 	font: normal 16px/100% $font_1;
 	cursor: pointer;
 	@include transition;
+
+	&::after {
+		content: icon(icon_arrow-right, #000);
+	}
 
 	&.is-disabled {
 		background-color: rgba($color_2, 0.5);
@@ -23,7 +31,7 @@
 
 		&:hover,
 		&:active,
-		.is-active {
+		&.is-active {
 			background-color: #fff;
 			color: $color_2;
 		}
@@ -36,7 +44,7 @@
 
 		&:hover,
 		&:active,
-		.is-active {
+		&.is-active {
 			background-color: $color_2;
 			color: #fff;
 		}
@@ -79,7 +87,7 @@
 
 		&:hover,
 		&:active,
-		.is-active {
+		&.is-active {
 			color: #fff;
 		}
 	}

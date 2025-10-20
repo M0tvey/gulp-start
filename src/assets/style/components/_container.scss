@@ -1,3 +1,6 @@
+@use '../modules/mixins';
+@use '../modules/variables' as var;
+
 .container {
 	width: 100%;
 	padding-right: 15px;
@@ -5,19 +8,19 @@
 	margin-right: auto;
 	margin-left: auto;
 
-	@include screen(sm) {
+	@include mixins.screen(sm) {
 		max-width: 540px;
 	}
 
-	@include screen(md) {
+	@include mixins.screen(md) {
 		max-width: 720px;
 	}
 
-	@include screen(lg) {
+	@include mixins.screen(lg) {
 		max-width: 960px;
 	}
 
-	@include screen(xl) {
-		max-width: #{$max_width + 30px};
+	@include mixins.screen(xl) {
+		max-width: #{var.$max_width + 30px};
 	}
 }

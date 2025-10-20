@@ -1,21 +1,26 @@
-@mixin transition($property: all, $time: 0.5, $timing-function: ease-in-out) {
-	@if length($property)==1 {
-		transition: $property #{$time}s $timing-function;
-	}	@else {
-		$prop: "";
+@use "sass:math";
+@use 'sass:list';
+@use "sass:map";
+@use 'variables';
 
-		@for $i from 1 through length($property) {
-			$prop: #{$prop}, nth($property, $i);
+@mixin transition($property: all, $time: 0.3, $timing-function: ease-in-out) {
+	@if list.length($property) == 1 {
+		transition: $property #{ $time }s $timing-function;
+	}	@else {
+		$props: "";
+
+		@for $i from 1 through list.length($property) {
+			$props: #{ $props }, list.nth($property, $i);
 		}
 
-		transition-property: #{$prop};
-		transition-duration: #{$time}s;
-		transition-timing-function: #{$timing-function};
+		transition-property: #{ $props };
+		transition-duration: #{ $time }s;
+		transition-timing-function: #{ $timing-function };
 	}
 }
 
 @mixin sizeVw($property, $f-min, $f-max, $v-min: 360, $v-max: 1792) {
-	$k: ( $f-max - $f-min)/ ($v-max - $v-min );
+	$k: math.div($f-max - $f-min, $v-max - $v-min);
 	$b: $f-min - $k * $v-min;
 
 	$b: $b * 1px;
@@ -78,8 +83,8 @@
 }
 
 @mixin screen($width, $type: min) {
-  @if map_has_key($breakpoints, $width) {
-    $width: map_get($breakpoints, $width);
+  @if map.has_key(variables.$breakpoints, $width) {
+    $width: map.get(variables.$breakpoints, $width);
 
     @if $type == max {
       $width: $width - 00.2px;

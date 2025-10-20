@@ -1,22 +1,17 @@
-@import '@fancyapps/fancybox/dist/jquery.fancybox.min';
-@import 'select2/dist/css/select2.min';
-@import 'swiper/swiper-bundle.min';
+@use 'modules/fonts';
 
-@import 'variables';
-@import 'layout/fonts';
+@use '../../../node_modules/@fancyapps/ui/dist/fancybox/fancybox.css';
+@use "../../../node_modules/choices.js/public/assets/styles/choices.css";
+@use '../../../node_modules/swiper/swiper-bundle.min.css';
 
-@import 'layout/functions';
-@import 'layout/mixins';
-@import 'layout/icons';
-
-@import 'layout/default';
-
-@import 'components/container';
-@import 'components/btn';
-@import 'components/form';
-@import 'components/menu';
-@import 'components/mobile-menu';
-@import 'components/popup';
-@import 'components/slider';
-@import 'components/header';
-@import 'components/footer';
+@use 'components/default';
+@use 'components/container';
+@use 'components/btn';
+@use 'components/form';
+@use 'components/menu';
+@use 'components/mobile-menu';
+@use 'components/popup';
+@use 'components/slider';
+@use 'components/header';
+@use 'components/footer';
+@use 'components/map';

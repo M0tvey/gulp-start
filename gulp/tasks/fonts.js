@@ -24,15 +24,14 @@ function convertFonts() {
 
 function fontsStyle() {
 	// Файл стилей подключения шрифтов
-	let fontsFile = app.path.srcFolder + '/assets/style/layout/_fonts.scss';
-	// Проверяем существуют ли файлы шрифтов
+	let fontsFile = app.path.srcFolder + '/assets/style/modules/_fonts.scss';
+
 	fs.readdir(app.path.build.fonts, function (err, fontsFiles) {
+		// Проверяем существуют ли файлы шрифтов
 		if (fontsFiles) {
 
 			// Если файл стилей для подключения шрифтов есть то удаляем его
 			deleteAsync([fontsFile]).then(function (paths) {
-				// Создаем файл
-				fs.writeFile(fontsFile, '', cb);
 				let newFileOnly;
 				const fontsNames = new Set();
 
@@ -50,28 +49,28 @@ function fontsStyle() {
 
 						fontsNames.add(fontName);
 
-						if (fontWeight.toLowerCase() === 'thin') {
+						if (fontWeight.toLowerCase() === 'thin' || fontWeight.includes('100')) {
 							fontWeight = 100;
-						} else if (fontWeight.toLowerCase() === 'extralight') {
+						} else if (fontWeight.toLowerCase() === 'extralight' || fontWeight.includes('200')) {
 							fontWeight = 200;
-						} else if (fontWeight.toLowerCase() === 'light') {
+						} else if (fontWeight.toLowerCase() === 'light' || fontWeight.includes('300')) {
 							fontWeight = 300;
-						} else if (fontWeight.toLowerCase() === 'medium') {
+						} else if (fontWeight.toLowerCase() === 'medium' || fontWeight.includes('500')) {
 							fontWeight = 500;
-						} else if (fontWeight.toLowerCase() === 'semibold') {
+						} else if (fontWeight.toLowerCase() === 'semibold' || fontWeight.includes('600')) {
 							fontWeight = 600;
-						} else if (fontWeight.toLowerCase() === 'bold') {
+						} else if (fontWeight.toLowerCase() === 'bold' || fontWeight.includes('700')) {
 							fontWeight = 700;
-						} else if (
-							fontWeight.toLowerCase() === 'extrabold' ||
-							fontWeight.toLowerCase() === 'heavy'
-						) {
+						} else if (fontWeight.toLowerCase() === 'extrabold' || fontWeight.toLowerCase() === 'heavy' || fontWeight.includes('800')) {
 							fontWeight = 800;
-						} else if (fontWeight.toLowerCase() === 'black') {
+						} else if (fontWeight.toLowerCase() === 'black' || fontWeight.includes('900')) {
 							fontWeight = 900;
 						} else {
 							fontWeight = 400;
 						}
+
+						// Создаем файл
+						fs.writeFile(fontsFile, '', cb);
 
 						fs.appendFile(fontsFile, `@font-face {
 	font-family: '${ fontName }';
@@ -88,13 +87,11 @@ function fontsStyle() {
 				}
 
 				[...fontsNames].forEach((fontName, fontNameIndex) => {
-					fs.appendFile(
-						fontsFile,
-						`$font_${fontNameIndex + 1}: '${fontName}';\r\n\n`,
-						cb
-					);
+					fs.appendFile(fontsFile, `$font_${fontNameIndex + 1}: '${fontName}';\r\n\n`, cb);
 				});
 			});
+		} else {
+			fs.writeFile(fontsFile, `$font_1: 'Arial';`, cb);
 		}
 	});
 

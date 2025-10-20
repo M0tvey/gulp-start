@@ -1,3 +1,5 @@
+@use '../modules/main' as *;
+
 $siteFont: 'Arial';
 @if $font_1 {	$siteFont: $font_1, 'Arial' }
 

@@ -1,19 +1,18 @@
-import select2 from 'select2';
+import Choices from 'choices.js'; // https://github.com/Choices-js/Choices
 
-function initSelect($el) {
-	if (!$el.length) return;
+function initSelect(el, callback) {
+	if (!el) return;
 
-	const placeholder = $el.data('placeholder') || false,
-		selectOpt = {
-			language: 'ru',
-			dropdownParent: $el.parent(),
-			width: '100%',
-			minimumResultsForSearch: -1,
-		};
+	const selectOpt = {
+		searchEnabled: false,
+		itemSelectText: false
+	}
 
-	if (placeholder) selectOpt.placeholder = placeholder;
+	const choices = new Choices(el, selectOpt);
 
-	$el.select2(selectOpt);
+	// choices.showDropdown();
+
+	callback && typeof callback === 'function' && callback(choices);
 }
 
 export { initSelect };

@@ -1,10 +1,13 @@
 import $ from 'jquery';
+import { Fancybox } from '@fancyapps/ui';
+import { openAjaxPopup } from './popups'
 
 export function ajaxForm(wrap = document) {
 	wrap.querySelectorAll('.js_form_ajax').forEach(function (form) {
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
-			$form = $(e.target);
+
+			const $form = $(form);
 			if ($form.find('input').hasClass('error')) return;
 
 			const $submitBtn = $form.find('.js_form_ajax_btn')
@@ -13,17 +16,6 @@ export function ajaxForm(wrap = document) {
 				, fd = new FormData(form)
 				, activeClass = 'is-active'
 				, isJson = form.action.includes('.json') || form.action.includes('.php');
-
-			function openPopup(url) {
-				$.fancybox.open({
-					src: url,
-					type: 'ajax',
-				});
-
-				setTimeout(function () {
-					$.fancybox.close(true);
-				}, 3000);
-			}
 
 			$.ajax({
 				url: $form.attr('action'),
@@ -41,7 +33,7 @@ export function ajaxForm(wrap = document) {
 
 					if (isJson) {
 						if (data.status === 1) {
-							openPopup(data.popup);
+							openAjaxPopup(data.popup);
 
 							$form.find('.' + activeClass).removeClass(activeClass);
 							$form[0].reset();
@@ -51,11 +43,15 @@ export function ajaxForm(wrap = document) {
 							$errorContainer.html('<div>' + data.error + '</div>');
 						}
 					} else {
-						const wrap = document.createElement('div');
-						wrap.innerHTML = data;
+						if (form.dataset.popup) {
+							openAjaxPopup(form.dataset.popup)
+						} else {
+							const wrap = document.createElement('div');
+							wrap.innerHTML = data;
 
-						if (wrap.querySelector('[data-is-send]')?.value === 'Y') {
-							openPopup(wrap.querySelector('[data-post-url]').dataset.postUrl);
+							if (wrap.querySelector('[data-is-send]')?.value === 'Y') {
+								openAjaxPopup(wrap.querySelector('[data-post-url]').dataset.postUrl);
+							}
 						}
 					}
 				},

@@ -1,7 +1,7 @@
-{% extends 'src/templates/template.njk' %}
+{% extends './src/templates/template.njk' %}
 {% set activePage = 'Главная' %}
 
-{% from 'src/templates/macros.njk' import link %}
+{% from './src/templates/macros.njk' import link %}
 
 {% set newsArray = [
 	{
@@ -19,7 +19,13 @@
 {% block main %}
 	<main class="main">
 		<section class="container">
-			{% include 'src/templates/blocks/form.njk' %}
+			{% include './src/templates/blocks/form.njk' %}
+		</section>
+
+		<section class="container">
+			<center>
+				<h2><a href="./popups/postmessage.html" class="js_open_popup">Open postmessage</a></h2>
+			</center>
 		</section>
 
 		<section class="news container">
@@ -27,17 +33,15 @@
 
 			<div class="slider swiper-container js_custom_slider" data-slider="news" data-items-count="2" data-space-between="30" data-space-breakpoints="80-spaceBetween:20,slidesPerView:1;992-spaceBetween:30,slidesPerView:2">
 				<div class="slider__wrap swiper-wrapper">
-					{% for item in newsArray %}
-						<div class="swiper-slide slider__slide">
-							<div class="news__item">
-								<div class="news__item_content">
-									<p class="news__item_data">{{ item.data }}</p>
-									<p class="news__item_title_2">{{ item.title }}</p>
-									<a href="{{ link('404') }}" class="news__item_link">Подробнее >></a>
-								</div>
-							</div>
+				{% for item in newsArray %}
+					<div class="news__item swiper-slide slider__slide">
+						<div class="item__content">
+							<p class="item__data">{{ item.data }}</p>
+							<p class="item__title">{{ item.title }}</p>
+							<a href="{{ link('404') }}" class="item__link">Подробнее >></a>
 						</div>
-					{% endfor %}
+					</div>
+				{% endfor %}
 				</div>
 
 				<div class="slider__buttons">
@@ -47,6 +51,10 @@
 
 				<div class="slider__pagination" data-paginate="news"></div>
 			</div>
+		</section>
+
+		<section class="container">
+			{% include './src/templates/blocks/map.njk' %}
 		</section>
 	</main>
 {% endblock %}

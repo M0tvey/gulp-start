@@ -37,7 +37,7 @@ function watcher() {
 }
 
 const mondatory = gulp.series(convertFonts, fontsStyle, svgToScssIcons)
-	, devTasks = gulp.series(mondatory, gulp.parallel(root, html, style, script, image, svg, fontsCopy))
+	, devTasks = gulp.series(mondatory, gulp.parallel(root, html, script, image, svg, fontsCopy), style)
 	, dev = gulp.series(reset, devTasks, watcher)
 	, build = gulp.series(reset, devTasks);
 

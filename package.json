@@ -17,12 +17,14 @@
 		"gulp": "latest",
 		"gulp-autoprefixer": "latest",
 		"gulp-fonter-2": "latest",
+		"gulp-if": "latest",
 		"gulp-imagemin": "^7.1.0",
 		"gulp-notify": "latest",
 		"gulp-nunjucks-render": "latest",
 		"gulp-plumber": "latest",
 		"gulp-rename": "latest",
 		"gulp-sass": "latest",
+		"gulp-sourcemaps": "latest",
 		"gulp-svgmin": "latest",
 		"gulp-svgstore": "latest",
 		"gulp-webp": "latest",
@@ -31,12 +33,12 @@
 		"webpack-stream": "latest"
 	},
 	"dependencies": {
-		"@fancyapps/fancybox": "latest",
+		"@fancyapps/ui": "latest",
+		"choices.js": "^11.1.0",
 		"element-to-path": "latest",
 		"inputmask": "latest",
 		"jquery": "latest",
 		"parsleyjs": "latest",
-		"select2": "latest",
 		"svgson": "latest",
 		"swiper": "latest"
 	}

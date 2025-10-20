@@ -10,9 +10,8 @@ export default () => {
 			url: inputUrl.dataset.url,
 			context: document.body,
 			success: function (response) {
-				document
-					.querySelector('.main')
-					.insertAdjacentHTML('afterend', response);
+				document.querySelector('.main').insertAdjacentHTML('afterend', response);
+				setTimeout(() => document.querySelector('.js_acceptcookie').classList.remove('hide'), 350);
 			},
 		});
 
@@ -24,7 +23,7 @@ export default () => {
 				setCookie('user_cookie_accept', 1);
 
 				$(popup).fadeOut(() => {
-					document.querySelector('.js_acceptcookie').remove();
+					popup.remove();
 				});
 			}
 		});

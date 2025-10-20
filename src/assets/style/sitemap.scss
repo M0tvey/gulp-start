@@ -1,5 +1,4 @@
-@import 'layout/fonts';
-@import "variables";
+@use 'modules/main' as *;
 
 .sitemap {
 	margin-bottom: 150px;
@@ -13,33 +12,39 @@
 	}
 
 	&-menu {
-		counter-reset: map;
 		padding-left: 20px;
 		grid-auto-flow: row;
+		row-gap: 20px;
 
-		[class$=__submenu] {
-			padding-left: 35px;
-			margin: 7px 0;
+		&__submenu {
+			padding-left: 45px !important;
+			margin: 7px 0 !important;
 
-			[class$=_link]::before {
+			&_link::before {
 				inset: auto auto 0 -30px;
 			}
 		}
 
-		&__item {
+		&__item,
+		&__submenu_item {
 			&::marker {
 				font-size: 14px;
 				color: $color_2;
 			}
 		}
 
-		&__link {
+		&__link,
+		&__submenu_link {
 			text-decoration: none;
 			color: $color_1;
 			position: relative;
 			display: inline-block;
 			font: 300 20px/150% $font_1;
 			transition: padding 0.3s ease-in-out;
+
+			&:active {
+				text-decoration: none;
+			}
 
 			$leftP: 20px;
 
@@ -66,6 +71,10 @@
 			font: 300 20px/150% $font_1;
 			margin: 0;
 		}
+	}
+
+	ul {
+		counter-reset: map;
 	}
 
 	li {

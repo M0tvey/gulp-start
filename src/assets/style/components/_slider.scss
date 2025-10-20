@@ -1,3 +1,6 @@
+@use '../modules/main' as *;
+@use '../modules/icons' as *;
+
 .slider {
 	position: relative;
 	overflow: hidden;
@@ -28,6 +31,7 @@
 		cursor: pointer;
 
 		&::before {
+			content: icon(arrow-right, #fff);
 			position: absolute;
 			line-height: 0;
 			inset: 50% auto auto 50%;
@@ -42,10 +46,14 @@
 			background-color: rgba($color_2, 0.8);
 		}
 
-		&[class*="disabled"] {
+		&[class*=disabled] {
 			background-color: transparent;
 			border: solid 1px rgba(104, 112, 124, 0.2);
 			cursor: default;
+
+			&::before {
+				content: icon(arrow-right, rgba(104, 112, 124, 0.2));
+			}
 		}
 
 		&--2 {
@@ -55,29 +63,16 @@
 	}
 
 	&__pagination {
-		margin-top: 40px;
-		display: grid;
-		grid-auto-flow: column;
-		grid-auto-columns: 8px;
-		column-gap: 9px;
-		justify-content: center;
+		text-align: right;
+		--swiper-pagination-bullet-inactive-color: #{ $color_1 };
+		--swiper-pagination-bullet-inactive-opacity: .25;
+		--swiper-pagination-bullet-height: 14px;
+		--swiper-pagination-bullet-width: 14px;
+		--swiper-pagination-bullet-horizontal-gap: 3.5px;
+		--swiper-pagination-color: #{ $color_2 };
 
-		@include screen(sm) {
-			margin-top: 20px;
-		}
-
-		[class*="bullet"] {
-			aspect-ratio: 1/1;
-			margin: 0 !important;
-			background-color: $color_1;
-			opacity: 1;
-			width: 100%;
-			height: auto;
+		[class*=bullet] {
 			@include transition;
-		}
-
-		[class*="bullet-active"] {
-			background-color: $color_2;
 		}
 	}
 }

@@ -8,7 +8,7 @@ pages:
     - npm i
     - node -v
     - npm list
-    - gulp build
+    - gulp build --build
     - mv build public
     - find ./public/ -type f -exec sed -i -e 's|./assets/|'$CI_PAGES_URL'/assets/|g' {} \;
     - find ./public/ -type f -exec sed -i -e 's|href="./|href="'$CI_PAGES_URL'/|g' {} \;

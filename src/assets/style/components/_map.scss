@@ -1,0 +1,8 @@
+.map {
+	height: 350px;
+
+	&.grey [class*=main-engine-container],
+	[class*=ground-pane] {
+    filter: grayscale(1);
+	}
+}
