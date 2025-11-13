@@ -1,29 +1,30 @@
-import imagemin, { gifsicle, mozjpeg, optipng } from 'gulp-imagemin';
-import webp from 'gulp-webp';
-import svgstore from 'gulp-svgstore';
-import svgmin from 'gulp-svgmin';
-import fs from 'fs';
-import deleteAsync from 'del';
-import { parse, stringify } from 'svgson';
-import elementToPath from 'element-to-path';
+import imagemin, { gifsicle, mozjpeg, optipng } from "gulp-imagemin";
+import webp from "gulp-webp";
+import svgstore from "gulp-svgstore";
+import svgmin from "gulp-svgmin";
+import fs from "fs";
+import { parse, stringify } from "svgson";
+import elementToPath from "element-to-path";
 
 function image() {
-	return app.gulp
-		.src(app.path.src.img, {
-			encoding: false,
-			since: app.gulp.lastRun(image),
-		}) // Выберем наши картинки
-		// .pipe(
-		// 	imagemin([
-		// 		gifsicle({ interlaced: true }),
-		// 		mozjpeg({ quality: 75, progressive: true }),
-		// 		optipng({ optimizationLevel: 5 })
-		// 	])
-		// )
-		.pipe(webp({ quality: 80 }))
-		.pipe(app.gulp.src('./src/assets/img/*.svg'))
-		.pipe(app.gulp.dest(app.path.build.img)) // И бросим в build
-		.pipe(app.plugins.browserSync.stream());
+	return (
+		app.gulp
+			.src(app.path.src.img, {
+				encoding: false,
+				since: app.gulp.lastRun(image),
+			}) // Выберем наши картинки
+			// .pipe(
+			// 	imagemin([
+			// 		gifsicle({ interlaced: true }),
+			// 		mozjpeg({ quality: 75, progressive: true }),
+			// 		optipng({ optimizationLevel: 5 })
+			// 	])
+			// )
+			.pipe(webp({ quality: 80 }))
+			.pipe(app.gulp.src("./src/assets/img/*.svg"))
+			.pipe(app.gulp.dest(app.path.build.img)) // И бросим в build
+			.pipe(app.plugins.browserSync.stream())
+	);
 }
 
 function svg() {
@@ -39,107 +40,51 @@ function svg() {
 		.pipe(app.plugins.browserSync.stream());
 }
 
-function svgToScssIcons() {
-	const svgsPath = app.path.src.svg.replace('*.*', ''),
-		filesObj = {},
-		scssFile = app.path.srcFolder + '/assets/style/modules/_icons.scss';
+function svgToScssIcons(cb) {
+	const svgsPath = app.path.src.svg.replace('*.svg', '')
+		, elemToPath = (svgJson, object) => {
+				const obj = object || { path: [], parameters: [] };
 
-	let fileIndex = 0;
+				if (/(rect|circle|ellipse|polygon|polyline|line|path)/.test(svgJson.name)) {
+					obj.path.push(elementToPath(svgJson));
+
+					Object.keys(svgJson.attributes).forEach((attrKey) => {
+						/(fill-rule|clip-rule)/.test(attrKey) && obj.parameters.push(attrKey + '="' + svgJson.attributes[attrKey] + '"');
+					});
+				}
+
+				if (svgJson.children && Array.isArray(svgJson.children)) {
+					svgJson.children.forEach((child) => elemToPath(child, obj) );
+				}
+
+				return obj;
+			}
 
 	fs.readdir(svgsPath, function (err, svgFiles) {
+		let iconsText = [], fileI = 0;
+
 		for (var i = 0; i < svgFiles.length; i++) {
-			const fileName = svgFiles[i].split('.')[0];
+			const [fileName, fileExtension] = svgFiles[i].split('.');
 
-			fs.readFile(svgsPath + svgFiles[i], (err, input) => {
-				const elemToPath = (svgJson) => {
-					if (/(rect|circle|ellipse|polygon|polyline|line|path)/.test(svgJson.name)) {
-						filesObj[fileName].path.push(elementToPath(svgJson));
-						Object.keys(svgJson.attributes).forEach((attrKey) => {
-							/(fill-rule|clip-rule)/.test(attrKey) && filesObj[fileName].parameters.push(attrKey + '="' + svgJson.attributes[attrKey] + '"')
-						});
-					} else if (svgJson.children && Array.isArray(svgJson.children)) {
-						svgJson.children.forEach((child) => {
-							elemToPath(child);
-						});
-					}
-				};
+			if (fileExtension.toLowerCase() != 'svg') continue;
 
-				parse(input).then((json) => {
-					const viewBoxArray = json.attributes.viewBox.split(' ');
+			fs.readFile(svgsPath + svgFiles[i], (err, data) => {
+				++fileI;
 
-					filesObj[fileName] = {
-						path: [],
-						size: `(${viewBoxArray[2]},${viewBoxArray[3]})`,
-						parameters: [],
-					};
+				parse(data).then((json) => {
+					const viewBoxArray = json.attributes.viewBox.split(' ')
+						, { path, parameters } = elemToPath(json);
 
-					elemToPath(json);
+					iconsText.push(`${ fileName }: functions.buildIconPath((1: '${path.join(' ')}'), $parameters, '${parameters.join(' ')}') (${ viewBoxArray[2] },${ viewBoxArray[3] })`);
 
-					if (++fileIndex === svgFiles.length) {
-						let iconsText = [];
-
-						for (let iconName in filesObj) {
-							const { path, size, parameters } = filesObj[iconName];
-							iconsText.push(
-								`${iconName}: functions.buildIconPath((1: '${path.join(
-									' '
-								)}'), $parameters, '${parameters.join(' ')}') ${size}`
-							);
-						}
-
-						deleteAsync([scssFile]).then(function (paths) {
-							fs.writeFile(
-								scssFile,
-								`@use 'sass:map';
-@use 'sass:list';
-@use 'functions';
-
-@function icon(
-	$icon-name,
-	$fill,
-	$stroke-color: transparent,
-	$stroke-width: 0,
-	$css: '',
-	$size: ''
-) {
-	$parameters: (
-		'fill': $fill,
-		'stroke-color': $stroke-color,
-		'stroke-width': $stroke-width,
-		'css': $css,
-		'size': $size,
-	);
-
-	$icons: (
-		${iconsText.join(',\n\t\t')}
-	);
-
-	@if map.has-key($icons, $icon-name) {
-		$icon: map.get($icons, $icon-name);
-		$listSize: list.length($icon);
-		$path: list.nth($icon, 1);
-		$icon_size: list.nth($icon, 2);
-		@if map.get($parameters, size) != '' {
-			$icon_size: map.get($parameters, size);
-		}
-
-		$icon: functions.buildIcon($path, list.nth($icon, 2), $icon_size);
-		@return url('data:image/svg+xml;utf8,#{$icon}');
-	} @else {
-		@return null;
-	}
-}\n`,
-								cb
-							);
-						});
-					}
+					fileI === svgFiles.length - 1 && fs.writeFile(app.path.srcFolder + '/assets/style/modules/_icons.scss', `@use 'sass:map';\n@use 'sass:list';\n@use 'functions';\n\n@function icon(\n$icon-name,\n\t$fill,\n\t$stroke-color: transparent,\n\t$stroke-width: 0,\n\t$css: '',\n\t$size: ''\n) {\n\t$parameters: (\n\t\t'fill': $fill,\n\t\t'stroke-color': $stroke-color,\n\t\t'stroke-width': $stroke-width,\n\t\t'css': $css,\n\t\t'size': $size,\n\t);\n\n\t$icons: (\n\t\t${iconsText.join(',\n\t\t')} \n\t);\n\n\t@if map.has-key($icons, $icon-name) {\n\t\t$icon: map.get($icons, $icon-name);\n\t\t$listSize: list.length($icon);\n\t\t$path: list.nth($icon, 1);\n\t\t$icon_size: list.nth($icon, 2);\n\t\t@if map.get($parameters, size) != '' {\n\t\t\t$icon_size: map.get($parameters, size);\n\t\t}\n\n\t\t$icon: functions.buildIcon($path, list.nth($icon, 2), $icon_size);\n\t\t@return url('data:image/svg+xml;utf8,#{$icon}');\n\t} @else {\n\t\t@return null;\n\t}\n}\n`, () => {
+						cb();
+						return app.gulp.src(`${app.path.srcFolder}`);
+					});
 				});
 			});
 		}
 	});
-
-	return app.gulp.src(`${app.path.srcFolder}`);
-	function cb() {}
 }
 
 export { image, svg, svgToScssIcons };

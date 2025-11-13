@@ -5,8 +5,8 @@ before_script:
 
 pages:
   script:
-    - npm i
     - node -v
+    - npm i
     - npm list
     - gulp build --build
     - mv build public

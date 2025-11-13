@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 
 // ----------------------------------------- custom sliders
 // https://swiperjs.com/swiper-api
@@ -9,9 +9,10 @@ import { Navigation, Pagination } from 'swiper/modules';
 	data-items-count        - количество видемых слайдов
 	data-space-between      - растояние между слайдами
 	data-paginate           - включить пагинацию? (data-paginate='id слайдера')
-	data-space-breakpoints  - настройки для адаптации (data-space-breakpoints='0-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2')
+	data-space-breakpoints  - настройки для адаптации (data-space-breakpoints='80-spaceBetween:20;1200-spaceBetween:60,slidesPerView:2')
 	data-slider-direction   - напровленеи слайдера
 	data-thumbs             - взаимодействи слайдеров (data-thumbs='id второго слайдера')
+	...
 */
 
 export default function customSliders(callback = false) {
@@ -21,11 +22,14 @@ export default function customSliders(callback = false) {
 
 	window.siteOpt.swipers = {};
 
-	function initSlider(s) {
-		const $slider = $(s),
-			sliderId = s.dataset.slider,
-			sliderSettings = {
-				modules: [Navigation, Pagination],
+	function initSlider(sliderEl) {
+		const $slider = $(sliderEl),
+			sliderId = sliderEl.dataset.slider
+
+		if (window.siteOpt.swipers[sliderId]) return;
+
+		const sliderSettings = {
+				modules: [Navigation, Pagination, Thumbs],
 				loop: $slider.data('loop') || false,
 				slidesPerGroup: $slider.data('items-group')
 					? +$slider.data('items-group')
@@ -48,6 +52,7 @@ export default function customSliders(callback = false) {
 					nextEl: `[data-slider-next=${sliderId}]`,
 					prevEl: `[data-slider-prev=${sliderId}]`,
 				},
+				initialSlide: $slider.data('first-slide') || 0
 			};
 
 		if ($slider.data('data-mousewheel') !== undefined)
@@ -113,28 +118,21 @@ export default function customSliders(callback = false) {
 			sliderSettings.breakpoints = sliderbreakbreak;
 		}
 
-		const thisSwiper = new Swiper(s, sliderSettings);
+		if ($slider.data('thumbs')) {
+			sliderSettings.thumbs = {
+				swiper: initSlider(document.querySelector(`[data-slider='${$slider.data('thumbs')}']`))
+			};
+		}
 
-		window.siteOpt.swipers[sliderId] = thisSwiper;
+		const thisSwiper = new Swiper(sliderEl, sliderSettings);
+
+		!window.siteOpt.swipers[sliderId] && (window.siteOpt.swipers[sliderId] = thisSwiper);
 
 		if (callback) callback(sliderId, thisSwiper);
 		return thisSwiper;
 	}
 
-	setTimeout((_) => {
-		sliders.forEach((slider) => {
-			if (window.siteOpt.swipers[slider.dataset.slider]) return;
-
-			if (slider.dataset.thumbs) {
-				const secondSliderEl = document.querySelector(`[data-slider='${slider.dataset.thumbs}']`)
-					, secondSlider = initSlider(secondSliderEl)
-					, firstSlider = initSlider(slider);
-
-				firstSlider.params.thumbs.swiper = secondSlider;
-				firstSlider.thumbs.init();
-			} else {
-				initSlider(slider);
-			}
-		});
+	setTimeout(() => {
+		sliders.forEach((slider) => initSlider(slider) );
 	}, 100);
 }

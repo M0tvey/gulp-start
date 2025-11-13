@@ -34,7 +34,7 @@
 	},
 	"dependencies": {
 		"@fancyapps/ui": "latest",
-		"choices.js": "^11.1.0",
+		"choices.js": "latest",
 		"element-to-path": "latest",
 		"inputmask": "latest",
 		"jquery": "latest",

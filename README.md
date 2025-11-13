@@ -1,4 +1,6 @@
-<p style="text-align:center;">![AVD GULP](./readme/avd-gulp.png)</p>
+<p align="center">
+	<img align="center" width="264" height="185" src="./readme/avd-gulp.png" alt="AVD GULP">
+</p>
 
 # Шаблон для быстрого старта проектов
 

@@ -25,7 +25,7 @@ export const filePaths = {
 		js: srcFolder + '/assets/js/**/*.js',
 		json: srcFolder + '/*.json',
 		img: srcFolder + '/assets/img/**/*.*',
-		svg: srcFolder + '/assets/img/svg/*.*',
+		svg: srcFolder + '/assets/img/svg/*.svg',
 		fonts: srcFolder + '/assets/fonts/',
 	},
 	watch: {

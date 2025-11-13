@@ -16,9 +16,9 @@
 
 8. Иконки хранятся в папке `./img/svg/sprite.svg`. После сборки или добавления новых иконок в эту папку автоматически создается (обновляется) svg спрайт в `./build/assets/img/svg/svg.svg` и создается (обновляется) scss файл с иконками `./src/assets/style/modules/_icons.scss`. id иконок в спрайте и ключами иконок в scss служат названия файлов. Желательно закидывать svg только с `path` с `fill` без `stroke`. Преобразовать `<circle>, <rect>, <line>, ...` можно в фигме, нажав правой кнопкой на векторе и выбрать `Outline stroke`;
 
-  8.1. Вывести иконку из svg спрайта можно с помощью `<svg><use></svg>` (например, `<svg><use href="../assets/img/svg/svg.svgg#... id иконки ..."></use></svg>`);
+  - Вывести иконку из svg спрайта можно с помощью `<svg><use></svg>` (например, `<svg><use href="../assets/img/svg/svg.svgg#... id иконки ..."></use></svg>`);
 
-  8.2. Вывести иконку из scss файла можно с помощью функции `icon(... id иконки ...)` (например, `background-image: icon(arrow-right);`). Предварительно в файле должен подключатся файл `./src/assets/style/modules/_icons.scss` (`@use '../modules/icons' as *;`).
+  - Вывести иконку из scss файла можно с помощью функции `icon(... id иконки ...)` (например, `background-image: icon(arrow-right);`). Предварительно в файле должен подключатся файл `./src/assets/style/modules/_icons.scss` (`@use '../modules/icons' as *;`).
 
 9. Все переменные должны находиться в `./src/assets/style/modules/_variables.scss`;
 
@@ -28,9 +28,9 @@
 
 12. Все попапы находятся в папке `./src/popups` или в конце footer-а и работают на [fancybox](https://fancyapps.com/fancybox/);
 
-  12.1. Локальные попапы (находятся в самой странице) вызываются ссылкой `<a href="#... id попапа ...." class="js_open_local_popup">Open popup</a>`;
+  - Локальные попапы (находятся в самой странице) вызываются ссылкой `<a href="#... id попапа ...." class="js_open_local_popup">Open popup</a>`;
 
-  12.2. Ссылка для вывода попап из папки `./src/popups` должна быть такой `<a href="./popups/... имя файла .... .html" class="js_open_popup">Open popup</a>`.
+  - Ссылка для вывода попап из папки `./src/popups` должна быть такой `<a href="./popups/... имя файла .... .html" class="js_open_popup">Open popup</a>`.
 
 
 
