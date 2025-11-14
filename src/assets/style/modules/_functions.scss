@@ -5,7 +5,7 @@
 @use "variables";
 
 @function sizeVwF($f-min, $f-max, $v-min: 360, $v-max: 1920) {
-	$k: ($f-max - $f-min) / ($v-max - $v-min);
+	$k: math.div($f-max - $f-min, $v-max - $v-min);
 	$b: $f-min - $k * $v-min;
 
 	$b: $b * 1px;
