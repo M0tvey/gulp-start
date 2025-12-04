@@ -119,9 +119,11 @@ export default function customSliders(callback = false) {
 		}
 
 		if ($slider.data('thumbs')) {
-			sliderSettings.thumbs = {
-				swiper: initSlider(document.querySelector(`[data-slider='${$slider.data('thumbs')}']`))
-			};
+			const thumbSliderEl = document.querySelector(`[data-slider='${$slider.data('thumbs')}']`)
+
+			thumbSliderEl.checkVisibility() && (sliderSettings.thumbs = {
+				swiper: thumbSliderEl
+			});
 		}
 
 		const thisSwiper = new Swiper(sliderEl, sliderSettings);

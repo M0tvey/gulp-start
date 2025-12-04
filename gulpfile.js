@@ -17,7 +17,7 @@ global.app = {
 
 import { server } from './gulp/tasks/serv.js';
 import { reset } from './gulp/tasks/reset.js';
-import { root } from './gulp/tasks/root.js';
+import { root, json } from './gulp/tasks/root.js';
 import { html } from './gulp/tasks/html.js';
 import { style } from './gulp/tasks/style.js';
 import { script } from './gulp/tasks/script.js';
@@ -28,6 +28,7 @@ function watcher() {
 	server();
 
 	gulp.watch(filePaths.watch.root, root);
+	gulp.watch(filePaths.watch.json, json);
 	gulp.watch(filePaths.watch.html, html);
 	gulp.watch(filePaths.watch.style, style);
 	gulp.watch(filePaths.watch.js, script);
@@ -37,7 +38,7 @@ function watcher() {
 }
 
 const mondatory = gulp.series(convertFonts, fontsStyle, svgToScssIcons)
-	, devTasks = gulp.series(mondatory, gulp.parallel(root, html, script, image, svg, fontsCopy), style)
+	, devTasks = gulp.series(mondatory, gulp.parallel(root, json, html, script, image, svg, fontsCopy), style)
 	, dev = gulp.series(reset, devTasks, watcher)
 	, build = gulp.series(reset, devTasks);
 

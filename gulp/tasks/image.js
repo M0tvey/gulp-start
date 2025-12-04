@@ -66,7 +66,7 @@ function svgToScssIcons(cb) {
 		for (var i = 0; i < svgFiles.length; i++) {
 			const [fileName, fileExtension] = svgFiles[i].split('.');
 
-			if (fileExtension.toLowerCase() != 'svg') continue;
+			if (fileExtension.toLowerCase() != 'svg' || fileName.includes('sprite')) continue;
 
 			fs.readFile(svgsPath + svgFiles[i], (err, data) => {
 				++fileI;

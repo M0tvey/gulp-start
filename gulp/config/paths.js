@@ -4,7 +4,7 @@ const buildFolder = './build',
 export const filePaths = {
 	build: {
 		// Тут мы укажем куда складывать готовые после сборки файлы
-		root: buildFolder + '/',
+		root: buildFolder + '/assets/',
 		html: buildFolder + '/',
 		style: buildFolder + '/assets/css/',
 		js: buildFolder + '/assets/js/',
