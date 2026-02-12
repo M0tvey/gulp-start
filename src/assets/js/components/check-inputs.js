@@ -7,14 +7,11 @@ function checkVal(el) {
 }
 
 export function checkInputs(wrap = document) {
-	wrap.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="hidden"]), textarea')
-		.forEach((el) => {
-			['keydown', 'change', 'dragend', 'paste'].forEach((eventName) => {
-				el.addEventListener(eventName, () => {
-					checkVal(el);
-				});
-			});
-
-			checkVal(el);
+	wrap.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="hidden"]), textarea').forEach((el) => {
+		['keydown', 'change', 'input', 'dragend', 'paste'].forEach((eventName) => {
+			el.addEventListener(eventName, () => checkVal(el) );
 		});
+
+		checkVal(el);
+	});
 }

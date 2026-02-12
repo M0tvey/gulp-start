@@ -15,6 +15,7 @@
 		padding-left: 20px;
 		grid-auto-flow: row;
 		row-gap: 20px;
+		grid-auto-columns: 100%;
 
 		&__submenu {
 			padding-left: 45px !important;
@@ -23,6 +24,9 @@
 			&_link::before {
 				inset: auto auto 0 -30px;
 			}
+
+			&.level--3 .sitemap-menu__submenu_link { --line-left: 43px }
+			&.level--4 .sitemap-menu__submenu_link { --line-left: 53px }
 		}
 
 		&__item,
@@ -33,25 +37,32 @@
 			}
 		}
 
+		&__link { --line-left: 20px }
+		&__submenu_link { --line-left: 30px }
+
 		&__link,
 		&__submenu_link {
 			text-decoration: none;
 			color: $color_1;
 			position: relative;
 			display: inline-block;
-			font: 300 20px/150% $font_1;
+			font: 300 14px/150% $font_1;
 			transition: padding 0.3s ease-in-out;
+			@include screen(sm, $block: body) {
+				font-size: 16px;
+			}
+			@include screen(md, $block: body) {
+				font-size: 20px;
+			}
 
 			&:active {
 				text-decoration: none;
 			}
 
-			$leftP: 20px;
-
 			&:before {
 				content: "";
 				position: absolute;
-				inset: auto auto 0 #{-$leftP};
+				inset: auto auto 0 calc(var(--line-left) * -1);
 				height: 1px;
 				background-color: $color_2;
 				transition: width 0.3s ease-in-out;
@@ -62,7 +73,7 @@
 				padding-left: 10px;
 
 				&:before {
-					width: calc(100% + #{$leftP});
+					width: calc(100% + var(--line-left));
 				}
 			}
 		}

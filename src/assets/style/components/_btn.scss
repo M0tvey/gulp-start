@@ -15,10 +15,6 @@
 	cursor: pointer;
 	@include transition;
 
-	&::after {
-		content: icon(icon_arrow-right, #000);
-	}
-
 	&.is-disabled {
 		background-color: rgba($color_2, 0.5);
 		color: $color_1;
@@ -47,33 +43,6 @@
 		&.is-active {
 			background-color: $color_2;
 			color: #fff;
-		}
-
-		&.arrow {
-			position: relative;
-
-			&::before {
-				content: "";
-				background-color: #fff;
-				position: absolute;
-				inset: 50% -2px auto auto;
-				@include size(6px);
-				transform: translateY(-50%);
-				@include transition;
-			}
-
-			&::after {
-				position: absolute;
-				inset: 50% -25px auto auto;
-				line-height: 0;
-				transform: translateY(-50%);
-			}
-
-			&:hover {
-				&::before {
-					opacity: 0;
-				}
-			}
 		}
 	}
 

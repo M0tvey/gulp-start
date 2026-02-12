@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { Navigation, Pagination, Thumbs } from 'swiper/modules';
+import { Navigation, Pagination, Thumbs, Autoplay } from 'swiper/modules';
 
 // ----------------------------------------- custom sliders
 // https://swiperjs.com/swiper-api
@@ -29,7 +29,7 @@ export default function customSliders(callback = false) {
 		if (window.siteOpt.swipers[sliderId]) return;
 
 		const sliderSettings = {
-				modules: [Navigation, Pagination, Thumbs],
+				modules: [Navigation],
 				loop: $slider.data('loop') || false,
 				slidesPerGroup: $slider.data('items-group')
 					? +$slider.data('items-group')
@@ -68,6 +68,8 @@ export default function customSliders(callback = false) {
 		}
 
 		if ($slider.data('auto')) {
+			sliderSettings.modules.push(Autoplay);
+
 			sliderSettings.autoplay = {
 				delay: $slider.data('auto'),
 			};
@@ -80,6 +82,7 @@ export default function customSliders(callback = false) {
 			};
 
 			$slider.addClass('paginate');
+			sliderSettings.modules.push(Pagination);
 			sliderSettings.pagination = sliderPagination;
 		}
 
@@ -121,9 +124,13 @@ export default function customSliders(callback = false) {
 		if ($slider.data('thumbs')) {
 			const thumbSliderEl = document.querySelector(`[data-slider='${$slider.data('thumbs')}']`)
 
-			thumbSliderEl.checkVisibility() && (sliderSettings.thumbs = {
-				swiper: thumbSliderEl
-			});
+			thumbSliderEl.checkVisibility() && (
+				sliderSettings.modules.push(Thumbs),
+
+				sliderSettings.thumbs = {
+					swiper: initSlider(thumbSliderEl)
+				}
+			)
 		}
 
 		const thisSwiper = new Swiper(sliderEl, sliderSettings);

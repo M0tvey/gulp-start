@@ -82,7 +82,11 @@
 	}
 }
 
-@mixin screen($width, $type: min) {
+@mixin screen($width, $type: min, $block: false) {
+	// .block {
+	// 	container-name: $block;
+	// 	container-type: inline-size;
+	// }
   @if map.has_key(variables.$breakpoints, $width) {
     $width: map.get(variables.$breakpoints, $width);
 
@@ -94,8 +98,16 @@
       $width: $width + 00.2px;
     }
 
-    @media only screen and (#{$type}-width: $width) {
-      @content;
-    }
+		@if ($block) {
+			$condition: width '>' #{ $width };
+			@if ($type == max) { $condition: width '<' #{ $width }; }
+			@container #{ $block } (#{ $condition }) {
+				@content;
+			}
+		} @else {
+			@media only screen and (#{$type}-width: $width) {
+				@content;
+			}
+		}
   }
 }
