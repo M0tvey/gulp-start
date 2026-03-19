@@ -1,18 +1,27 @@
-import Choices from 'choices.js'; // https://github.com/Choices-js/Choices
+import TomSelect from 'tom-select/base'; // https://tom-select.js.org/docs/
 
 function initSelect(el, callback) {
 	if (!el) return;
 
 	const selectOpt = {
 		searchEnabled: false,
-		itemSelectText: false
+		itemSelectText: false,
+		render: {
+			option: function(data, escape) {
+				return `<div class=""${ data.hasOwnProperty('icon') ? 'style="--icon:url(' + data.icon + ')"' : '' }>${ escape(data.text) }</div>`;
+			},
+			item: function(data, escape) {
+				return `<div class=""${ data.hasOwnProperty('icon') ? 'style="--icon:url(' + data.icon + ')"' : '' }>${ escape(data.text) }</div>`;
+			},
+		},
 	}
 
-	const choices = new Choices(el, selectOpt);
+	el.dataset.parent && (selectOpt.dropdownParent = el.closest(el.dataset.parent));
 
-	// choices.showDropdown();
+	const selectInstance = new TomSelect(el, selectOpt);
+	console.log(selectOpt, selectInstance);
 
-	callback && typeof callback === 'function' && callback(choices);
+	callback && typeof callback === 'function' && callback(selectInstance);
 }
 
 export { initSelect };

@@ -32,6 +32,7 @@ body {
 	grid-template-columns: 100%;
 	grid-template-rows: 1fr auto;
 	font: normal 16px/140% $siteFont;
+	font-feature-settings: 'pnum', 'lnum';
 	color: $color_1;
 	min-height: 100%;
 }

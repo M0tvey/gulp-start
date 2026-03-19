@@ -8,7 +8,7 @@ import acceptCookie from './components/cookie-accept';
 import { initOpenPopup, initOpenUrlPopup } from './components/popups';
 import { initSelect } from './components/custom-select';
 import { initFormsValidator } from './components/validation-forms';
-import { phoneMask } from './components/phone-mask';
+import inputsMask from './components/inputs-mask';
 import { inputFile } from './components/input-file';
 import { ajaxForm } from './components/ajax-form';
 import { checkInputs } from './components/check-inputs';
@@ -27,7 +27,7 @@ $(function () {
 	document.querySelectorAll('select').forEach(select => initSelect(select));
 
 	initFormsValidator();
-	phoneMask();
+	inputsMask();
 	inputFile();
 	ajaxForm();
 	checkInputs();

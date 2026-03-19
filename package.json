@@ -25,7 +25,6 @@
 		"gulp-rename": "latest",
 		"gulp-sass": "latest",
 		"gulp-sourcemaps": "latest",
-		"gulp-svgmin": "latest",
 		"gulp-svgstore": "latest",
 		"gulp-webp": "latest",
 		"sass": "latest",
@@ -34,12 +33,12 @@
 	},
 	"dependencies": {
 		"@fancyapps/ui": "latest",
-		"choices.js": "latest",
 		"element-to-path": "latest",
 		"inputmask": "latest",
 		"jquery": "latest",
 		"parsleyjs": "latest",
 		"svgson": "latest",
-		"swiper": "latest"
+		"swiper": "latest",
+		"tom-select": "^2.5.2"
 	}
 }

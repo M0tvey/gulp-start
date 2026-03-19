@@ -16,7 +16,7 @@
 
 8. Иконки хранятся в папке `./img/svg/sprite.svg`. После сборки или добавления новых иконок в эту папку автоматически создается (обновляется) svg спрайт в `./build/assets/img/svg/svg.svg` и создается (обновляется) scss файл с иконками `./src/assets/style/modules/_icons.scss`. id иконок в спрайте и ключами иконок в scss служат названия файлов. Желательно закидывать svg только с `path` с `fill` без `stroke`. Преобразовать `<circle>, <rect>, <line>, ...` можно в фигме, нажав правой кнопкой на векторе и выбрать `Outline stroke`;
 
-  - Вывести иконку из svg спрайта можно с помощью `<svg><use></svg>` (например, `<svg><use href="../assets/img/svg/svg.svgg#... id иконки ..."></use></svg>`);
+  - Вывести иконку из svg спрайта можно с помощью `<svg><use></svg>` (например, `<svg><use href="../assets/img/svg/svg.svg#... id иконки ..."></use></svg>`);
 
   - Вывести иконку из scss файла можно с помощью функции `icon(... id иконки ...)` (например, `background-image: icon(arrow-right);`). Предварительно в файле должен подключатся файл `./src/assets/style/modules/_icons.scss` (`@use '../modules/icons' as *;`).
 

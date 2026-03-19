@@ -10,14 +10,14 @@
 
 		<title>{% if siteTitle %}Site | {{ siteTitle | striptags(true) }}{% else %}Site{% endif %}</title>
 
-		<link rel="icon" type="image/svg+xml" sizes="any" href="./favicon.svg">
+		<link rel="icon" type="image/svg+xml" sizes="any" href="./assets/favicon.svg">
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="theme-color" content="#ffffff">
 
 		<link rel="stylesheet" type="text/css" href="./assets/css/main.min.css?v={{ randomNumber }}">
 		{% if dopStyleFile %}<link rel="stylesheet" type="text/css" href="./assets/css/{{ dopStyleFile }}.min.css?v={{ randomNumber }}">{% endif %}
 
-		<script src="https://api-maps.yandex.ru/v3/?apikey=865714b7-1fc0-49e4-ac3d-b917e31ad8de&lang=ru_RU" type="text/javascript"></script>
+		{% if newScriptFile %}<script src="{{ newScriptFile }}" type="text/javascript"></script>{% endif %}
 
 		<script defer src="./assets/js/main.min.js?v={{ randomNumber }}"></script>
 		<!-- -------------------------------------------

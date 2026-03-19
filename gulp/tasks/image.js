@@ -1,7 +1,6 @@
 import imagemin, { gifsicle, mozjpeg, optipng } from "gulp-imagemin";
 import webp from "gulp-webp";
 import svgstore from "gulp-svgstore";
-import svgmin from "gulp-svgmin";
 import fs from "fs";
 import { parse, stringify } from "svgson";
 import elementToPath from "element-to-path";
@@ -30,11 +29,15 @@ function image() {
 function svg() {
 	return app.gulp
 		.src(app.path.src.svg, {
-			encoding: false,
-			since: app.gulp.lastRun(svg),
+			encoding: false
 		}) // Выберем наши svg
 		.pipe(app.gulp.dest(app.path.build.svg))
-		.pipe(svgmin())
+		.pipe(cheerio({
+			run: ($, file) => {
+				$('[fill]').removeAttr('fill');
+			},
+			parserOptions: { xmlMode: true }
+		}))
 		.pipe(svgstore())
 		.pipe(app.gulp.dest(app.path.build.svg))
 		.pipe(app.plugins.browserSync.stream());

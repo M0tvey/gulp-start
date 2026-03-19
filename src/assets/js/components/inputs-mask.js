@@ -1,6 +1,6 @@
-import Inputmask from '../../../../node_modules/inputmask/dist/inputmask.es6.js';
+import Inputmask from 'inputmask/dist/inputmask.es6.js';
 
-export function phoneMask() {
+export default () => {
 	document.querySelectorAll('.js_phone_mask').forEach((phoneEl) => {
 		Inputmask({
 			showMaskOnHover: false,

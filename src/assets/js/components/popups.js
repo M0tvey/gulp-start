@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import { Fancybox } from "@fancyapps/ui";
 import { initSelect } from './custom-select';
-import { phoneMask } from './phone-mask';
+import { phoneMask } from './inputs-mask';
 import { checkInputs } from './check-inputs';
-import { inputFile } from './input-file';
+import inputsMask from './inputs-mask';
 import { ajaxForm } from './ajax-form';
 import { initFormsValidator } from './validation-forms';
 
@@ -26,7 +26,7 @@ const defaults = {
 
 			initFormsValidator(popup);
 
-			phoneMask();
+			inputsMask();
 			checkInputs(popup);
 			inputFile(popup);
 			ajaxForm(popup);
