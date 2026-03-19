@@ -2,6 +2,7 @@ import imagemin, { gifsicle, mozjpeg, optipng } from "gulp-imagemin";
 import webp from "gulp-webp";
 import svgstore from "gulp-svgstore";
 import fs from "fs";
+import cheerio from "gulp-cheerio";
 import { parse, stringify } from "svgson";
 import elementToPath from "element-to-path";
 

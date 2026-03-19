@@ -29,7 +29,8 @@
 		"gulp-webp": "latest",
 		"sass": "latest",
 		"svg4everybody": "latest",
-		"webpack-stream": "latest"
+		"webpack-stream": "latest",
+		"gulp-cheerio": "latest"
 	},
 	"dependencies": {
 		"@fancyapps/ui": "latest",
@@ -39,6 +40,6 @@
 		"parsleyjs": "latest",
 		"svgson": "latest",
 		"swiper": "latest",
-		"tom-select": "^2.5.2"
+		"tom-select": "latest"
 	}
 }
